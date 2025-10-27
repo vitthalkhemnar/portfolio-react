@@ -1,21 +1,22 @@
+import React from "react";
+
 const Contact = () => {
   return (
-    <div className="d-flex justify-content-center align-items-center my-4 py-5">
+    <section id="contact" className="d-flex justify-content-center py-5 px-3">
       <div
-        className="container p-4"
+        className="container"
         style={{
-          maxWidth: "50%",
-          //   borderRadius: "15px",
-          //   boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+          maxWidth: "900px",
+          width: "100%",
         }}
       >
         {/* Heading */}
-        <div className="fw-bold fs-6 mb-4">
+        <div className="fw-bold fs-6 mb-3 text-start">
           <p className="role text-primary m-0 text-uppercase">Contact</p>
         </div>
 
         {/* Subheading */}
-        <div className="fw-bold fs-5 mb-4">
+        <div className="fw-bold mb-4 text-start">
           <p className="m-0">
             Don't be shy! Hit me up!{" "}
             <span role="img" aria-label="wave">
@@ -24,18 +25,17 @@ const Contact = () => {
           </p>
         </div>
 
-        {/* Contact Details Boxes */}
-        <div className="d-flex flex-row gap-3">
-          {/* Location Box */}
+        {/* Contact Boxes */}
+        <div className="d-flex flex-column flex-md-row gap-3">
+          {/* Location */}
           <a
             href="https://www.google.com/maps/search/?api=1&query=Pune,India"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-fill"
-            style={{ textDecoration: "none", color: "black" }}
+            className="flex-fill text-decoration-none"
           >
             <div
-              className="d-flex align-items-center p-2 rounded border border-primary"
+              className="d-flex align-items-center p-3 rounded border border-primary"
               style={{ cursor: "pointer", backgroundColor: "#f8f9fa" }}
             >
               <i className="bi bi-geo-alt-fill text-primary me-3 fs-4"></i>
@@ -46,16 +46,15 @@ const Contact = () => {
             </div>
           </a>
 
-          {/* Email Box */}
+          {/* Email */}
           <a
-            href="https://mailto:vitthalkkhemnar@gmail.com"
+            href="mailto:vitthalkkhemnar@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-fill"
-            style={{ textDecoration: "none", color: "black" }}
+            className="flex-fill text-decoration-none"
           >
             <div
-              className="d-flex align-items-center p-2 rounded border border-primary"
+              className="d-flex align-items-center p-3 rounded border border-primary"
               style={{ cursor: "pointer", backgroundColor: "#f8f9fa" }}
             >
               <i className="bi bi-envelope-fill text-primary me-3 fs-4"></i>
@@ -66,16 +65,15 @@ const Contact = () => {
             </div>
           </a>
 
-          {/* WhatsApp Box */}
+          {/* WhatsApp */}
           <a
             href="https://wa.me/918767841958"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-fill"
-            style={{ textDecoration: "none", color: "black" }}
+            className="flex-fill text-decoration-none"
           >
             <div
-              className="d-flex align-items-center p-2 rounded border border-primary"
+              className="d-flex align-items-center p-3 rounded border border-primary"
               style={{ cursor: "pointer", backgroundColor: "#f8f9fa" }}
             >
               <i className="bi bi-whatsapp text-success me-3 fs-4"></i>
@@ -87,7 +85,7 @@ const Contact = () => {
           </a>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

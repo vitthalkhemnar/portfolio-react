@@ -1,49 +1,63 @@
+import React, { useState } from "react";
+import "./Navbar.css";
+
 const Navbar = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
-      <div className="container-fluid">
-        <a className="navbar-brand fw-bold" href="#home">
-          Vitthal.dev
-        </a>
+    <>
+      <nav className="navbar navbar-light bg-light fixed-top shadow-sm">
+        <div className="container-fluid">
+          <a className="navbar-brand fw-bold fs-4" href="#home">
+            Vitthal.dev
+          </a>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+          <button
+            className="btn btn-outline-dark d-lg-none"
+            type="button"
+            onClick={toggleSidebar}
+          >
+            <i className="bi bi-list" style={{ fontSize: "1.5rem" }}></i>
+          </button>
 
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item me-3">
-              <a className="nav-link" href="#home">
-                Home
-              </a>
+          <ul className="navbar-nav d-none d-lg-flex flex-row ms-auto gap-3">
+            <li className="nav-item">
+              <a className="nav-link" href="#home">Home</a>
             </li>
-            <li className="nav-item me-3">
-              <a className="nav-link" href="#about">
-                About
-              </a>
+            <li className="nav-item">
+              <a className="nav-link" href="#about">About</a>
             </li>
-            <li className="nav-item me-3">
-              <a className="nav-link" href="#project">
-                Project
-              </a>
+            <li className="nav-item">
+              <a className="nav-link" href="#project">Portfolio</a>
             </li>
-            <li className="nav-item me-3">
-              <a className="nav-link" href="#contact">
-                Contact
-              </a>
+            <li className="nav-item">
+              <a className="nav-link" href="#contact">Contact</a>
             </li>
           </ul>
         </div>
+      </nav>
+
+      {/* Sidebar */}
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        <button className="close-btn" onClick={toggleSidebar}>&times;</button>
+        <ul className="sidebar-nav">
+          {["home","about","project","contact"].map((sec) => (
+            <li key={sec}>
+              <a
+                href={`#${sec}`}
+                onClick={toggleSidebar}
+              >
+                {sec.charAt(0).toUpperCase() + sec.slice(1)}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-    </nav>
+
+      {sidebarOpen && <div className="overlay" onClick={toggleSidebar}></div>}
+    </>
   );
 };
 
