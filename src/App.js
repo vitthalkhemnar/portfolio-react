@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import About from "./components/About";

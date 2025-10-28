@@ -14,11 +14,12 @@ const About = () => {
             style={{
               width: "40vw",
               height: "40vw",
-              maxWidth: "250px",
+              maxWidth: "350px",
               maxHeight: "250px",
-              minWidth: "120px",
+              minWidth: "220px",
               minHeight: "120px",
               backgroundColor: "#fff",
+              border: "1px solid black",
               boxShadow: "0 0 10px rgba(0,0,0,0.2)",
               borderRadius: "20px",
             }}

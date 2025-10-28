@@ -39,26 +39,29 @@ const Project = () => {
       >
         {/* Portfolio Heading - same as Contact */}
         <div className="fw-bold fs-6 mb-3 text-start">
-          <p className="role text-primary m-0 text-uppercase">Portfolio</p>
+          <p
+            className="role text-primary m-0 text-uppercase"
+            style={{ textAlign: "start" }}
+          >
+            Portfolio
+          </p>
         </div>
 
         {/* Optional Subheading */}
-        <div className="fw-bold mb-4 text-start">
+        {/* <div className="fw-bold mb-4 text-start">
           <p className="m-0">
             Check out my projects!{" "}
             <span role="img" aria-label="projects">
               💻
             </span>
           </p>
-        </div>
+        </div> */}
 
         {/* Project Cards */}
         {projects.map((proj, index) => (
           <div
             key={proj.id}
-            className={`d-flex flex-column flex-md-row align-items-center mb-5 ${
-              index % 2 !== 0 ? "flex-md-row-reverse" : ""
-            }`}
+            className={`d-flex flex-column flex-md-row align-items-center mb-5`}
           >
             {/* Project Image */}
             <div className="d-flex justify-content-center mb-3 mb-md-0 px-3 flex-fill">
@@ -68,11 +71,12 @@ const Project = () => {
                   width: "40vw",
                   height: "40vw",
                   maxWidth: "300px",
-                  maxHeight: "300px",
-                  minWidth: "120px",
+                  maxHeight: "220px",
+                  minWidth: "200px",
                   minHeight: "120px",
                   backgroundColor: "#fff",
-                  boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+                  border: "1px solid black",
+                  // boxShadow: "0 0 10px rgba(0,0,0,0.2)",
                   borderRadius: "20px",
                 }}
               >
@@ -91,9 +95,12 @@ const Project = () => {
 
             {/* Project Content */}
             <div className="d-flex flex-column justify-content-center text-center text-md-start px-3 flex-fill">
-              <h3 className="fw-bold mb-3">{proj.name}</h3>
+              <p className="fw-bold mb-3 fs-6 text-uppercase">{proj.name}</p>
               <p className="mb-3 text-dark">{proj.description}</p>
-              <p className="fw-bold mb-3 text-primary">
+              <p
+                className="fw-bold mb-3"
+                style={{ color: "rgba(37, 178, 220, 0.8)" }}
+              >
                 {proj.techStack.join(", ")}
               </p>
 

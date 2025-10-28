@@ -1,0 +1,77 @@
+.download-btn {
+    background-color: #5bc0de;
+    /* soft blue-silver */
+    color: white;
+    border: none;
+    padding: 6px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(91, 192, 222, 0.4);
+}
+
+.download-btn:hover {
+    background-color: #76d4f0;
+    box-shadow: 0 0 15px rgba(91, 192, 222, 0.8);
+    transform: translateY(-2px);
+}
+
+.download-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 0 10px rgba(91, 192, 222, 0.6);
+}
+
+.social-icon-link {
+    /* color: #00bfff; */
+    /* fluorescent blue */
+    color: #444;
+    font-size: 1.2rem;
+    margin: 0 0;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon-link:hover {
+    color: #5bc0de;
+    /* slightly brighter */
+    /* text-shadow: 0 0 12px rgba(0, 191, 255, 0.9); */
+    /* glowing effect */
+    /* transform: translateY(-3px); */
+    /* smooth lift */
+}
+
+.social-icon-link:active {
+    color: #5bc0de;
+    /* transform: translateY(0);
+    text-shadow: 0 0 6px rgba(0, 191, 255, 0.7); */
+}
+
+@keyframes morph {
+    0% {
+        border-radius: 62% 38% 48% 52% / 52% 58% 42% 48%;
+    }
+
+    25% {
+        border-radius: 58% 42% 55% 45% / 48% 52% 55% 45%;
+    }
+
+    50% {
+        border-radius: 65% 35% 45% 55% / 55% 45% 50% 50%;
+    }
+
+    75% {
+        border-radius: 60% 40% 52% 48% / 50% 55% 45% 50%;
+    }
+
+    100% {
+        border-radius: 62% 38% 48% 52% / 52% 58% 42% 48%;
+    }
+}
+
+.animated-image {
+    animation: morph 10s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+    /* soft glow */
+    transition: all 0.3s ease;
+}
