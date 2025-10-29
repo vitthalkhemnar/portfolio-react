@@ -1,6 +1,31 @@
+import { useEffect, useState } from "react";
 import "./Home.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setProfile } from "../redux/profile/profileSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile);
+
+  useEffect(() => {
+    const userData = {
+      name: "Vitthal Khemnar",
+      role: "Java Back-End Developer",
+      experience: "1 year",
+      skills: ["Core Java", "Spring Boot", "ReactJS"],
+      location: "Pune, India",
+      linkedInUrl: "https://www.linkedin.com/in/vitthalkhemnar/",
+      githubUrl: "https://github.com/vitthalkhemnar",
+      whatsappNo: "918767841958",
+      email: "vitthalkkhemnar@gmail.com",
+      summary: "",
+      aboutMe:
+        "I am a Java Backend Developer with 1 year of professional experience at ANMsoft Technologies. My expertise includes Core Java, Spring, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture, with a focus on problem-solving and writing clean, maintainable code. I am eager to continue enhancing my skills and contribute to impactful projects.",
+    };
+
+    dispatch(setProfile(userData));
+  }, [dispatch]);
+
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100 px-3">
       <div
@@ -11,7 +36,7 @@ const Home = () => {
         <div className="text-center text-md-start mb-4 mb-md-0 flex-fill px-3">
           <div className="fw-bold fs-2 fs-md-1 mb-3">
             <p className="role mb-0">
-              Back-End Java Developer{" "}
+              {profile.role}{" "}
               <span role="img" aria-label="wave">
                 👋
               </span>
@@ -20,8 +45,8 @@ const Home = () => {
 
           <div className="summary mb-3">
             <p className="m-0">
-              Hi, I'm <strong>Vitthal Khemnar</strong>. A passionate Back-end
-              Java Developer based in Pune, India.
+              Hi, I'm <strong>{profile.name}</strong>. A passionate{" "}
+              {profile.role} based in {profile.location}.
             </p>
           </div>
 
@@ -30,7 +55,7 @@ const Home = () => {
             {/* Social Icons */}
             <div className="d-flex justify-content-center justify-content-md-start gap-3">
               <a
-                href="#"
+                href={profile.linkedInUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon-link"
@@ -39,7 +64,7 @@ const Home = () => {
               </a>
 
               <a
-                href="#"
+                href={profile.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon-link"
@@ -50,7 +75,7 @@ const Home = () => {
 
             {/* Download CV Button */}
             <a
-              href="#"
+              href="/Vitthal Khemnar - Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="text-decoration-none"

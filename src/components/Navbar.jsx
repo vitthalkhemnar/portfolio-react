@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./Navbar.css";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const profile = useSelector((state) => state.profile);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
@@ -11,7 +12,7 @@ const Navbar = () => {
       <nav className="navbar navbar-light bg-light fixed-top shadow-sm">
         <div className="container-fluid">
           <a className="navbar-brand fw-bold fs-4" href="#home">
-            Vitthal.dev
+            {profile.name}
           </a>
 
           <button
@@ -24,16 +25,24 @@ const Navbar = () => {
 
           <ul className="navbar-nav d-none d-lg-flex flex-row ms-auto gap-3">
             <li className="nav-item">
-              <a className="nav-link" href="#home">Home</a>
+              <a className="nav-link" href="#home">
+                Home
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#about">About</a>
+              <a className="nav-link" href="#about">
+                About
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#project">Portfolio</a>
+              <a className="nav-link" href="#project">
+                Portfolio
+              </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#contact">Contact</a>
+              <a className="nav-link" href="#contact">
+                Contact
+              </a>
             </li>
           </ul>
         </div>
@@ -41,14 +50,13 @@ const Navbar = () => {
 
       {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <button className="close-btn" onClick={toggleSidebar}>&times;</button>
+        <button className="close-btn" onClick={toggleSidebar}>
+          &times;
+        </button>
         <ul className="sidebar-nav">
-          {["home","about","project","contact"].map((sec) => (
+          {["home", "about", "project", "contact"].map((sec) => (
             <li key={sec}>
-              <a
-                href={`#${sec}`}
-                onClick={toggleSidebar}
-              >
+              <a href={`#${sec}`} onClick={toggleSidebar}>
                 {sec.charAt(0).toUpperCase() + sec.slice(1)}
               </a>
             </li>

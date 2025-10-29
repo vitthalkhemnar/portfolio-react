@@ -81,7 +81,7 @@ const Project = () => {
                 }}
               >
                 <img
-                  src={proj.image}
+                  src="/images/aboutme.jpeg"
                   alt={proj.name}
                   style={{
                     width: "100%",

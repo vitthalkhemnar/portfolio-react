@@ -1,6 +1,8 @@
-import React from "react";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
+  const profile = useSelector((state) => state.profile);
+
   return (
     <footer
       className="d-flex flex-column flex-md-row justify-content-between align-items-center p-3"
@@ -8,14 +10,14 @@ const Footer = () => {
     >
       {/* Left side: copyright text */}
       <div className="mb-2 mb-md-0 text-center text-md-start">
-        &copy; 2025 Vitthal Khemnar. All rights reserved.
+        &copy; 2025 {profile.name}. All rights reserved.
       </div>
 
       {/* Right side: social icons */}
       <div className="d-flex gap-3 justify-content-center">
         {/* LinkedIn */}
         <a
-          href="https://www.linkedin.com/in/vitthal-khemnar"
+          href={profile.linkedInUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-decoration-none"
@@ -28,7 +30,7 @@ const Footer = () => {
 
         {/* GitHub */}
         <a
-          href="https://github.com/vitthalkhemnar"
+          href={profile.githubUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-decoration-none"

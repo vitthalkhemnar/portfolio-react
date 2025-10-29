@@ -1,6 +1,7 @@
-import React from "react";
+import { useSelector } from "react-redux";
 
 const Contact = () => {
+  const profile = useSelector((state) => state.profile);
   return (
     <section id="contact" className="py-5 px-3">
       <div className="container" style={{ maxWidth: "900px" }}>
@@ -14,7 +15,7 @@ const Contact = () => {
           {/* Location */}
           <div className="col-12 col-md-4">
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Pune,India"
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.location)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-decoration-none text-black"
@@ -26,7 +27,7 @@ const Contact = () => {
                 <i className="bi bi-geo-alt-fill text-dark me-3 fs-4"></i>
                 <div>
                   <p className="mb-0 fw-bold">Location</p>
-                  <p className="m-0">Pune, India</p>
+                  <p className="m-0">{profile.location}</p>
                 </div>
               </div>
             </a>
@@ -35,7 +36,7 @@ const Contact = () => {
           {/* Email */}
           <div className="col-12 col-md-4">
             <a
-              href="mailto:vitthalkkhemnar@gmail.com"
+              href={`mailto:${profile.email}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-decoration-none text-black"
@@ -47,7 +48,7 @@ const Contact = () => {
                 <i className="bi bi-envelope-fill text-dark me-3 fs-4"></i>
                 <div>
                   <p className="mb-0 fw-bold">Email</p>
-                  <p className="m-0">vitthalkkhemnar@gmail.com</p>
+                  <p className="m-0">{profile.email}</p>
                 </div>
               </div>
             </a>
@@ -56,7 +57,7 @@ const Contact = () => {
           {/* WhatsApp */}
           <div className="col-12 col-md-4">
             <a
-              href="https://wa.me/918767841958"
+              href={`https://wa.me/${profile.whatsappNo}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-decoration-none text-black"
@@ -68,7 +69,7 @@ const Contact = () => {
                 <i className="bi bi-whatsapp text-dark me-3 fs-4"></i>
                 <div>
                   <p className="mb-0 fw-bold">WhatsApp</p>
-                  <p className="m-0">+91 8767841958</p>
+                  <p className="m-0">{profile.whatsappNo}</p>
                 </div>
               </div>
             </a>

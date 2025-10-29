@@ -1,6 +1,8 @@
-import React from "react";
+import { useSelector } from "react-redux";
 
 const About = () => {
+  const profile = useSelector((state) => state.profile);
+
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100 px-3">
       <div
@@ -45,16 +47,13 @@ const About = () => {
 
           <div className="fw-bold fs-4 mb-3">
             <p className="heading m-0">
-              A dedicated Back-end Developer based in Pune, India.
+              A dedicated {profile.role} based in {profile.location}.
             </p>
           </div>
 
           <div className="summary text-dark fs-6">
             <p>
-              I'm <strong>Vitthal Khemnar</strong>, a passionate Back-End Java
-              Developer with expertise in Spring Boot, REST APIs, and
-              Microservices. I enjoy designing scalable back-end systems and
-              continuously improving my skills to build efficient solutions.
+             {profile.aboutMe}
             </p>
           </div>
         </div>
