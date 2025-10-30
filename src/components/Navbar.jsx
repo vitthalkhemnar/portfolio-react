@@ -11,7 +11,8 @@ const Navbar = () => {
     <>
       <nav className="navbar navbar-light bg-light fixed-top shadow-sm">
         <div className="container-fluid">
-          <a className="navbar-brand fw-bold fs-4" href="#home">
+          <a className="navbar-brand fw-bold fs-4 d-flex justify-content-center text-align-center gap-2" href="#home">
+            <img src="v-logo2.png" alt="v-logo" style={{ width: "35px" }} /> {" "}
             {profile.name}
           </a>
 

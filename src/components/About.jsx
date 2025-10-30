@@ -4,7 +4,15 @@ const About = () => {
   const profile = useSelector((state) => state.profile);
 
   return (
-    <section id="about" className="py-5 px-3">
+    <section
+      id="about"
+      className="d-flex align-items-center justify-content-center px-3"
+      style={{
+        minHeight: "100vh", // makes it take full page height
+        paddingTop: "80px", // creates balanced spacing from top
+        paddingBottom: "80px",
+      }}
+    >
       <div className="container" style={{ maxWidth: "1000px" }}>
         {/* Heading */}
         <div className="fw-bold fs-6 mb-3 text-center text-md-start">
@@ -23,6 +31,7 @@ const About = () => {
                 height: "250px",
                 backgroundColor: "#fff",
                 borderRadius: "20px",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
               }}
             >
               <img
