@@ -31,10 +31,10 @@ const Login = () => {
   return (
     <div
       className="d-flex justify-content-center align-items-center min-vh-100 px-3"
-      style={{ backgroundColor: "var(--bg-main)" }}
+      style={{ backgroundColor: "var(--bg-page)" }}
     >
       <div
-        className="clean-card p-4 p-md-5 shadow-lg"
+        className="clean-card p-4 p-md-5 shadow-sm"
         style={{ maxWidth: "420px", width: "100%", borderRadius: "20px" }}
       >
         <div className="text-center mb-4">
@@ -44,8 +44,8 @@ const Login = () => {
             style={{ width: "48px", height: "48px" }}
             className="mb-2"
           />
-          <h4 className="fw-bold mb-1 text-white">Admin Portal</h4>
-          <p className="small mb-0" style={{ color: "#94a3b8" }}>
+          <h4 className="fw-bold mb-1 text-dark">Admin Portal</h4>
+          <p className="small mb-0 text-muted">
             Sign in to manage your portfolio
           </p>
         </div>
@@ -59,27 +59,16 @@ const Login = () => {
 
         <form onSubmit={handleLogin}>
           <div className="mb-3">
-            <label className="form-label small fw-semibold text-white">
+            <label className="form-label small fw-semibold text-dark">
               Admin Email
             </label>
             <div className="input-group">
-              <span
-                className="input-group-text border-end-0"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderColor: "rgba(255, 255, 255, 0.15)",
-                  color: "#94a3b8"
-                }}
-              >
+              <span className="input-group-text bg-light text-muted border-end-0">
                 <i className="bi bi-envelope"></i>
               </span>
               <input
                 type="email"
-                className="form-control border-start-0 ps-0 text-white"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderColor: "rgba(255, 255, 255, 0.15)"
-                }}
+                className="form-control border-start-0 ps-0"
                 placeholder="admin@portfolio.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -89,27 +78,16 @@ const Login = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label small fw-semibold text-white">
+            <label className="form-label small fw-semibold text-dark">
               Password
             </label>
             <div className="input-group">
-              <span
-                className="input-group-text border-end-0"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderColor: "rgba(255, 255, 255, 0.15)",
-                  color: "#94a3b8"
-                }}
-              >
+              <span className="input-group-text bg-light text-muted border-end-0">
                 <i className="bi bi-lock"></i>
               </span>
               <input
                 type="password"
-                className="form-control border-start-0 ps-0 text-white"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderColor: "rgba(255, 255, 255, 0.15)"
-                }}
+                className="form-control border-start-0 ps-0"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -127,21 +105,14 @@ const Login = () => {
           </button>
         </form>
 
-        <div
-          className="p-2 rounded text-center small mb-3"
-          style={{
-            backgroundColor: "rgba(255, 255, 255, 0.04)",
-            border: "1px solid rgba(255, 255, 255, 0.08)",
-            color: "#94a3b8"
-          }}
-        >
+        <div className="bg-light p-2 rounded text-center small mb-3 border text-muted">
           <small>
             Default: <code>admin@portfolio.com</code> / <code>admin</code>
           </small>
         </div>
 
         <div className="text-center">
-          <Link to="/" className="text-decoration-none small text-white-50 hover-text-white">
+          <Link to="/" className="text-decoration-none small text-secondary hover-text-dark">
             <i className="bi bi-arrow-left me-1"></i> Return to Portfolio
           </Link>
         </div>

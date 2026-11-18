@@ -28,7 +28,7 @@ const Home = () => {
             </h1>
 
             <p className="hero-description mb-4">
-              I'm <strong className="text-white">{profile.name || "Vitthal Khemnar"}</strong>, a backend engineer with {calculatedExp} of professional experience at ANMsoft Technologies. I specialize in Core Java, Spring Boot, and scalable microservices architecture.
+              I'm <strong className="text-dark fw-semibold">{profile.name || "Vitthal Khemnar"}</strong>, a backend engineer with {calculatedExp} of professional experience at ANMsoft Technologies. I specialize in Core Java, Spring Boot, and scalable microservices architecture.
             </p>
 
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">
@@ -85,7 +85,7 @@ const Home = () => {
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-2 pt-2">
               <span className="small text-muted me-1">Core Stack:</span>
               {displaySkills.map((tech) => (
-                <span key={tech} className="hero-tech-chip">
+                <span key={tech} className="clean-chip">
                   {tech}
                 </span>
               ))}

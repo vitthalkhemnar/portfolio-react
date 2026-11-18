@@ -24,14 +24,14 @@ const Experience = () => {
               <div key={item.id || idx} className="clean-card p-4 p-md-5">
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
                   <div>
-                    <h5 className="fw-bold mb-1 text-white">
+                    <h5 className="fw-bold mb-1 text-dark">
                       {item.role}{" "}
-                      <span className="fw-normal text-white-50">@ {item.company}</span>
+                      <span className="fw-normal text-muted">@ {item.company}</span>
                     </h5>
-                    <div className="d-flex flex-wrap gap-2 small mt-1" style={{ color: "#94a3b8" }}>
+                    <div className="d-flex flex-wrap gap-2 small mt-1 text-muted">
                       {item.location && (
                         <span>
-                          <i className="bi bi-geo-alt me-1 text-white-50"></i>
+                          <i className="bi bi-geo-alt me-1 text-muted"></i>
                           {item.location}
                         </span>
                       )}
@@ -44,26 +44,23 @@ const Experience = () => {
                     </div>
                   </div>
                   <span
-                    className="badge px-3 py-2 mt-2 mt-md-0 fw-normal"
+                    className="badge bg-light text-secondary border px-3 py-2 mt-2 mt-md-0 fw-normal"
                     style={{
                       fontSize: "0.82rem",
-                      borderRadius: "9999px",
-                      background: "rgba(255, 255, 255, 0.05)",
-                      color: "#cbd5e1",
-                      border: "1px solid rgba(255, 255, 255, 0.1)"
+                      borderRadius: "9999px"
                     }}
                   >
                     {item.duration || `${item.startDate || ""} - ${item.isCurrent ? "Present" : item.endDate || ""}`}
                   </span>
                 </div>
 
-                <p className="mb-4" style={{ color: "#94a3b8", lineHeight: "1.8" }}>
+                <p className="mb-4" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
                   {item.description}
                 </p>
 
                 {item.responsibilities && (
                   <div className="mb-3">
-                    <ul className="small ps-3 mb-0" style={{ color: "#94a3b8", lineHeight: "1.7" }}>
+                    <ul className="small ps-3 mb-0" style={{ color: "var(--text-body)", lineHeight: "1.7" }}>
                       {(Array.isArray(item.responsibilities)
                         ? item.responsibilities
                         : item.responsibilities.split("\n").filter(Boolean)
@@ -77,7 +74,7 @@ const Experience = () => {
                 {item.technologies && (
                   <div
                     className="d-flex flex-wrap gap-2 pt-3"
-                    style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}
+                    style={{ borderTop: "1px solid var(--border-subtle)" }}
                   >
                     {(Array.isArray(item.technologies)
                       ? item.technologies
@@ -85,16 +82,7 @@ const Experience = () => {
                       ? item.technologies.split(",")
                       : []
                     ).map((tech, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="badge px-2 py-1 small fw-normal"
-                        style={{
-                          borderRadius: "6px",
-                          background: "rgba(255, 255, 255, 0.05)",
-                          color: "#cbd5e1",
-                          border: "1px solid rgba(255, 255, 255, 0.08)"
-                        }}
-                      >
+                      <span key={tIdx} className="clean-chip">
                         {typeof tech === "string" ? tech.trim() : tech}
                       </span>
                     ))}

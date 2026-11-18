@@ -21,9 +21,9 @@ const Contact = () => {
               className="text-decoration-none d-block h-100"
             >
               <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-envelope text-white fs-3 mb-2 d-block"></i>
-                <h6 className="fw-bold mb-1 text-white">Email</h6>
-                <p className="small mb-0 text-break" style={{ color: "#94a3b8" }}>
+                <i className="bi bi-envelope text-primary fs-3 mb-2 d-block"></i>
+                <h6 className="fw-bold mb-1 text-dark">Email</h6>
+                <p className="small mb-0 text-break text-muted">
                   {profile.email || "vitthalkkhemnar@gmail.com"}
                 </p>
               </div>
@@ -38,9 +38,9 @@ const Contact = () => {
               className="text-decoration-none d-block h-100"
             >
               <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-whatsapp text-white fs-3 mb-2 d-block"></i>
-                <h6 className="fw-bold mb-1 text-white">WhatsApp</h6>
-                <p className="small mb-0" style={{ color: "#94a3b8" }}>
+                <i className="bi bi-whatsapp text-primary fs-3 mb-2 d-block"></i>
+                <h6 className="fw-bold mb-1 text-dark">WhatsApp</h6>
+                <p className="small mb-0 text-muted">
                   +{profile.whatsappNo || "918767841958"}
                 </p>
               </div>
@@ -49,16 +49,16 @@ const Contact = () => {
 
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 text-center h-100">
-              <i className="bi bi-geo-alt text-white fs-3 mb-2 d-block"></i>
-              <h6 className="fw-bold mb-1 text-white">Location</h6>
-              <p className="small mb-0" style={{ color: "#94a3b8" }}>
+              <i className="bi bi-geo-alt text-primary fs-3 mb-2 d-block"></i>
+              <h6 className="fw-bold mb-1 text-dark">Location</h6>
+              <p className="small mb-0 text-muted">
                 {profile.location || "Pune, India"}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Unified Action Buttons */}
+        {/* Action Buttons */}
         <div className="d-flex justify-content-center gap-3 pt-3">
           {profile.githubUrl && (
             <a

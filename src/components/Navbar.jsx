@@ -73,7 +73,7 @@ const Navbar = () => {
         <div className="d-flex justify-content-between align-items-center mb-4">
           <span className="fw-semibold">{profile.name || "Vitthal Khemnar"}</span>
           <button
-            className="btn-close btn-close-white"
+            className="btn-close"
             onClick={toggleSidebar}
             aria-label="Close"
           ></button>
@@ -93,19 +93,19 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="pt-3 border-top mt-auto d-flex flex-column gap-2" style={{ borderColor: "rgba(255, 255, 255, 0.1)" }}>
+        <div className="pt-3 border-top mt-auto d-flex flex-column gap-2" style={{ borderColor: "var(--border-subtle)" }}>
           <a
             href={profile.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-outline-light rounded-pill py-2 text-center"
+            className="btn btn-outline-dark rounded-pill py-2 text-center"
             onClick={toggleSidebar}
           >
             View Resume
           </a>
           <Link
             to="/admin"
-            className="btn btn-light rounded-pill py-2 text-center text-dark fw-semibold"
+            className="btn btn-dark rounded-pill py-2 text-center fw-semibold"
             onClick={toggleSidebar}
           >
             Admin Panel

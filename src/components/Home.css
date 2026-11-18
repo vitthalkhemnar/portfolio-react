@@ -1,21 +1,21 @@
 .hero-section {
-  min-height: 88vh;
+  min-height: 85vh;
   padding-top: 80px;
-  background: var(--bg-main);
+  background: var(--bg-page);
 }
 
 .hero-status-pill {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
 .hero-status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
 .hero-heading {
@@ -23,52 +23,36 @@
   font-weight: 750;
   line-height: 1.18;
   letter-spacing: -0.03em;
-  color: #f8fafc;
+  color: var(--text-heading);
 }
 
 .hero-description {
   font-size: clamp(1.05rem, 1.8vw, 1.15rem);
   line-height: 1.7;
   max-width: 580px;
-  color: #94a3b8;
+  color: var(--text-body);
 }
 
 .hero-social-link {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: var(--text-muted);
   text-decoration: none;
   transition: all 0.2s ease;
-  background: rgba(255, 255, 255, 0.04);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
 }
 
 .hero-social-link:hover {
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-heading);
+  border-color: var(--border-hover);
+  background: #f8fafc;
   transform: translateY(-2px);
-}
-
-.hero-tech-chip {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #cbd5e1;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 4px 12px;
-  border-radius: 6px;
-  transition: all 0.15s ease;
-}
-
-.hero-tech-chip:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
 }
 
 .hero-photo-wrapper {
@@ -76,9 +60,9 @@
   height: 280px;
   border-radius: 50%;
   padding: 8px;
-  background: #111827;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
 }
 
 .hero-photo-img {

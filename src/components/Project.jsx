@@ -32,17 +32,9 @@ const Project = () => {
                   <div className="clean-card p-4 p-md-4 flex-fill d-flex flex-column">
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <div>
-                        <h5 className="fw-bold text-white mb-1">{proj.name}</h5>
+                        <h5 className="fw-bold text-dark mb-1">{proj.name}</h5>
                         {proj.category && (
-                          <span
-                            className="badge small fw-normal"
-                            style={{
-                              borderRadius: "6px",
-                              background: "rgba(255, 255, 255, 0.06)",
-                              color: "#e2e8f0",
-                              border: "1px solid rgba(255, 255, 255, 0.1)"
-                            }}
-                          >
+                          <span className="clean-badge-accent">
                             {proj.category}
                           </span>
                         )}
@@ -53,7 +45,7 @@ const Project = () => {
                             href={proj.githubLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-white-50 hover-text-white"
+                            className="text-secondary hover-text-dark"
                             title="GitHub Repository"
                           >
                             <i className="bi bi-github fs-5"></i>
@@ -64,7 +56,7 @@ const Project = () => {
                             href={proj.demoLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-white-50 hover-text-white"
+                            className="text-secondary hover-text-dark"
                             title="Live Demo"
                           >
                             <i className="bi bi-arrow-up-right-circle fs-5"></i>
@@ -73,13 +65,13 @@ const Project = () => {
                       </div>
                     </div>
 
-                    <p className="small mb-3 flex-grow-1" style={{ color: "#94a3b8", lineHeight: "1.7" }}>
+                    <p className="small mb-3 flex-grow-1" style={{ color: "var(--text-body)", lineHeight: "1.7" }}>
                       {proj.description}
                     </p>
 
                     {proj.keyFeatures && (
                       <div className="mb-3">
-                        <ul className="small ps-3 mb-0" style={{ color: "#94a3b8", lineHeight: "1.6" }}>
+                        <ul className="small ps-3 mb-0" style={{ color: "var(--text-body)", lineHeight: "1.6" }}>
                           {(Array.isArray(proj.keyFeatures)
                             ? proj.keyFeatures
                             : proj.keyFeatures.split("\n").filter(Boolean)
@@ -93,20 +85,10 @@ const Project = () => {
                     {techList.length > 0 && (
                       <div
                         className="d-flex flex-wrap gap-1 pt-3 mt-auto"
-                        style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}
+                        style={{ borderTop: "1px solid var(--border-subtle)" }}
                       >
                         {techList.map((tech, idx) => (
-                          <span
-                            key={idx}
-                            className="badge px-2 py-1 small fw-normal"
-                            style={{
-                              borderRadius: "6px",
-                              fontSize: "0.78rem",
-                              background: "rgba(255, 255, 255, 0.05)",
-                              color: "#cbd5e1",
-                              border: "1px solid rgba(255, 255, 255, 0.08)"
-                            }}
-                          >
+                          <span key={idx} className="clean-chip">
                             {tech}
                           </span>
                         ))}

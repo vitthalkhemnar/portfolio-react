@@ -4,18 +4,27 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Unified Dark Theme (Inspired by the Footer) */
-  --bg-main: #0b0f19;       /* Deep obsidian dark */
-  --bg-card: #111827;       /* Card surface dark */
-  --bg-card-hover: #162032; /* Card hover dark */
-  --bg-chip: rgba(255, 255, 255, 0.05);
+  /* Harmonious, High-Contrast Executive Tech Palette */
+  --bg-page: #f8fafc;        /* Unified soft crisp slate canvas */
+  --bg-card: #ffffff;        /* Crisp white card surface */
+  --bg-chip: #f1f5f9;        /* Soft slate pill background */
+  --bg-chip-hover: #e2e8f0;
 
-  --text-main: #f8fafc;     /* Crisp white text */
-  --text-muted: #94a3b8;    /* Soft slate text */
-  --text-subtle: #64748b;
+  --primary: #2563eb;        /* Classic Royal Tech Blue */
+  --primary-hover: #1d4ed8;
+  --primary-soft: #eff6ff;   /* Soft blue accent tint */
+  --primary-border: #bfdbfe;
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.2);
+  --text-heading: #0f172a;   /* Rich deep slate for headings */
+  --text-body: #334155;      /* High contrast readable body text */
+  --text-muted: #64748b;     /* Clean secondary text */
+
+  --border-subtle: #e2e8f0;  /* Subtle clean borders */
+  --border-hover: #cbd5e1;
+
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  --shadow-card-hover: 0 12px 28px -4px rgba(15, 23, 42, 0.09);
 }
 
 html {
@@ -26,8 +35,8 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: var(--bg-main);
-  color: var(--text-main);
+  background-color: var(--bg-page) !important;
+  color: var(--text-body) !important;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,7 +45,7 @@ body {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-  color: var(--text-main);
+  color: var(--text-heading) !important;
   font-weight: 700;
   letter-spacing: -0.025em;
 }
@@ -44,38 +53,38 @@ h1, h2, h3, h4, h5, h6 {
 .section-heading {
   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--text-heading) !important;
   margin-bottom: 0.5rem;
 }
 
 .section-desc {
   font-size: 1.05rem;
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
   max-width: 580px;
   margin: 0 auto;
 }
 
-/* Unified Dark Card */
+/* Clean Unified Card */
 .clean-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle) !important;
   border-radius: 16px;
-  color: var(--text-main);
+  color: var(--text-body) !important;
+  box-shadow: var(--shadow-card);
   transition: all 0.25s ease;
 }
 
 .clean-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-hover);
-  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5);
-  transform: translateY(-3px);
+  border-color: var(--border-hover) !important;
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 
 /* Unified Buttons */
 .btn-clean-primary {
-  background: #ffffff;
-  color: #0b0f19;
-  border: 1px solid #ffffff;
+  background: var(--primary);
+  color: #ffffff !important;
+  border: 1px solid var(--primary);
   padding: 10px 24px;
   border-radius: 9999px;
   font-weight: 600;
@@ -85,20 +94,21 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
 }
 
 .btn-clean-primary:hover {
-  background: #e2e8f0;
-  border-color: #e2e8f0;
-  color: #0b0f19;
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #ffffff !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .btn-clean-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #f8fafc;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #ffffff;
+  color: var(--text-heading) !important;
+  border: 1px solid var(--border-subtle);
   padding: 10px 24px;
   border-radius: 9999px;
   font-weight: 500;
@@ -108,34 +118,67 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-clean-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
+  background: #f8fafc;
+  border-color: var(--border-hover);
+  color: var(--primary) !important;
+  transform: translateY(-1px);
 }
 
-/* Common text & chip utilities */
-.hover-text-white {
+/* Clean Chips & Badges */
+.clean-chip {
+  background: var(--bg-chip);
+  color: var(--text-body);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.clean-chip:hover {
+  background: var(--bg-chip-hover);
+  border-color: var(--border-hover);
+  color: var(--text-heading);
+}
+
+.clean-badge-accent {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Text link hovers */
+.hover-text-dark {
+  color: var(--text-muted);
   transition: color 0.15s ease;
 }
 
-.hover-text-white:hover {
-  color: #ffffff !important;
+.hover-text-dark:hover {
+  color: var(--text-heading) !important;
 }
 
-/* Unified Scrollbar */
+/* Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-main);
+  background: var(--bg-page);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f293d;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }
