@@ -1,38 +1,114 @@
+.custom-navbar {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.3s ease;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.logo-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ea580c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+}
+
+.brand-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: block;
+  line-height: 1.2;
+}
+
+.brand-sub {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: 0.2px;
+}
+
+.custom-nav-link {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #475569 !important;
+  padding: 6px 12px !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.custom-nav-link:hover {
+  color: #0f172a !important;
+  background: #f1f5f9;
+}
+
+/* Sidebar Drawer */
 .sidebar {
   position: fixed;
   top: 0;
-  left: -250px;
-  width: 250px;
+  right: -300px;
+  width: 290px;
   height: 100%;
-  background-color: #f8f9fa;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-  z-index: 1050;
-  padding: 2rem 1rem;
-  transition: left 0.3s ease;
+  background-color: #ffffff;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  z-index: 1055;
+  padding: 1.5rem;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-column: column;
 }
 
-.sidebar.open { left: 0; }
-
-.sidebar .close-btn {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
+.sidebar.open {
+  right: 0;
 }
 
-.sidebar-nav { list-style: none; padding: 0; margin-top: 3rem; }
-.sidebar-nav li { margin: 1.5rem 0; }
-.sidebar-nav li a { text-decoration: none; color: #000; font-size: 1.2rem; }
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 10px 14px;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background: #f8fafc;
+  color: #ea580c;
+}
 
 .overlay {
   position: fixed;
-  top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.3);
-  z-index: 1040;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 1050;
+  transition: opacity 0.3s ease;
 }
 
 @media (min-width: 992px) {
-  .sidebar, .overlay { display: none; }
+  .sidebar, .overlay {
+    display: none;
+  }
 }

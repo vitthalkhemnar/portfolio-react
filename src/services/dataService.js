@@ -1,28 +1,53 @@
-// Default portfolio initial data
+// Default portfolio initial data tailored for a classic Java Backend Developer
 export const DEFAULT_PORTFOLIO_DATA = {
   profile: {
     name: "Vitthal Khemnar",
-    role: "Java Back-End Developer",
+    role: "Java Backend Developer",
     experience: "1+ Years",
-    location: "Pune, India",
+    location: "Pune, Maharashtra, India",
     linkedInUrl: "https://www.linkedin.com/in/vitthalkhemnar/",
     githubUrl: "https://github.com/vitthalkhemnar",
     whatsappNo: "918767841958",
     email: "vitthalkkhemnar@gmail.com",
-    summary: "Passionate Java Backend Developer specializing in scalable microservices, REST APIs, and clean code architecture.",
+    summary:
+      "Passionate Java Backend Developer with professional experience in designing scalable microservices, high-throughput REST APIs, and robust database architectures using Spring Boot and Hibernate.",
     aboutMe:
-      "I am a Java Backend Developer with 1 year of professional experience at ANMsoft Technologies. My expertise includes Core Java, Spring, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture, with a focus on problem-solving and writing clean, maintainable code. I am eager to continue enhancing my skills and contribute to impactful projects.",
+      "I am a Java Backend Developer with 1 year of professional experience at ANMsoft Technologies. My core expertise encompasses Core Java, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture. I specialize in developing resilient RESTful services, optimizing database query performance, and implementing secure, maintainable backend systems. I have a strong foundation in Object-Oriented Programming (OOP), Multithreading, and Clean Architecture principles, and I am continuously expanding my knowledge in distributed cloud systems.",
     resumeUrl: "/Vitthal Khemnar - Resume.pdf",
     skills: [
-      "Java",
+      "Java (8/17/21)",
       "Spring Boot",
+      "Spring Data JPA",
+      "Hibernate",
       "Microservices",
-      "Hibernate / JPA",
+      "Spring Security",
+      "RESTful Web Services",
       "MySQL",
+      "PostgreSQL",
       "MongoDB",
-      "ReactJS",
+      "Docker",
+      "Maven",
       "Git & GitHub",
-      "REST APIs"
+      "Postman",
+      "ReactJS"
+    ],
+    skillCategories: [
+      {
+        category: "Backend & Core",
+        items: ["Core Java (OOP, Collections, Streams, Multithreading)", "Spring Boot 3", "Spring Data JPA", "Hibernate ORM", "Microservices Architecture", "Spring Security", "RESTful APIs"]
+      },
+      {
+        category: "Databases & Persistence",
+        items: ["MySQL", "PostgreSQL", "MongoDB", "Query Optimization", "Indexing & Transactions"]
+      },
+      {
+        category: "Tools & DevOps",
+        items: ["Docker", "Maven", "Git & GitHub", "Postman", "Swagger / OpenAPI", "Linux / Bash"]
+      },
+      {
+        category: "Frontend & Full Stack",
+        items: ["ReactJS", "JavaScript (ES6+)", "Bootstrap 5", "HTML5 & CSS3"]
+      }
     ]
   },
   companies: [
@@ -33,34 +58,47 @@ export const DEFAULT_PORTFOLIO_DATA = {
       duration: "2023 - Present",
       location: "Pune, India",
       description:
-        "Developed and maintained robust backend microservices using Core Java, Spring Boot, and Spring Data JPA. Designed scalable RESTful APIs, optimized database queries with Hibernate, and collaborated with frontend teams to deliver seamless user experiences.",
-      technologies: ["Core Java", "Spring Boot", "Microservices", "Hibernate", "MySQL"]
+        "Engineered scalable backend microservices and enterprise REST APIs using Core Java, Spring Boot, and Spring Data JPA. Designed normalized relational database schemas in MySQL, optimized complex Hibernate queries to reduce latency, and implemented secure token-based authentication. Collaborated closely with cross-functional teams and frontend engineers in an Agile sprint environment.",
+      technologies: ["Core Java", "Spring Boot", "Spring Data JPA", "Hibernate", "Microservices", "MySQL", "REST APIs", "Git"]
     }
   ],
   projects: [
     {
       id: "proj-1",
-      name: "Portfolio Website",
-      description: "A responsive personal portfolio built with React, Redux Toolkit, and Bootstrap, featuring a dynamic serverless admin panel.",
-      techStack: ["React", "Redux", "Bootstrap", "JavaScript"],
+      name: "E-Commerce Microservices Platform",
+      description:
+        "A distributed backend system with decoupled microservices for product catalog, user authentication, shopping cart, and order processing. Features asynchronous communication, service discovery, and centralized configuration.",
+      techStack: ["Java 17", "Spring Boot", "Spring Cloud", "MySQL", "Docker", "REST API"],
       image: "/images/aboutme.jpeg",
-      demoLink: "https://github.com/vitthalkhemnar/portfolio-react",
-      githubLink: "https://github.com/vitthalkhemnar/portfolio-react"
+      demoLink: "https://github.com/vitthalkhemnar",
+      githubLink: "https://github.com/vitthalkhemnar"
     },
     {
       id: "proj-2",
-      name: "E-Commerce Microservices",
-      description: "A full-scale backend system with product catalog, cart, user authentication, and payment gateway integration.",
-      techStack: ["Java", "Spring Boot", "Spring Cloud", "MySQL", "Docker"],
+      name: "Banking & Transaction Management API",
+      description:
+        "High-integrity financial transactions REST API with ACID compliance, role-based access control with JWT authentication, audit logging, and automated OpenAPI documentation.",
+      techStack: ["Spring Boot", "Spring Security", "Hibernate", "PostgreSQL", "Swagger"],
       image: "/images/aboutme.jpeg",
       demoLink: "https://github.com/vitthalkhemnar",
       githubLink: "https://github.com/vitthalkhemnar"
     },
     {
       id: "proj-3",
-      name: "Task Management REST API",
-      description: "Secure RESTful APIs featuring JWT authentication, role-based access control, and automated OpenAPI documentation.",
-      techStack: ["Spring Boot", "Spring Security", "MySQL", "Swagger"],
+      name: "Dynamic Portfolio & Serverless Admin Portal",
+      description:
+        "A modern, responsive portfolio application engineered with React, Redux Toolkit, and Bootstrap, featuring a client-side serverless CMS for real-time project, company, and resume management.",
+      techStack: ["ReactJS", "Redux Toolkit", "Bootstrap 5", "JavaScript", "HTML5/CSS3"],
+      image: "/images/aboutme.jpeg",
+      demoLink: "https://github.com/vitthalkhemnar/portfolio-react",
+      githubLink: "https://github.com/vitthalkhemnar/portfolio-react"
+    },
+    {
+      id: "proj-4",
+      name: "Employee & Task Management System",
+      description:
+        "Enterprise task delegation service with multi-level hierarchical user management, scheduled email reminders, and complex SQL reporting queries.",
+      techStack: ["Java", "Spring Boot", "MySQL", "Spring Data JPA", "Maven"],
       image: "/images/aboutme.jpeg",
       demoLink: "https://github.com/vitthalkhemnar",
       githubLink: "https://github.com/vitthalkhemnar"
@@ -71,7 +109,6 @@ export const DEFAULT_PORTFOLIO_DATA = {
 const STORAGE_KEY = "vitthal_portfolio_data";
 
 export const dataService = {
-  // Load data: check localStorage first, fallback to DEFAULT_PORTFOLIO_DATA
   loadData: () => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -89,7 +126,6 @@ export const dataService = {
     return DEFAULT_PORTFOLIO_DATA;
   },
 
-  // Save full data bundle
   saveData: (data) => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -100,7 +136,6 @@ export const dataService = {
     }
   },
 
-  // Update specific section
   updateProfile: (profile) => {
     const current = dataService.loadData();
     const updated = { ...current, profile: { ...current.profile, ...profile } };

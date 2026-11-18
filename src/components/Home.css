@@ -1,77 +1,134 @@
-.download-btn {
-    background-color: #5bc0de;
-    /* soft blue-silver */
-    color: white;
-    border: none;
-    padding: 6px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 8px rgba(91, 192, 222, 0.4);
+.home-hero-wrapper {
+  background: radial-gradient(circle at top left, #fff7ed 0%, #f8fafc 40%, #f1f5f9 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-.download-btn:hover {
-    background-color: #76d4f0;
-    box-shadow: 0 0 15px rgba(91, 192, 222, 0.8);
-    transform: translateY(-2px);
+.status-pill {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-.download-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 0 10px rgba(91, 192, 222, 0.6);
+.pulse-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+  animation: pulseAnimation 2s infinite;
 }
 
-.social-icon-link {
-    /* color: #00bfff; */
-    /* fluorescent blue */
-    color: #444;
-    font-size: 1.2rem;
-    margin: 0 0;
-    transition: all 0.3s ease;
-    text-decoration: none;
+@keyframes pulseAnimation {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }
 
-.social-icon-link:hover {
-    color: #5bc0de;
-    /* slightly brighter */
-    /* text-shadow: 0 0 12px rgba(0, 191, 255, 0.9); */
-    /* glowing effect */
-    /* transform: translateY(-3px); */
-    /* smooth lift */
+.hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #0f172a;
+  letter-spacing: -1px;
 }
 
-.social-icon-link:active {
-    color: #5bc0de;
-    /* transform: translateY(0);
-    text-shadow: 0 0 6px rgba(0, 191, 255, 0.7); */
+.text-java-gradient {
+  background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-@keyframes morph {
-    0% {
-        border-radius: 62% 38% 48% 52% / 52% 58% 42% 48%;
-    }
-
-    25% {
-        border-radius: 58% 42% 55% 45% / 48% 52% 55% 45%;
-    }
-
-    50% {
-        border-radius: 65% 35% 45% 55% / 55% 45% 50% 50%;
-    }
-
-    75% {
-        border-radius: 60% 40% 52% 48% / 50% 55% 45% 50%;
-    }
-
-    100% {
-        border-radius: 62% 38% 48% 52% / 52% 58% 42% 48%;
-    }
+.hero-lead {
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  line-height: 1.7;
+  max-width: 620px;
 }
 
-.animated-image {
-    animation: morph 10s ease-in-out infinite;
-    box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
-    /* soft glow */
-    transition: all 0.3s ease;
+/* Social Buttons */
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.social-btn:hover {
+  background: #0f172a;
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.15);
+}
+
+/* Tech Badges */
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.tech-badge:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* Hero Avatar */
+.hero-avatar-wrapper {
+  width: 200px;
+  height: 200px;
+}
+
+.hero-avatar-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  padding: 6px;
+  background: linear-gradient(135deg, #ea580c 0%, #3b82f6 100%);
+  box-shadow: 0 12px 30px rgba(234, 88, 12, 0.2);
+}
+
+.floating-badge {
+  position: absolute;
+  bottom: -10px;
+  right: -20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 576px) {
+  .hero-avatar-wrapper {
+    width: 170px;
+    height: 170px;
+  }
+  .floating-badge {
+    right: 0px;
+  }
 }
