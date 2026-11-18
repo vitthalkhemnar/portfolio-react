@@ -1,11 +1,10 @@
 import "./Home.css";
 import { useSelector } from "react-redux";
-import { calculateTotalExperience } from "../utils/experienceCalculator";
 
 const Home = () => {
   const profile = useSelector((state) => state.profile);
   const companies = useSelector((state) => state.profile.companies) || [];
-  const calculatedExp = calculateTotalExperience(companies);
+  const experienceText = profile.experience || "1.5+ Years";
 
   const currentCompany =
     companies.find((c) => c.isCurrent)?.company ||
@@ -18,6 +17,13 @@ const Home = () => {
 
   const role = profile.role || "Java Backend Developer";
   const name = profile.name || "Vitthal Khemnar";
+
+  const githubUrl = profile.githubUrl || "https://github.com/vitthalkhemnar";
+  const linkedInUrl = profile.linkedInUrl || "https://www.linkedin.com/in/vitthalkhemnar/";
+  const email = profile.email || "vitthalkkhemnar@gmail.com";
+  const summary =
+    profile.summary ||
+    "I specialize in Core Java, Spring Boot, and scalable microservices architecture.";
 
   return (
     <section className="hero-section d-flex align-items-center">
@@ -35,7 +41,7 @@ const Home = () => {
             </h1>
 
             <p className="hero-description mb-4">
-              I'm <strong className="text-dark fw-semibold">{name}</strong>, a {role.toLowerCase()} with {calculatedExp} of professional experience{currentCompany ? ` at ${currentCompany}` : ""}. {profile.summary || "I specialize in Core Java, Spring Boot, and scalable microservices architecture."}
+              I'm <strong className="text-dark fw-semibold">{name}</strong>, a {role.toLowerCase()} with {experienceText} of professional experience{currentCompany ? ` at ${currentCompany}` : ""}. {summary}
             </p>
 
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">
@@ -53,40 +59,34 @@ const Home = () => {
               </a>
 
               <div className="d-flex align-items-center gap-2 ms-lg-2">
-                {profile.githubUrl && (
-                  <a
-                    href={profile.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hero-social-link"
-                    title="GitHub"
-                    aria-label="GitHub Profile"
-                  >
-                    <i className="bi bi-github"></i>
-                  </a>
-                )}
-                {profile.linkedInUrl && (
-                  <a
-                    href={profile.linkedInUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hero-social-link"
-                    title="LinkedIn"
-                    aria-label="LinkedIn Profile"
-                  >
-                    <i className="bi bi-linkedin"></i>
-                  </a>
-                )}
-                {profile.email && (
-                  <a
-                    href={`mailto:${profile.email}`}
-                    className="hero-social-link"
-                    title="Email"
-                    aria-label="Send Email"
-                  >
-                    <i className="bi bi-envelope"></i>
-                  </a>
-                )}
+                <a
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social-link"
+                  title="GitHub"
+                  aria-label="GitHub Profile"
+                >
+                  <i className="bi bi-github"></i>
+                </a>
+                <a
+                  href={linkedInUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social-link"
+                  title="LinkedIn"
+                  aria-label="LinkedIn Profile"
+                >
+                  <i className="bi bi-linkedin"></i>
+                </a>
+                <a
+                  href={`mailto:${email}`}
+                  className="hero-social-link"
+                  title="Email"
+                  aria-label="Send Email"
+                >
+                  <i className="bi bi-envelope"></i>
+                </a>
               </div>
             </div>
 

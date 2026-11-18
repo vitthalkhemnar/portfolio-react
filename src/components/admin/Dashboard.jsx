@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { authService } from "../../services/authService";
-import { calculateTotalExperience } from "../../utils/experienceCalculator";
+import { DEFAULT_PORTFOLIO_DATA } from "../../services/dataService";
 import {
   setProfile,
+  setSkillCategories,
   addProject,
   updateProject,
   deleteProject,
@@ -28,12 +29,11 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [successMsg, setSuccessMsg] = useState("");
 
-  const calculatedExp = calculateTotalExperience(profileState.companies || []);
-
   // Profile Form state
   const [profileForm, setProfileForm] = useState({
     name: profileState.name || "",
     role: profileState.role || "",
+    experience: profileState.experience || "1.5+ Years",
     location: profileState.location || "",
     email: profileState.email || "",
     whatsappNo: profileState.whatsappNo || "",
@@ -49,6 +49,7 @@ const Dashboard = () => {
     setProfileForm({
       name: profileState.name || "",
       role: profileState.role || "",
+      experience: profileState.experience || "1.5+ Years",
       location: profileState.location || "",
       email: profileState.email || "",
       whatsappNo: profileState.whatsappNo || "",
@@ -92,8 +93,55 @@ const Dashboard = () => {
   });
   const [companyModalOpen, setCompanyModalOpen] = useState(false);
 
-  // Skill Add input
+  // Lock body scroll when any modal is open to prevent background fighting with modal scroll
+  useEffect(() => {
+    if (projectModalOpen || companyModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [projectModalOpen, companyModalOpen]);
+
+  // Categorized Skills states with full fallback
+  const masterSkillCategories = DEFAULT_PORTFOLIO_DATA.profile.skillCategories;
+  const hasValidAdminCategories =
+    Array.isArray(profileState.skillCategories) &&
+    profileState.skillCategories.length > 0 &&
+    profileState.skillCategories.every(
+      (c) => typeof c === "object" && c !== null && (c.title || c.name)
+    );
+
+  const rawSkillCategories = (
+    hasValidAdminCategories ? profileState.skillCategories : masterSkillCategories
+  ).map((cat, idx) => {
+    const defaultCat = masterSkillCategories[idx] || masterSkillCategories[idx % masterSkillCategories.length];
+    const catObj = typeof cat === "object" && cat !== null ? cat : {};
+    return {
+      ...defaultCat,
+      ...catObj,
+      id: catObj.id || defaultCat.id || `cat-${idx}`,
+      title: catObj.title || catObj.name || defaultCat.title,
+      icon: catObj.icon || defaultCat.icon,
+      skills: Array.isArray(catObj.skills) && catObj.skills.length > 0 ? catObj.skills : defaultCat.skills
+    };
+  });
+  const firstCatId = rawSkillCategories[0]?.id;
+  const [selectedCatId, setSelectedCatId] = useState("");
   const [newSkillInput, setNewSkillInput] = useState("");
+  const [isCreatingCategory, setIsCreatingCategory] = useState(false);
+  const [newCategoryTitle, setNewCategoryTitle] = useState("");
+  const [newCategoryIcon, setNewCategoryIcon] = useState("bi-cup-hot");
+  const [inlineSkillInputs, setInlineSkillInputs] = useState({});
+
+  // Auto-select first category when categories load
+  useEffect(() => {
+    if (!selectedCatId && firstCatId) {
+      setSelectedCatId(firstCatId);
+    }
+  }, [firstCatId, selectedCatId]);
 
   const showNotification = (msg) => {
     setSuccessMsg(msg);
@@ -116,6 +164,7 @@ const Dashboard = () => {
     const updated = {
       name: profileForm.name,
       role: profileForm.role,
+      experience: profileForm.experience,
       location: profileForm.location,
       email: profileForm.email,
       whatsappNo: profileForm.whatsappNo,
@@ -317,25 +366,112 @@ const Dashboard = () => {
     }
   };
 
-  // Skills quick add / remove
-  const handleAddSkill = (e) => {
-    e.preventDefault();
-    if (!newSkillInput.trim()) return;
-    const currentSkills = profileState.skills || [];
-    if (currentSkills.includes(newSkillInput.trim())) {
-      showNotification("Skill already exists in list.");
-      return;
-    }
-    const updatedSkills = [...currentSkills, newSkillInput.trim()];
-    dispatch(setProfile({ skills: updatedSkills }));
-    setNewSkillInput("");
-    showNotification(`Added skill: "${newSkillInput.trim()}"`);
+  // Icon presets for category creation
+  const CATEGORY_ICON_PRESETS = [
+    { value: "bi-cup-hot", label: "Backend / Java (Cup)" },
+    { value: "bi-database", label: "Databases (Database)" },
+    { value: "bi-terminal", label: "DevOps / CLI (Terminal)" },
+    { value: "bi-laptop", label: "Frontend / Full Stack (Laptop)" },
+    { value: "bi-cloud", label: "Cloud & Distributed (Cloud)" },
+    { value: "bi-shield-check", label: "Security & Auth (Shield)" },
+    { value: "bi-gear", label: "Architecture & Tools (Gear)" },
+    { value: "bi-code-slash", label: "Code & Languages (Brackets)" },
+    { value: "bi-stars", label: "General & Highlights (Stars)" }
+  ];
+
+  // Add skill(s) to a specific category
+  const handleAddSkillToCategory = (catId, skillStr) => {
+    if (!catId || !skillStr || !skillStr.trim()) return;
+
+    const newSkills = skillStr
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    if (newSkills.length === 0) return;
+
+    const currentCategories = profileState.skillCategories && profileState.skillCategories.length > 0
+      ? profileState.skillCategories
+      : [];
+
+    const updatedCategories = currentCategories.map((cat) => {
+      if (cat.id === catId) {
+        const existing = cat.skills || [];
+        const uniqueToAdd = newSkills.filter((s) => !existing.includes(s));
+        return {
+          ...cat,
+          skills: [...existing, ...uniqueToAdd]
+        };
+      }
+      return cat;
+    });
+
+    dispatch(setSkillCategories(updatedCategories));
+    showNotification(`Added ${newSkills.length} skill(s) successfully!`);
   };
 
-  const handleDeleteSkill = (skillToRemove) => {
-    const updatedSkills = (profileState.skills || []).filter((s) => s !== skillToRemove);
-    dispatch(setProfile({ skills: updatedSkills }));
-    showNotification(`Removed skill: "${skillToRemove}"`);
+  // Form submit for top quick-add
+  const handleTopAddSkillSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedCatId) {
+      alert("Please select or create a category first.");
+      return;
+    }
+    handleAddSkillToCategory(selectedCatId, newSkillInput);
+    setNewSkillInput("");
+  };
+
+  // Remove a skill from a specific category
+  const handleRemoveSkillFromCategory = (catId, skillToRemove) => {
+    const currentCategories = profileState.skillCategories || [];
+    const updatedCategories = currentCategories.map((cat) => {
+      if (cat.id === catId) {
+        return {
+          ...cat,
+          skills: (cat.skills || []).filter((s) => s !== skillToRemove)
+        };
+      }
+      return cat;
+    });
+    dispatch(setSkillCategories(updatedCategories));
+    showNotification(`Removed "${skillToRemove}" from category.`);
+  };
+
+  // Create a brand new category
+  const handleCreateNewCategory = (e) => {
+    e.preventDefault();
+    if (!newCategoryTitle.trim()) {
+      alert("Please enter a category title.");
+      return;
+    }
+
+    const newCat = {
+      id: "cat-" + Date.now(),
+      title: newCategoryTitle.trim(),
+      icon: newCategoryIcon || "bi-stars",
+      skills: []
+    };
+
+    const currentCategories = profileState.skillCategories || [];
+    const updatedCategories = [...currentCategories, newCat];
+    dispatch(setSkillCategories(updatedCategories));
+    setSelectedCatId(newCat.id);
+    setNewCategoryTitle("");
+    setIsCreatingCategory(false);
+    showNotification(`Created new category: "${newCat.title}"`);
+  };
+
+  // Delete an entire category
+  const handleDeleteCategory = (catId, catTitle) => {
+    if (window.confirm(`Are you sure you want to delete the category "${catTitle}" and all its skills?`)) {
+      const currentCategories = profileState.skillCategories || [];
+      const updatedCategories = currentCategories.filter((c) => c.id !== catId);
+      dispatch(setSkillCategories(updatedCategories));
+      if (selectedCatId === catId) {
+        setSelectedCatId(updatedCategories[0]?.id || "");
+      }
+      showNotification(`Category "${catTitle}" deleted.`);
+    }
   };
 
   return (
@@ -449,9 +585,9 @@ const Dashboard = () => {
                 <div className="row g-2 g-sm-3">
                   <div className="col-6 col-lg-3">
                     <div className="card border-0 shadow-sm p-3 rounded-3 bg-white h-100">
-                      <div className="text-muted small">Calculated Experience</div>
-                      <div className="fs-3 fs-md-2 fw-bold text-success">{calculatedExp}</div>
-                      <div className="small text-muted d-none d-sm-block">Auto-computed</div>
+                      <div className="text-muted small">Total Experience</div>
+                      <div className="fs-3 fs-md-2 fw-bold text-success">{profileState.experience || "1.5+ Years"}</div>
+                      <div className="small text-muted d-none d-sm-block">Set by admin</div>
                     </div>
                   </div>
                   <div className="col-6 col-lg-3">
@@ -513,15 +649,18 @@ const Dashboard = () => {
             {activeTab === "profile" && (
               <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
                 <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-4">
-                  <h5 className="fw-bold mb-0">Detailed Profile & Biography</h5>
+                  <div>
+                    <h5 className="fw-bold mb-0">Detailed Profile & Biography</h5>
+                    <p className="text-muted small mb-0">Manage bio, experience, contact details, and core skills</p>
+                  </div>
                   <span className="badge bg-light text-secondary border px-3 py-2">
-                    Experience: <strong>{calculatedExp}</strong>
+                    Experience: <strong>{profileState.experience || "1.5+ Years"}</strong>
                   </span>
                 </div>
 
                 <form onSubmit={handleProfileSubmit}>
                   <div className="row g-3">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-4">
                       <label className="form-label small fw-semibold">Full Name</label>
                       <input
                         type="text"
@@ -533,7 +672,7 @@ const Dashboard = () => {
                         required
                       />
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-4">
                       <label className="form-label small fw-semibold">Professional Title / Headline</label>
                       <input
                         type="text"
@@ -542,6 +681,19 @@ const Dashboard = () => {
                         onChange={(e) =>
                           setProfileForm({ ...profileForm, role: e.target.value })
                         }
+                        required
+                      />
+                    </div>
+                    <div className="col-12 col-md-4">
+                      <label className="form-label small fw-semibold">Total Experience</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={profileForm.experience}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, experience: e.target.value })
+                        }
+                        placeholder="e.g. 1.5+ Years or 2 Years"
                         required
                       />
                     </div>
@@ -785,7 +937,7 @@ const Dashboard = () => {
                 <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-4">
                   <div>
                     <h5 className="fw-bold mb-0">Manage Work Experience</h5>
-                    <p className="text-muted small mb-0">Dates automatically calculate total experience across the site</p>
+                    <p className="text-muted small mb-0">Manage professional positions, companies, and roles</p>
                   </div>
                   <button
                     className="btn btn-primary rounded-pill px-3"
@@ -884,69 +1036,227 @@ const Dashboard = () => {
             {/* SKILLS TAB */}
             {activeTab === "skills" && (
               <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
-                <h5 className="fw-bold mb-2">Manage Skills & Technologies</h5>
-                <p className="text-muted small mb-4">
-                  Add, edit, or remove skills. Changes update the skills matrix on the live site immediately.
-                </p>
-
-                {/* Quick Add Form */}
-                <form onSubmit={handleAddSkill} className="mb-4">
-                  <div className="row g-2 align-items-center">
-                    <div className="col-12 col-sm-8 col-md-6">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="e.g. Redis, Kafka, Kubernetes, Spring Cloud..."
-                        value={newSkillInput}
-                        onChange={(e) => setNewSkillInput(e.target.value)}
-                      />
-                    </div>
-                    <div className="col-12 col-sm-4 col-md-3">
-                      <button type="submit" className="btn btn-primary rounded-pill px-4 w-100">
-                        <i className="bi bi-plus-lg me-1"></i> Add Skill
-                      </button>
-                    </div>
+                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
+                  <div>
+                    <h5 className="fw-bold mb-1">Manage Skills & Technologies</h5>
+                    <p className="text-muted small mb-0">
+                      Organize skills into architectural categories. Changes immediately update the live Skills Carousel.
+                    </p>
                   </div>
-                </form>
-
-                {/* Active Skills List with Delete Button */}
-                <h6 className="fw-bold text-dark mb-3">Active Skills ({profileState.skills?.length || 0}):</h6>
-                <div className="d-flex flex-wrap gap-2 mb-4">
-                  {(profileState.skills || []).map((skill, index) => (
-                    <span
-                      key={index}
-                      className="badge bg-light text-dark border px-3 py-2 rounded-pill d-inline-flex align-items-center gap-2"
-                      style={{ fontSize: "0.88rem" }}
-                    >
-                      <span>{skill}</span>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        style={{ fontSize: "0.6rem" }}
-                        aria-label="Remove skill"
-                        onClick={() => handleDeleteSkill(skill)}
-                      ></button>
-                    </span>
-                  ))}
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary btn-sm rounded-pill px-3"
+                    onClick={() => setIsCreatingCategory(!isCreatingCategory)}
+                  >
+                    <i className="bi bi-folder-plus me-1"></i>
+                    {isCreatingCategory ? "Cancel New Category" : "New Category"}
+                  </button>
                 </div>
 
-                {/* Bulk Edit textarea */}
-                <form onSubmit={handleProfileSubmit}>
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">Bulk Edit Skills (comma-separated)</label>
-                    <textarea
-                      className="form-control"
-                      rows="3"
-                      value={profileForm.skillsText}
-                      onChange={(e) =>
-                        setProfileForm({ ...profileForm, skillsText: e.target.value })
-                      }
-                    ></textarea>
+                {/* Create New Category Panel (collapsible) */}
+                {isCreatingCategory && (
+                  <div className="card border p-3 rounded-3 bg-light mb-4">
+                    <h6 className="fw-bold text-dark mb-3">
+                      <i className="bi bi-plus-circle me-1 text-primary"></i> Create New Skill Category
+                    </h6>
+                    <form onSubmit={handleCreateNewCategory}>
+                      <div className="row g-2 align-items-end">
+                        <div className="col-12 col-md-5">
+                          <label className="form-label small fw-semibold">Category Title</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="e.g. Cloud & Distributed Systems"
+                            value={newCategoryTitle}
+                            onChange={(e) => setNewCategoryTitle(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="col-12 col-md-4">
+                          <label className="form-label small fw-semibold">Icon</label>
+                          <select
+                            className="form-select"
+                            value={newCategoryIcon}
+                            onChange={(e) => setNewCategoryIcon(e.target.value)}
+                          >
+                            {CATEGORY_ICON_PRESETS.map((ico) => (
+                              <option key={ico.value} value={ico.value}>
+                                {ico.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="col-12 col-md-3">
+                          <button type="submit" className="btn btn-success rounded-pill px-3 w-100">
+                            <i className="bi bi-check-lg me-1"></i> Save Category
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                  <button type="submit" className="btn btn-outline-primary rounded-pill px-4 w-100 w-sm-auto">
-                    Save Bulk Skills
-                  </button>
-                </form>
+                )}
+
+                {/* Primary Add Skill Form: Select Category & Add Skills */}
+                <div className="card border p-3 rounded-3 bg-light mb-4">
+                  <h6 className="fw-bold text-dark mb-2">
+                    <i className="bi bi-tag me-1 text-primary"></i> Add Skills to a Category
+                  </h6>
+                  <form onSubmit={handleTopAddSkillSubmit}>
+                    <div className="row g-2 align-items-end">
+                      <div className="col-12 col-md-4">
+                        <label className="form-label small fw-semibold">Select Category</label>
+                        <select
+                          className="form-select"
+                          value={selectedCatId}
+                          onChange={(e) => {
+                            if (e.target.value === "__new__") {
+                              setIsCreatingCategory(true);
+                            } else {
+                              setSelectedCatId(e.target.value);
+                            }
+                          }}
+                          required
+                        >
+                          {rawSkillCategories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                              {cat.title} ({cat.skills?.length || 0})
+                            </option>
+                          ))}
+                          <option value="__new__">+ Create New Category...</option>
+                        </select>
+                      </div>
+
+                      <div className="col-12 col-md-5">
+                        <label className="form-label small fw-semibold">Skill Name(s)</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="e.g. Kafka, Redis (comma-separated for multiple)"
+                          value={newSkillInput}
+                          onChange={(e) => setNewSkillInput(e.target.value)}
+                          required
+                        />
+                      </div>
+
+                      <div className="col-12 col-md-3">
+                        <button type="submit" className="btn btn-primary rounded-pill px-3 w-100">
+                          <i className="bi bi-plus-lg me-1"></i> Add to Category
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                {/* Categorized Skills Matrix Cards */}
+                <h6 className="fw-bold text-dark mb-3">
+                  Categorized Skills Matrix ({rawSkillCategories.length} Categories, {profileState.skills?.length || 0} Total Skills):
+                </h6>
+
+                {rawSkillCategories.length === 0 ? (
+                  <div className="text-center text-muted py-4 border rounded-3 bg-light">
+                    No categories created yet. Click &quot;New Category&quot; above to get started.
+                  </div>
+                ) : (
+                  <div className="row g-3">
+                    {rawSkillCategories.map((cat) => (
+                      <div key={cat.id} className="col-12 col-lg-6">
+                        <div className="border rounded-3 p-3 bg-white h-100 shadow-sm d-flex flex-column justify-content-between">
+                          <div>
+                            {/* Card Header */}
+                            <div className="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                              <div className="d-flex align-items-center gap-2">
+                                <i className={`bi ${cat.icon || "bi-stars"} text-primary fs-5`}></i>
+                                <span className="fw-bold text-dark">{cat.title}</span>
+                                <span className="badge bg-light text-secondary border rounded-pill">
+                                  {cat.skills?.length || 0}
+                                </span>
+                              </div>
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-outline-danger border-0 rounded-circle p-1"
+                                title="Delete Category"
+                                onClick={() => handleDeleteCategory(cat.id, cat.title)}
+                              >
+                                <i className="bi bi-trash"></i>
+                              </button>
+                            </div>
+
+                            {/* Skills Badges */}
+                            <div className="d-flex flex-wrap gap-2 mb-3">
+                              {cat.skills && cat.skills.length > 0 ? (
+                                cat.skills.map((skill, sIdx) => (
+                                  <span
+                                    key={sIdx}
+                                    className="badge bg-light text-dark border px-3 py-2 rounded-pill d-inline-flex align-items-center gap-2"
+                                    style={{ fontSize: "0.85rem" }}
+                                  >
+                                    <span>{skill}</span>
+                                    <button
+                                      type="button"
+                                      className="btn-close"
+                                      style={{ fontSize: "0.55rem" }}
+                                      aria-label={`Remove ${skill}`}
+                                      onClick={() => handleRemoveSkillFromCategory(cat.id, skill)}
+                                    ></button>
+                                  </span>
+                                ))
+                              ) : (
+                                <span className="text-muted small">No skills in this category yet.</span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Inline Quick Add Form inside each card */}
+                          <div className="pt-2 border-top mt-2">
+                            <div className="input-group input-group-sm">
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder={`Add skill to ${cat.title}...`}
+                                value={inlineSkillInputs[cat.id] || ""}
+                                onChange={(e) =>
+                                  setInlineSkillInputs({
+                                    ...inlineSkillInputs,
+                                    [cat.id]: e.target.value
+                                  })
+                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    const val = inlineSkillInputs[cat.id];
+                                    if (val && val.trim()) {
+                                      handleAddSkillToCategory(cat.id, val);
+                                      setInlineSkillInputs({
+                                        ...inlineSkillInputs,
+                                        [cat.id]: ""
+                                      });
+                                    }
+                                  }
+                                }}
+                              />
+                              <button
+                                className="btn btn-outline-primary"
+                                type="button"
+                                onClick={() => {
+                                  const val = inlineSkillInputs[cat.id];
+                                  if (val && val.trim()) {
+                                    handleAddSkillToCategory(cat.id, val);
+                                    setInlineSkillInputs({
+                                      ...inlineSkillInputs,
+                                      [cat.id]: ""
+                                    });
+                                  }
+                                }}
+                              >
+                                Add
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -997,27 +1307,53 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* FULLY RESPONSIVE PROJECT MODAL */}
+      {/* FULLY RESPONSIVE SMOOTH-SCROLLING PROJECT MODAL */}
       {projectModalOpen && (
         <div
           className="modal show d-block"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          style={{
+            backgroundColor: "rgba(0,0,0,0.6)",
+            overflowY: "auto",
+            zIndex: 1060
+          }}
           tabIndex="-1"
+          role="dialog"
+          aria-modal="true"
         >
-          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg modal-fullscreen-sm-down">
-            <div className="modal-content border-0 shadow-lg rounded-3">
-              <div className="modal-header">
-                <h5 className="modal-title fw-bold">
+          <div className="modal-dialog modal-dialog-centered modal-lg my-3 my-sm-4">
+            <div
+              className="modal-content border-0 shadow-lg rounded-3"
+              style={{
+                maxHeight: "90vh",
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden"
+              }}
+            >
+              <div className="modal-header border-bottom py-3 px-3 px-md-4">
+                <h5 className="modal-title fw-bold mb-0">
                   {editingProjectId ? "Edit Project Details" : "Add Detailed Project"}
                 </h5>
                 <button
                   type="button"
                   className="btn-close"
                   onClick={() => setProjectModalOpen(false)}
+                  aria-label="Close"
                 ></button>
               </div>
-              <form onSubmit={handleSaveProject}>
-                <div className="modal-body">
+              <form
+                onSubmit={handleSaveProject}
+                className="d-flex flex-column h-100 overflow-hidden m-0"
+              >
+                <div
+                  className="modal-body p-3 p-md-4"
+                  style={{
+                    overflowY: "auto",
+                    WebkitOverflowScrolling: "touch",
+                    flex: "1 1 auto",
+                    maxHeight: "calc(90vh - 130px)"
+                  }}
+                >
                   <div className="row g-3">
                     <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold">Project Title</label>
@@ -1127,10 +1463,10 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="modal-footer d-flex justify-content-end gap-2 flex-wrap">
+                <div className="modal-footer border-top bg-light py-2 px-3 px-md-4 d-flex justify-content-end gap-2 flex-wrap">
                   <button
                     type="button"
-                    className="btn btn-secondary rounded-pill"
+                    className="btn btn-secondary rounded-pill px-3"
                     onClick={() => setProjectModalOpen(false)}
                   >
                     Cancel
@@ -1145,27 +1481,53 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* FULLY RESPONSIVE COMPANY MODAL */}
+      {/* FULLY RESPONSIVE SMOOTH-SCROLLING COMPANY MODAL */}
       {companyModalOpen && (
         <div
           className="modal show d-block"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          style={{
+            backgroundColor: "rgba(0,0,0,0.6)",
+            overflowY: "auto",
+            zIndex: 1060
+          }}
           tabIndex="-1"
+          role="dialog"
+          aria-modal="true"
         >
-          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg modal-fullscreen-sm-down">
-            <div className="modal-content border-0 shadow-lg rounded-3">
-              <div className="modal-header">
-                <h5 className="modal-title fw-bold">
+          <div className="modal-dialog modal-dialog-centered modal-lg my-3 my-sm-4">
+            <div
+              className="modal-content border-0 shadow-lg rounded-3"
+              style={{
+                maxHeight: "90vh",
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden"
+              }}
+            >
+              <div className="modal-header border-bottom py-3 px-3 px-md-4">
+                <h5 className="modal-title fw-bold mb-0">
                   {editingCompanyId ? "Edit Company Experience" : "Add Company Experience"}
                 </h5>
                 <button
                   type="button"
                   className="btn-close"
                   onClick={() => setCompanyModalOpen(false)}
+                  aria-label="Close"
                 ></button>
               </div>
-              <form onSubmit={handleSaveCompany}>
-                <div className="modal-body">
+              <form
+                onSubmit={handleSaveCompany}
+                className="d-flex flex-column h-100 overflow-hidden m-0"
+              >
+                <div
+                  className="modal-body p-3 p-md-4"
+                  style={{
+                    overflowY: "auto",
+                    WebkitOverflowScrolling: "touch",
+                    flex: "1 1 auto",
+                    maxHeight: "calc(90vh - 130px)"
+                  }}
+                >
                   <div className="row g-3">
                     <div className="col-12 col-md-6">
                       <label className="form-label small fw-semibold">Company Name</label>
@@ -1317,10 +1679,10 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="modal-footer d-flex justify-content-end gap-2 flex-wrap">
+                <div className="modal-footer border-top bg-light py-2 px-3 px-md-4 d-flex justify-content-end gap-2 flex-wrap">
                   <button
                     type="button"
-                    className="btn btn-secondary rounded-pill"
+                    className="btn btn-secondary rounded-pill px-3"
                     onClick={() => setCompanyModalOpen(false)}
                   >
                     Cancel

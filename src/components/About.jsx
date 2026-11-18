@@ -1,11 +1,9 @@
 import { useSelector } from "react-redux";
-import { calculateTotalExperience } from "../utils/experienceCalculator";
 
 const About = () => {
   const profile = useSelector((state) => state.profile);
   const companies = useSelector((state) => state.profile.companies) || [];
   const projects = useSelector((state) => state.profile.projects) || [];
-  const calculatedExp = calculateTotalExperience(companies);
 
   const currentCompany =
     companies.find((c) => c.isCurrent)?.company ||
@@ -14,9 +12,11 @@ const About = () => {
   const role = profile.role || "Java Backend Developer";
   const name = profile.name || "Vitthal Khemnar";
 
-  const aboutText =
-    profile.aboutMe ||
-    `I am a ${role} with professional experience${currentCompany ? ` at ${currentCompany}` : ""}. My expertise includes Core Java, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture.`;
+  const defaultAboutMe = `I am a ${role} with professional experience${
+    currentCompany ? ` at ${currentCompany}` : " in enterprise software"
+  }. My expertise includes Core Java, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture. I focus on developing resilient RESTful services, optimizing database query performance, and implementing secure backend systems.`;
+
+  const aboutText = profile.aboutMe || defaultAboutMe;
 
   return (
     <div className="py-5 px-3">
@@ -60,14 +60,14 @@ const About = () => {
         <div className="row g-3 text-center">
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">{calculatedExp}</div>
-              <div className="small text-muted">Experience (Calculated)</div>
+              <div className="fs-3 fw-bold text-dark mb-1">{profile.experience || "1.5+ Years"}</div>
+              <div className="small text-muted">Experience</div>
             </div>
           </div>
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
               <div className="fs-3 fw-bold text-dark mb-1">
-                {projects.length > 0 ? `${projects.length}+ Projects` : "Projects"}
+                {projects.length > 0 ? `${projects.length}+ Projects` : "4+ Projects"}
               </div>
               <div className="small text-muted">Built & Showcased</div>
             </div>
@@ -75,9 +75,9 @@ const About = () => {
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
               <div className="fs-3 fw-bold text-dark mb-1">
-                {profile.location || "Remote / On-site"}
+                {profile.location || "Pune, Maharashtra, India"}
               </div>
-              <div className="small text-muted">Location</div>
+              <div className="small text-muted">Primary Location</div>
             </div>
           </div>
         </div>

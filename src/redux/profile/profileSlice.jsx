@@ -31,6 +31,16 @@ const profileSlice = createSlice({
       dataService.updateProfile({ [key]: value });
     },
 
+    setSkillCategories: (state, action) => {
+      state.skillCategories = action.payload;
+      const flatSkills = action.payload.flatMap((cat) => cat.skills || []);
+      state.skills = flatSkills;
+      dataService.updateProfile({
+        skillCategories: action.payload,
+        skills: flatSkills
+      });
+    },
+
     // Projects CRUD
     setProjects: (state, action) => {
       state.projects = action.payload;
@@ -79,6 +89,7 @@ export const {
   setFullData,
   setProfile,
   updateProfileField,
+  setSkillCategories,
   setProjects,
   addProject,
   updateProject,
