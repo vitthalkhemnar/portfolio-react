@@ -61,7 +61,7 @@ const Skills = () => {
   ];
 
   return (
-    <div className="py-5 px-3 bg-light">
+    <div className="py-5 px-3">
       <div className="container py-3" style={{ maxWidth: "960px" }}>
         {/* Clean Section Header */}
         <div className="text-center mb-5">
@@ -74,17 +74,23 @@ const Skills = () => {
         <div className="row g-4">
           {categories.map((cat, idx) => (
             <div key={idx} className="col-12 col-md-4">
-              <div className="clean-card p-4 h-100 bg-white">
+              <div className="clean-card p-4 h-100">
                 <div className="d-flex align-items-center gap-2 mb-3">
-                  <i className={`bi ${cat.icon} text-accent fs-5`}></i>
-                  <h6 className="fw-bold mb-0 text-dark">{cat.title}</h6>
+                  <i className={`bi ${cat.icon} text-white fs-5`}></i>
+                  <h6 className="fw-bold mb-0 text-white">{cat.title}</h6>
                 </div>
                 <div className="d-flex flex-wrap gap-2">
                   {cat.skills.map((skill, sIdx) => (
                     <span
                       key={sIdx}
-                      className="badge bg-light text-secondary border px-3 py-2 fw-normal"
-                      style={{ fontSize: "0.85rem", borderRadius: "8px" }}
+                      className="badge px-3 py-2 fw-normal"
+                      style={{
+                        fontSize: "0.85rem",
+                        borderRadius: "8px",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        color: "#e2e8f0",
+                        border: "1px solid rgba(255, 255, 255, 0.08)"
+                      }}
                     >
                       {skill}
                     </span>

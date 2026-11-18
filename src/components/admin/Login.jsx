@@ -29,9 +29,12 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light px-3">
+    <div
+      className="d-flex justify-content-center align-items-center min-vh-100 px-3"
+      style={{ backgroundColor: "var(--bg-main)" }}
+    >
       <div
-        className="card border-0 shadow-lg p-4 p-md-5"
+        className="clean-card p-4 p-md-5 shadow-lg"
         style={{ maxWidth: "420px", width: "100%", borderRadius: "20px" }}
       >
         <div className="text-center mb-4">
@@ -41,8 +44,10 @@ const Login = () => {
             style={{ width: "48px", height: "48px" }}
             className="mb-2"
           />
-          <h4 className="fw-bold mb-1">Admin Portal</h4>
-          <p className="text-muted small mb-0">Sign in to manage your portfolio</p>
+          <h4 className="fw-bold mb-1 text-white">Admin Portal</h4>
+          <p className="small mb-0" style={{ color: "#94a3b8" }}>
+            Sign in to manage your portfolio
+          </p>
         </div>
 
         {error && (
@@ -54,16 +59,27 @@ const Login = () => {
 
         <form onSubmit={handleLogin}>
           <div className="mb-3">
-            <label className="form-label small fw-semibold text-secondary">
+            <label className="form-label small fw-semibold text-white">
               Admin Email
             </label>
             <div className="input-group">
-              <span className="input-group-text bg-white border-end-0">
-                <i className="bi bi-envelope text-muted"></i>
+              <span
+                className="input-group-text border-end-0"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderColor: "rgba(255, 255, 255, 0.15)",
+                  color: "#94a3b8"
+                }}
+              >
+                <i className="bi bi-envelope"></i>
               </span>
               <input
                 type="email"
-                className="form-control border-start-0 ps-0"
+                className="form-control border-start-0 ps-0 text-white"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderColor: "rgba(255, 255, 255, 0.15)"
+                }}
                 placeholder="admin@portfolio.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -73,16 +89,27 @@ const Login = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label small fw-semibold text-secondary">
+            <label className="form-label small fw-semibold text-white">
               Password
             </label>
             <div className="input-group">
-              <span className="input-group-text bg-white border-end-0">
-                <i className="bi bi-lock text-muted"></i>
+              <span
+                className="input-group-text border-end-0"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderColor: "rgba(255, 255, 255, 0.15)",
+                  color: "#94a3b8"
+                }}
+              >
+                <i className="bi bi-lock"></i>
               </span>
               <input
                 type="password"
-                className="form-control border-start-0 ps-0"
+                className="form-control border-start-0 ps-0 text-white"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderColor: "rgba(255, 255, 255, 0.15)"
+                }}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -93,21 +120,28 @@ const Login = () => {
 
           <button
             type="submit"
-            className="btn btn-primary w-100 py-2 fw-semibold rounded-3 mb-3 shadow-sm"
+            className="btn-clean-primary w-100 justify-content-center py-2 mb-3"
             disabled={loading}
           >
             {loading ? "Authenticating..." : "Sign In"}
           </button>
         </form>
 
-        <div className="bg-light p-2 rounded text-center small text-muted mb-3 border">
+        <div
+          className="p-2 rounded text-center small mb-3"
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.04)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            color: "#94a3b8"
+          }}
+        >
           <small>
             Default: <code>admin@portfolio.com</code> / <code>admin</code>
           </small>
         </div>
 
         <div className="text-center">
-          <Link to="/" className="text-decoration-none small text-secondary">
+          <Link to="/" className="text-decoration-none small text-white-50 hover-text-white">
             <i className="bi bi-arrow-left me-1"></i> Return to Portfolio
           </Link>
         </div>

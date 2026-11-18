@@ -18,12 +18,12 @@ const Contact = () => {
           <div className="col-12 col-md-4">
             <a
               href={`mailto:${profile.email || "vitthalkkhemnar@gmail.com"}`}
-              className="text-decoration-none text-dark d-block h-100"
+              className="text-decoration-none d-block h-100"
             >
               <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-envelope text-accent fs-3 mb-2 d-block"></i>
-                <h6 className="fw-bold mb-1">Email</h6>
-                <p className="text-secondary small mb-0 text-break">
+                <i className="bi bi-envelope text-white fs-3 mb-2 d-block"></i>
+                <h6 className="fw-bold mb-1 text-white">Email</h6>
+                <p className="small mb-0 text-break" style={{ color: "#94a3b8" }}>
                   {profile.email || "vitthalkkhemnar@gmail.com"}
                 </p>
               </div>
@@ -35,12 +35,12 @@ const Contact = () => {
               href={`https://wa.me/${profile.whatsappNo || "918767841958"}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-decoration-none text-dark d-block h-100"
+              className="text-decoration-none d-block h-100"
             >
               <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-whatsapp text-accent fs-3 mb-2 d-block"></i>
-                <h6 className="fw-bold mb-1">WhatsApp</h6>
-                <p className="text-secondary small mb-0">
+                <i className="bi bi-whatsapp text-white fs-3 mb-2 d-block"></i>
+                <h6 className="fw-bold mb-1 text-white">WhatsApp</h6>
+                <p className="small mb-0" style={{ color: "#94a3b8" }}>
                   +{profile.whatsappNo || "918767841958"}
                 </p>
               </div>
@@ -49,16 +49,16 @@ const Contact = () => {
 
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 text-center h-100">
-              <i className="bi bi-geo-alt text-accent fs-3 mb-2 d-block"></i>
-              <h6 className="fw-bold mb-1">Location</h6>
-              <p className="text-secondary small mb-0">
+              <i className="bi bi-geo-alt text-white fs-3 mb-2 d-block"></i>
+              <h6 className="fw-bold mb-1 text-white">Location</h6>
+              <p className="small mb-0" style={{ color: "#94a3b8" }}>
                 {profile.location || "Pune, India"}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Unified Social Buttons */}
+        {/* Unified Action Buttons */}
         <div className="d-flex justify-content-center gap-3 pt-3">
           {profile.githubUrl && (
             <a

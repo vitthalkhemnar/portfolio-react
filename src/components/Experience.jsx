@@ -24,14 +24,14 @@ const Experience = () => {
               <div key={item.id || idx} className="clean-card p-4 p-md-5">
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
                   <div>
-                    <h5 className="fw-bold mb-1 text-dark">
+                    <h5 className="fw-bold mb-1 text-white">
                       {item.role}{" "}
-                      <span className="text-accent fw-medium">@ {item.company}</span>
+                      <span className="fw-normal text-white-50">@ {item.company}</span>
                     </h5>
-                    <div className="d-flex flex-wrap gap-2 text-muted small mt-1">
+                    <div className="d-flex flex-wrap gap-2 small mt-1" style={{ color: "#94a3b8" }}>
                       {item.location && (
                         <span>
-                          <i className="bi bi-geo-alt me-1 text-accent"></i>
+                          <i className="bi bi-geo-alt me-1 text-white-50"></i>
                           {item.location}
                         </span>
                       )}
@@ -44,20 +44,26 @@ const Experience = () => {
                     </div>
                   </div>
                   <span
-                    className="badge bg-light text-secondary border px-3 py-2 mt-2 mt-md-0 fw-normal"
-                    style={{ fontSize: "0.82rem", borderRadius: "9999px" }}
+                    className="badge px-3 py-2 mt-2 mt-md-0 fw-normal"
+                    style={{
+                      fontSize: "0.82rem",
+                      borderRadius: "9999px",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      color: "#cbd5e1",
+                      border: "1px solid rgba(255, 255, 255, 0.1)"
+                    }}
                   >
                     {item.duration || `${item.startDate || ""} - ${item.isCurrent ? "Present" : item.endDate || ""}`}
                   </span>
                 </div>
 
-                <p className="text-secondary mb-4" style={{ lineHeight: "1.8" }}>
+                <p className="mb-4" style={{ color: "#94a3b8", lineHeight: "1.8" }}>
                   {item.description}
                 </p>
 
                 {item.responsibilities && (
                   <div className="mb-3">
-                    <ul className="text-secondary small ps-3 mb-0" style={{ lineHeight: "1.7" }}>
+                    <ul className="small ps-3 mb-0" style={{ color: "#94a3b8", lineHeight: "1.7" }}>
                       {(Array.isArray(item.responsibilities)
                         ? item.responsibilities
                         : item.responsibilities.split("\n").filter(Boolean)
@@ -69,7 +75,10 @@ const Experience = () => {
                 )}
 
                 {item.technologies && (
-                  <div className="d-flex flex-wrap gap-2 pt-3 border-top">
+                  <div
+                    className="d-flex flex-wrap gap-2 pt-3"
+                    style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}
+                  >
                     {(Array.isArray(item.technologies)
                       ? item.technologies
                       : typeof item.technologies === "string"
@@ -78,8 +87,13 @@ const Experience = () => {
                     ).map((tech, tIdx) => (
                       <span
                         key={tIdx}
-                        className="badge bg-white text-muted border px-2 py-1 small fw-normal"
-                        style={{ borderRadius: "6px" }}
+                        className="badge px-2 py-1 small fw-normal"
+                        style={{
+                          borderRadius: "6px",
+                          background: "rgba(255, 255, 255, 0.05)",
+                          color: "#cbd5e1",
+                          border: "1px solid rgba(255, 255, 255, 0.08)"
+                        }}
                       >
                         {typeof tech === "string" ? tech.trim() : tech}
                       </span>
