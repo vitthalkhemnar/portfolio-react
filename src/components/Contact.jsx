@@ -5,15 +5,7 @@ const Contact = () => {
 
   return (
     <div className="py-5 px-3">
-      <div className="container py-4" style={{ maxWidth: "800px" }}>
-        <div className="text-center mb-5">
-          <span className="section-badge">Contact</span>
-          <h2 className="section-heading">Get In Touch</h2>
-          <p className="section-desc">
-            Feel free to reach out for career opportunities, consulting, or technical discussions.
-          </p>
-        </div>
-
+      <div className="container py-3" style={{ maxWidth: "800px" }}>
         <div className="row g-4 mb-4">
           <div className="col-12 col-md-4">
             <a

@@ -1,16 +1,14 @@
 import { useSelector } from "react-redux";
+import { calculateTotalExperience } from "../utils/experienceCalculator";
 
 const About = () => {
   const profile = useSelector((state) => state.profile);
+  const companies = useSelector((state) => state.profile.companies) || [];
+  const calculatedExp = calculateTotalExperience(companies);
 
   return (
     <div className="py-5 px-3">
-      <div className="container py-4" style={{ maxWidth: "900px" }}>
-        <div className="text-center mb-5">
-          <span className="section-badge">Background</span>
-          <h2 className="section-heading">About Me</h2>
-        </div>
-
+      <div className="container py-3" style={{ maxWidth: "900px" }}>
         <div className="row g-4 align-items-center mb-5">
           <div className="col-12 col-md-4 text-center">
             <div
@@ -33,7 +31,7 @@ const About = () => {
           <div className="col-12 col-md-8 text-center text-md-start">
             <p className="text-secondary fs-6 mb-3" style={{ lineHeight: "1.8" }}>
               {profile.aboutMe ||
-                "I am a Java Backend Developer with 1 year of professional experience at ANMsoft Technologies. My expertise includes Core Java, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture."}
+                "I am a Java Backend Developer with professional experience at ANMsoft Technologies. My expertise includes Core Java, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture."}
             </p>
             <p className="text-secondary fs-6 mb-0" style={{ lineHeight: "1.8" }}>
               I focus on writing clean, maintainable code, designing scalable REST APIs, and optimizing database performance. I value clear communication, strong fundamentals in Object-Oriented Programming, and team collaboration.
@@ -41,12 +39,12 @@ const About = () => {
           </div>
         </div>
 
-        {/* 3 Simple Stat Cards */}
+        {/* 3 Simple Stat Cards with Auto-Calculated Experience */}
         <div className="row g-3 text-center">
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">{profile.experience || "1+ Year"}</div>
-              <div className="text-muted small">Professional Experience</div>
+              <div className="fs-3 fw-bold text-dark mb-1">{calculatedExp}</div>
+              <div className="text-muted small">Experience (Calculated)</div>
             </div>
           </div>
           <div className="col-12 col-md-4">

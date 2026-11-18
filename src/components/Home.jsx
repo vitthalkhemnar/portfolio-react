@@ -1,8 +1,11 @@
 import "./Home.css";
 import { useSelector } from "react-redux";
+import { calculateTotalExperience } from "../utils/experienceCalculator";
 
 const Home = () => {
   const profile = useSelector((state) => state.profile);
+  const companies = useSelector((state) => state.profile.companies) || [];
+  const calculatedExp = calculateTotalExperience(companies);
 
   const displaySkills =
     profile.skills && profile.skills.length > 0
@@ -25,7 +28,7 @@ const Home = () => {
             </h1>
 
             <p className="hero-description text-secondary mb-4">
-              I'm <strong className="text-dark">{profile.name || "Vitthal Khemnar"}</strong>, a backend engineer with 1 year of experience at ANMsoft Technologies. I specialize in Core Java, Spring Boot, and scalable microservices architecture.
+              I'm <strong className="text-dark">{profile.name || "Vitthal Khemnar"}</strong>, a backend engineer with {calculatedExp} of professional experience at ANMsoft Technologies. I specialize in Core Java, Spring Boot, and scalable microservices architecture.
             </p>
 
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">

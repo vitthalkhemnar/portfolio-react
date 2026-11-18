@@ -71,13 +71,6 @@ const profileSlice = createSlice({
     deleteCompany: (state, action) => {
       state.companies = state.companies.filter((c) => c.id !== action.payload);
       dataService.updateCompanies(state.companies);
-    },
-
-    resetToDefaultData: (state) => {
-      const defaults = dataService.resetDefaults();
-      Object.assign(state, defaults.profile);
-      state.companies = defaults.companies;
-      state.projects = defaults.projects;
     }
   }
 });
@@ -93,8 +86,7 @@ export const {
   setCompanies,
   addCompany,
   updateCompany,
-  deleteCompany,
-  resetToDefaultData
+  deleteCompany
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

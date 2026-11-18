@@ -5,15 +5,7 @@ const Experience = () => {
 
   return (
     <div className="py-5 px-3">
-      <div className="container py-4" style={{ maxWidth: "860px" }}>
-        <div className="text-center mb-5">
-          <span className="section-badge">Career</span>
-          <h2 className="section-heading">Work Experience</h2>
-          <p className="section-desc">
-            Professional journey delivering backend microservices and APIs.
-          </p>
-        </div>
-
+      <div className="container py-3" style={{ maxWidth: "860px" }}>
         {companies.length === 0 ? (
           <div className="clean-card p-5 text-center text-muted">
             <p className="mb-0">No experience records found.</p>
@@ -28,18 +20,26 @@ const Experience = () => {
                       {item.role}{" "}
                       <span className="text-primary fw-normal">@ {item.company}</span>
                     </h5>
-                    {item.location && (
-                      <span className="text-muted small">
-                        <i className="bi bi-geo-alt me-1"></i>
-                        {item.location}
-                      </span>
-                    )}
+                    <div className="d-flex flex-wrap gap-2 text-muted small mt-1">
+                      {item.location && (
+                        <span>
+                          <i className="bi bi-geo-alt me-1"></i>
+                          {item.location}
+                        </span>
+                      )}
+                      {item.employmentType && (
+                        <span>&bull; {item.employmentType}</span>
+                      )}
+                      {item.locationType && (
+                        <span>&bull; {item.locationType}</span>
+                      )}
+                    </div>
                   </div>
                   <span
                     className="badge bg-light text-secondary border px-3 py-2 mt-2 mt-md-0 fw-normal"
                     style={{ fontSize: "0.82rem", borderRadius: "9999px" }}
                   >
-                    {item.duration}
+                    {item.duration || `${item.startDate || ""} - ${item.isCurrent ? "Present" : item.endDate || ""}`}
                   </span>
                 </div>
 
@@ -47,11 +47,26 @@ const Experience = () => {
                   {item.description}
                 </p>
 
+                {item.responsibilities && (
+                  <div className="mb-3">
+                    <ul className="text-secondary small ps-3 mb-0" style={{ lineHeight: "1.7" }}>
+                      {(Array.isArray(item.responsibilities)
+                        ? item.responsibilities
+                        : item.responsibilities.split("\n").filter(Boolean)
+                      ).map((resp, rIdx) => (
+                        <li key={rIdx}>{resp.replace(/^[•-]\s*/, "")}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {item.technologies && (
                   <div className="d-flex flex-wrap gap-2 pt-3 border-top">
                     {(Array.isArray(item.technologies)
                       ? item.technologies
-                      : item.technologies.split(",")
+                      : typeof item.technologies === "string"
+                      ? item.technologies.split(",")
+                      : []
                     ).map((tech, tIdx) => (
                       <span
                         key={tIdx}
