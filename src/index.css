@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --java-orange: #ea580c;
-  --java-orange-light: #fff7ed;
-  --spring-green: #10b981;
-  --spring-green-light: #ecfdf5;
-  --slate-900: #0f172a;
-  --slate-800: #1e293b;
-  --slate-700: #334155;
-  --slate-600: #475569;
-  --slate-100: #f1f5f9;
-  --slate-50: #f8fafc;
-  --border-color: #e2e8f0;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --primary: #0f172a; /* deep slate */
+  --primary-accent: #2563eb; /* clean royal blue */
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  --bg-main: #ffffff;
+  --bg-subtle: #f8fafc;
+  --border-subtle: #e2e8f0;
+  --border-light: #f1f5f9;
 }
 
 html {
@@ -21,107 +21,121 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8fafc;
-  color: #1e293b;
   overflow-x: hidden;
 }
 
-code, pre, .font-mono {
-  font-family: 'Fira Code', source-code-pro, Menlo, Monaco, Consolas, monospace;
+/* Minimal clean headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* Card Hover Animation */
-.hover-card {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid var(--border-color);
-}
-
-.hover-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08) !important;
-  border-color: #cbd5e1;
-}
-
-/* Section Header styling */
-.section-tag {
+/* Subtle clean section tags */
+.section-badge {
   display: inline-block;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--java-orange);
-  background: var(--java-orange-light);
-  border: 1px solid rgba(234, 88, 12, 0.2);
-  padding: 4px 14px;
-  border-radius: 9999px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--primary-accent);
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: 0.75rem;
 }
 
-.section-title {
-  font-weight: 800;
-  color: var(--slate-900);
-  letter-spacing: -0.5px;
+.section-heading {
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
 }
 
-/* Java Code Block in Hero */
-.java-code-window {
-  background: #0f172a;
-  color: #e2e8f0;
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* Minimal card */
+.clean-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
-  border: 1px solid #334155;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.82rem;
-  line-height: 1.5;
+  transition: all 0.25s ease;
 }
 
-.window-header {
-  background: #1e293b;
-  padding: 10px 16px;
-  display: flex;
+.clean-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  transform: translateY(-3px);
+}
+
+/* Clean Button Styles */
+.btn-clean-primary {
+  background: var(--primary);
+  color: #ffffff;
+  border: 1px solid var(--primary);
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 1px solid #334155;
 }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.dot.red { background: #ef4444; }
-.dot.yellow { background: #f59e0b; }
-.dot.green { background: #10b981; }
-
-.window-title {
-  margin-left: 8px;
-  font-size: 0.75rem;
-  color: #94a3b8;
+.btn-clean-primary:hover {
+  background: #1e293b;
+  border-color: #1e293b;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .java-code-window {
-    font-size: 0.72rem;
-  }
+.btn-clean-secondary {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-clean-secondary:hover {
+  background: var(--bg-subtle);
+  border-color: #cbd5e1;
+  color: var(--primary-accent);
+}
+
+/* Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
 }
