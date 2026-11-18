@@ -6,6 +6,14 @@ const Project = () => {
   return (
     <div className="py-5 px-3 bg-light">
       <div className="container py-3" style={{ maxWidth: "960px" }}>
+        {/* Clean Section Header */}
+        <div className="text-center mb-5">
+          <h2 className="section-heading">Featured Projects</h2>
+          <p className="section-desc">
+            A selection of backend systems and applications I've developed.
+          </p>
+        </div>
+
         {projects.length === 0 ? (
           <div className="clean-card p-5 text-center text-muted">
             <p className="mb-0">No projects added yet.</p>

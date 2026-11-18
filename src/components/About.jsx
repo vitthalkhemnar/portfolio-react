@@ -9,6 +9,11 @@ const About = () => {
   return (
     <div className="py-5 px-3">
       <div className="container py-3" style={{ maxWidth: "900px" }}>
+        {/* Clean Section Header */}
+        <div className="text-center mb-5">
+          <h2 className="section-heading">About Me</h2>
+        </div>
+
         <div className="row g-4 align-items-center mb-5">
           <div className="col-12 col-md-4 text-center">
             <div

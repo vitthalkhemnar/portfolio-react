@@ -6,6 +6,14 @@ const Experience = () => {
   return (
     <div className="py-5 px-3">
       <div className="container py-3" style={{ maxWidth: "860px" }}>
+        {/* Clean Section Header */}
+        <div className="text-center mb-5">
+          <h2 className="section-heading">Work Experience</h2>
+          <p className="section-desc">
+            Professional journey delivering backend microservices and APIs.
+          </p>
+        </div>
+
         {companies.length === 0 ? (
           <div className="clean-card p-5 text-center text-muted">
             <p className="mb-0">No experience records found.</p>

@@ -37,21 +37,6 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.025em;
 }
 
-/* Subtle clean section tags */
-.section-badge {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--primary-accent);
-  background: #eff6ff;
-  border: 1px solid #dbeafe;
-  padding: 4px 12px;
-  border-radius: 9999px;
-  margin-bottom: 0.75rem;
-}
-
 .section-heading {
   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
   font-weight: 700;

@@ -63,6 +63,14 @@ const Skills = () => {
   return (
     <div className="py-5 px-3 bg-light">
       <div className="container py-3" style={{ maxWidth: "960px" }}>
+        {/* Clean Section Header */}
+        <div className="text-center mb-5">
+          <h2 className="section-heading">Skills & Technologies</h2>
+          <p className="section-desc">
+            The core tools and frameworks I use to build scalable backend services.
+          </p>
+        </div>
+
         <div className="row g-4">
           {categories.map((cat, idx) => (
             <div key={idx} className="col-12 col-md-4">
