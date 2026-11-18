@@ -26,12 +26,12 @@ const Experience = () => {
                   <div>
                     <h5 className="fw-bold mb-1 text-dark">
                       {item.role}{" "}
-                      <span className="text-primary fw-normal">@ {item.company}</span>
+                      <span className="text-accent fw-medium">@ {item.company}</span>
                     </h5>
                     <div className="d-flex flex-wrap gap-2 text-muted small mt-1">
                       {item.location && (
                         <span>
-                          <i className="bi bi-geo-alt me-1"></i>
+                          <i className="bi bi-geo-alt me-1 text-accent"></i>
                           {item.location}
                         </span>
                       )}

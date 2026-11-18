@@ -21,7 +21,7 @@ const Contact = () => {
               className="text-decoration-none text-dark d-block h-100"
             >
               <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-envelope text-primary fs-3 mb-2 d-block"></i>
+                <i className="bi bi-envelope text-accent fs-3 mb-2 d-block"></i>
                 <h6 className="fw-bold mb-1">Email</h6>
                 <p className="text-secondary small mb-0 text-break">
                   {profile.email || "vitthalkkhemnar@gmail.com"}
@@ -38,7 +38,7 @@ const Contact = () => {
               className="text-decoration-none text-dark d-block h-100"
             >
               <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-whatsapp text-success fs-3 mb-2 d-block"></i>
+                <i className="bi bi-whatsapp text-accent fs-3 mb-2 d-block"></i>
                 <h6 className="fw-bold mb-1">WhatsApp</h6>
                 <p className="text-secondary small mb-0">
                   +{profile.whatsappNo || "918767841958"}
@@ -49,7 +49,7 @@ const Contact = () => {
 
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 text-center h-100">
-              <i className="bi bi-geo-alt text-danger fs-3 mb-2 d-block"></i>
+              <i className="bi bi-geo-alt text-accent fs-3 mb-2 d-block"></i>
               <h6 className="fw-bold mb-1">Location</h6>
               <p className="text-secondary small mb-0">
                 {profile.location || "Pune, India"}
@@ -58,16 +58,16 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Clean social buttons */}
+        {/* Unified Social Buttons */}
         <div className="d-flex justify-content-center gap-3 pt-3">
           {profile.githubUrl && (
             <a
               href={profile.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-sm btn-outline-dark rounded-pill px-4 py-2"
+              className="btn-clean-secondary"
             >
-              <i className="bi bi-github me-1"></i> GitHub
+              <i className="bi bi-github"></i> GitHub
             </a>
           )}
           {profile.linkedInUrl && (
@@ -75,9 +75,9 @@ const Contact = () => {
               href={profile.linkedInUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-sm btn-outline-primary rounded-pill px-4 py-2"
+              className="btn-clean-primary"
             >
-              <i className="bi bi-linkedin me-1"></i> LinkedIn
+              <i className="bi bi-linkedin"></i> LinkedIn
             </a>
           )}
         </div>

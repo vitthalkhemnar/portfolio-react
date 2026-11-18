@@ -34,7 +34,10 @@ const Project = () => {
                       <div>
                         <h5 className="fw-bold text-dark mb-1">{proj.name}</h5>
                         {proj.category && (
-                          <span className="badge bg-light text-primary border small fw-normal">
+                          <span
+                            className="badge bg-accent-light text-accent border border-accent small fw-normal"
+                            style={{ borderRadius: "6px" }}
+                          >
                             {proj.category}
                           </span>
                         )}
@@ -45,7 +48,7 @@ const Project = () => {
                             href={proj.githubLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-secondary hover-text-dark"
+                            className="text-secondary hover-text-accent"
                             title="GitHub Repository"
                           >
                             <i className="bi bi-github fs-5"></i>
@@ -56,7 +59,7 @@ const Project = () => {
                             href={proj.demoLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-secondary hover-text-dark"
+                            className="text-secondary hover-text-accent"
                             title="Live Demo"
                           >
                             <i className="bi bi-arrow-up-right-circle fs-5"></i>

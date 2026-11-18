@@ -76,7 +76,7 @@ const Skills = () => {
             <div key={idx} className="col-12 col-md-4">
               <div className="clean-card p-4 h-100 bg-white">
                 <div className="d-flex align-items-center gap-2 mb-3">
-                  <i className={`bi ${cat.icon} text-primary fs-5`}></i>
+                  <i className={`bi ${cat.icon} text-accent fs-5`}></i>
                   <h6 className="fw-bold mb-0 text-dark">{cat.title}</h6>
                 </div>
                 <div className="d-flex flex-wrap gap-2">

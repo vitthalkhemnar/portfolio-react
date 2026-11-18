@@ -44,23 +44,23 @@ const About = () => {
           </div>
         </div>
 
-        {/* 3 Simple Stat Cards with Auto-Calculated Experience */}
+        {/* 3 Simple Stat Cards with Unified Accent */}
         <div className="row g-3 text-center">
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">{calculatedExp}</div>
+              <div className="fs-3 fw-bold text-accent mb-1">{calculatedExp}</div>
               <div className="text-muted small">Experience (Calculated)</div>
             </div>
           </div>
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">Spring Boot</div>
+              <div className="fs-3 fw-bold text-accent mb-1">Spring Boot</div>
               <div className="text-muted small">Microservices & APIs</div>
             </div>
           </div>
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">{profile.location || "Pune, India"}</div>
+              <div className="fs-3 fw-bold text-accent mb-1">{profile.location || "Pune, India"}</div>
               <div className="text-muted small">Current Location</div>
             </div>
           </div>

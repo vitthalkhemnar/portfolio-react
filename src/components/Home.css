@@ -1,20 +1,21 @@
 .hero-section {
-  min-height: 90vh;
+  min-height: 88vh;
   padding-top: 80px;
-  background: radial-gradient(circle at 10% 20%, rgba(241, 245, 249, 0.6) 0%, rgba(255, 255, 255, 1) 60%);
+  background: radial-gradient(circle at 10% 20%, rgba(238, 242, 255, 0.5) 0%, rgba(255, 255, 255, 1) 60%);
 }
 
 .hero-status-pill {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--accent-border);
+  box-shadow: 0 1px 3px rgba(79, 70, 229, 0.04);
 }
 
 .hero-status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #10b981;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(79, 70, 229, 0.4);
 }
 
 .hero-heading {
@@ -46,8 +47,9 @@
 }
 
 .hero-social-link:hover {
-  color: #0f172a;
-  border-color: #94a3b8;
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-light);
   transform: translateY(-2px);
 }
 
@@ -57,8 +59,15 @@
   color: #475569;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.hero-tech-chip:hover {
+  border-color: var(--accent-border);
+  color: var(--accent);
+  background: var(--accent-light);
 }
 
 .hero-photo-wrapper {
@@ -67,8 +76,8 @@
   border-radius: 50%;
   padding: 8px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+  border: 2px solid var(--accent-light);
+  box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.12);
 }
 
 .hero-photo-img {
