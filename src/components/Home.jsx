@@ -4,6 +4,11 @@ import { useSelector } from "react-redux";
 const Home = () => {
   const profile = useSelector((state) => state.profile);
 
+  const displaySkills =
+    profile.skills && profile.skills.length > 0
+      ? profile.skills.slice(0, 6)
+      : ["Java", "Spring Boot", "Microservices", "Hibernate", "MySQL", "Docker"];
+
   return (
     <section className="hero-section d-flex align-items-center">
       <div className="container py-5">
@@ -76,7 +81,7 @@ const Home = () => {
             {/* Clean Tech Pills */}
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-2 pt-2">
               <span className="small text-muted me-1">Core Stack:</span>
-              {["Java", "Spring Boot", "Microservices", "Hibernate", "MySQL", "Docker"].map((tech) => (
+              {displaySkills.map((tech) => (
                 <span key={tech} className="hero-tech-chip">
                   {tech}
                 </span>

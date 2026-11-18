@@ -9,8 +9,7 @@ import {
   deleteProject,
   addCompany,
   updateCompany,
-  deleteCompany,
-  resetToDefaultData
+  deleteCompany
 } from "../../redux/profile/profileSlice";
 
 const Dashboard = () => {
@@ -117,7 +116,7 @@ const Dashboard = () => {
     };
 
     dispatch(setProfile(updated));
-    showNotification("Profile details saved successfully!");
+    showNotification("Changes saved successfully!");
   };
 
   // Projects CRUD
@@ -246,19 +245,12 @@ const Dashboard = () => {
     }
   };
 
-  const handleResetDefaults = () => {
-    if (window.confirm("Reset all portfolio data to default original settings?")) {
-      dispatch(resetToDefaultData());
-      showNotification("Reset all portfolio data to defaults.");
-    }
-  };
-
   return (
     <div className="min-vh-100 bg-light d-flex flex-column">
       {/* Top Navbar */}
       <header className="navbar navbar-dark bg-dark px-3 px-md-4 py-2 shadow-sm">
         <div className="d-flex align-items-center gap-2">
-          <img src="/v-logo2.png" alt="Logo" style={{ width: "30px", height: "30px" }} />
+          <span className="brand-dot"></span>
           <span className="navbar-brand fw-bold fs-5 mb-0">Portfolio Admin</span>
         </div>
         <div className="d-flex align-items-center gap-2">
@@ -337,13 +329,6 @@ const Dashboard = () => {
                 >
                   <i className="bi bi-file-earmark-pdf me-2"></i> Resume & Skills
                 </button>
-                <hr className="my-2" />
-                <button
-                  className="nav-link text-start py-2 px-3 fw-semibold rounded-2 text-danger"
-                  onClick={handleResetDefaults}
-                >
-                  <i className="bi bi-arrow-counterclockwise me-2"></i> Reset Defaults
-                </button>
               </div>
             </div>
           </div>
@@ -380,8 +365,8 @@ const Dashboard = () => {
                   </div>
                   <div className="col-12 col-sm-6 col-lg-3">
                     <div className="card border-0 shadow-sm p-3 rounded-3 bg-white">
-                      <div className="text-muted small">Deployment Status</div>
-                      <div className="fs-5 fw-bold text-dark mt-2">
+                      <div className="text-muted small">Architecture</div>
+                      <div className="fs-6 fw-bold text-dark mt-2">
                         <span className="badge bg-success-subtle text-success border border-success-subtle">
                           Serverless Static
                         </span>

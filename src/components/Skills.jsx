@@ -1,22 +1,19 @@
+import { useSelector } from "react-redux";
+
 const Skills = () => {
-  const categories = [
-    {
-      title: "Backend & Core Java",
-      icon: "bi-cup-hot",
-      skills: [
-        "Core Java (OOP, Collections, Streams)",
+  const profile = useSelector((state) => state.profile);
+
+  // Dynamic skills list from Redux/Admin
+  const allSkills = profile.skills && profile.skills.length > 0
+    ? profile.skills
+    : [
+        "Core Java",
         "Spring Boot",
         "Spring Data JPA",
         "Hibernate ORM",
-        "Microservices Architecture",
-        "RESTful Web Services",
-        "Spring Security"
-      ]
-    },
-    {
-      title: "Databases & DevOps",
-      icon: "bi-database",
-      skills: [
+        "Microservices",
+        "REST APIs",
+        "Spring Security",
         "MySQL",
         "PostgreSQL",
         "MongoDB",
@@ -24,19 +21,43 @@ const Skills = () => {
         "Git & GitHub",
         "Maven",
         "Postman",
-        "OpenAPI / Swagger"
-      ]
+        "ReactJS"
+      ];
+
+  // Group into clean categories dynamically
+  const backendKeywords = ["java", "spring", "hibernate", "jpa", "microservice", "rest", "api", "security"];
+  const dbToolsKeywords = ["sql", "mongo", "docker", "git", "maven", "postman", "swagger", "database", "redis", "linux"];
+
+  const backendSkills = [];
+  const dbToolsSkills = [];
+  const otherSkills = [];
+
+  allSkills.forEach((skill) => {
+    const sLower = skill.toLowerCase();
+    if (backendKeywords.some((k) => sLower.includes(k))) {
+      backendSkills.push(skill);
+    } else if (dbToolsKeywords.some((k) => sLower.includes(k))) {
+      dbToolsSkills.push(skill);
+    } else {
+      otherSkills.push(skill);
+    }
+  });
+
+  const categories = [
+    {
+      title: "Backend & Core Java",
+      icon: "bi-cup-hot",
+      skills: backendSkills.length > 0 ? backendSkills : allSkills.slice(0, 7)
     },
     {
-      title: "Frontend & Full Stack",
+      title: "Databases & Tools",
+      icon: "bi-database",
+      skills: dbToolsSkills.length > 0 ? dbToolsSkills : allSkills.slice(7, 13)
+    },
+    {
+      title: "Full Stack & Practices",
       icon: "bi-laptop",
-      skills: [
-        "ReactJS",
-        "Redux Toolkit",
-        "JavaScript (ES6+)",
-        "Bootstrap 5",
-        "HTML5 & CSS3"
-      ]
+      skills: otherSkills.length > 0 ? otherSkills : ["ReactJS", "Redux Toolkit", "JavaScript", "Bootstrap", "Agile / Scrum"]
     }
   ];
 
