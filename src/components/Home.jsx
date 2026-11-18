@@ -7,10 +7,17 @@ const Home = () => {
   const companies = useSelector((state) => state.profile.companies) || [];
   const calculatedExp = calculateTotalExperience(companies);
 
+  const currentCompany =
+    companies.find((c) => c.isCurrent)?.company ||
+    (companies[0] ? companies[0].company : "");
+
   const displaySkills =
     profile.skills && profile.skills.length > 0
       ? profile.skills.slice(0, 6)
-      : ["Java", "Spring Boot", "Microservices", "Hibernate", "MySQL", "Docker"];
+      : ["Core Java", "Spring Boot", "Microservices", "Hibernate", "MySQL", "Docker"];
+
+  const role = profile.role || "Java Backend Developer";
+  const name = profile.name || "Vitthal Khemnar";
 
   return (
     <section className="hero-section d-flex align-items-center">
@@ -24,11 +31,11 @@ const Home = () => {
             </div>
 
             <h1 className="hero-heading mb-3">
-              Java Backend Developer building clean, resilient systems.
+              {role} building clean, resilient systems.
             </h1>
 
             <p className="hero-description mb-4">
-              I'm <strong className="text-dark fw-semibold">{profile.name || "Vitthal Khemnar"}</strong>, a backend engineer with {calculatedExp} of professional experience at ANMsoft Technologies. I specialize in Core Java, Spring Boot, and scalable microservices architecture.
+              I'm <strong className="text-dark fw-semibold">{name}</strong>, a {role.toLowerCase()} with {calculatedExp} of professional experience{currentCompany ? ` at ${currentCompany}` : ""}. {profile.summary || "I specialize in Core Java, Spring Boot, and scalable microservices architecture."}
             </p>
 
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">
@@ -70,26 +77,30 @@ const Home = () => {
                     <i className="bi bi-linkedin"></i>
                   </a>
                 )}
-                <a
-                  href={`mailto:${profile.email || "vitthalkkhemnar@gmail.com"}`}
-                  className="hero-social-link"
-                  title="Email"
-                  aria-label="Send Email"
-                >
-                  <i className="bi bi-envelope"></i>
-                </a>
+                {profile.email && (
+                  <a
+                    href={`mailto:${profile.email}`}
+                    className="hero-social-link"
+                    title="Email"
+                    aria-label="Send Email"
+                  >
+                    <i className="bi bi-envelope"></i>
+                  </a>
+                )}
               </div>
             </div>
 
             {/* Clean Tech Pills */}
-            <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-2 pt-2">
-              <span className="small text-muted me-1">Core Stack:</span>
-              {displaySkills.map((tech) => (
-                <span key={tech} className="clean-chip">
-                  {tech}
-                </span>
-              ))}
-            </div>
+            {displaySkills.length > 0 && (
+              <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-2 pt-2">
+                <span className="small text-muted me-1">Core Stack:</span>
+                {displaySkills.map((tech) => (
+                  <span key={tech} className="clean-chip">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right Column (Minimal Clean Photo) */}
@@ -97,7 +108,7 @@ const Home = () => {
             <div className="hero-photo-wrapper">
               <img
                 src="/images/vitthal-image.jpeg"
-                alt={profile.name || "Vitthal Khemnar"}
+                alt={name}
                 className="hero-photo-img"
               />
             </div>

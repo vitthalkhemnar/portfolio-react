@@ -60,8 +60,7 @@ const Dashboard = () => {
     });
   }, [profileState]);
 
-  // Project Modal State
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  // Project Form state (Detailed)
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [projectForm, setProjectForm] = useState({
     name: "",
@@ -70,13 +69,13 @@ const Dashboard = () => {
     description: "",
     keyFeatures: "",
     techStack: "",
-    image: "/images/aboutme.jpeg",
     demoLink: "",
-    githubLink: ""
+    githubLink: "",
+    image: "/images/aboutme.jpeg"
   });
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
 
-  // Company Modal State
-  const [companyModalOpen, setCompanyModalOpen] = useState(false);
+  // Company Form state (Detailed)
   const [editingCompanyId, setEditingCompanyId] = useState(null);
   const [companyForm, setCompanyForm] = useState({
     company: "",
@@ -91,8 +90,9 @@ const Dashboard = () => {
     responsibilities: "",
     technologies: ""
   });
+  const [companyModalOpen, setCompanyModalOpen] = useState(false);
 
-  // New Skill Input State
+  // Skill Add input
   const [newSkillInput, setNewSkillInput] = useState("");
 
   const showNotification = (msg) => {
@@ -140,9 +140,9 @@ const Dashboard = () => {
       description: "",
       keyFeatures: "",
       techStack: "",
-      image: "/images/aboutme.jpeg",
       demoLink: "",
-      githubLink: ""
+      githubLink: "",
+      image: "/images/aboutme.jpeg"
     });
     setProjectModalOpen(true);
   };
@@ -160,9 +160,9 @@ const Dashboard = () => {
       techStack: Array.isArray(proj.techStack)
         ? proj.techStack.join(", ")
         : proj.techStack || "",
-      image: proj.image || "/images/aboutme.jpeg",
       demoLink: proj.demoLink || "",
-      githubLink: proj.githubLink || ""
+      githubLink: proj.githubLink || "",
+      image: proj.image || "/images/aboutme.jpeg"
     });
     setProjectModalOpen(true);
   };
@@ -186,9 +186,9 @@ const Dashboard = () => {
       description: projectForm.description,
       keyFeatures: featuresArray,
       techStack: techArray,
-      image: projectForm.image || "/images/aboutme.jpeg",
       demoLink: projectForm.demoLink,
-      githubLink: projectForm.githubLink
+      githubLink: projectForm.githubLink,
+      image: projectForm.image
     };
 
     if (editingProjectId) {
@@ -261,19 +261,19 @@ const Dashboard = () => {
 
   const handleSaveCompany = (e) => {
     e.preventDefault();
-    const techArray = companyForm.technologies
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-
     const respArray = companyForm.responsibilities
       .split("\n")
       .map((r) => r.trim())
       .filter(Boolean);
 
-    const durationStr = companyForm.isCurrent
-      ? `${companyForm.startDate || "2023"} - Present`
-      : `${companyForm.startDate || ""} - ${companyForm.endDate || ""}`;
+    const techArray = companyForm.technologies
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    const durationComputed = `${companyForm.startDate || ""} - ${
+      companyForm.isCurrent ? "Present" : companyForm.endDate || ""
+    }`;
 
     const companyData = {
       company: companyForm.company,
@@ -284,7 +284,7 @@ const Dashboard = () => {
       startDate: companyForm.startDate,
       endDate: companyForm.isCurrent ? "Present" : companyForm.endDate,
       isCurrent: companyForm.isCurrent,
-      duration: durationStr,
+      duration: durationComputed,
       description: companyForm.description,
       responsibilities: respArray,
       technologies: techArray
@@ -339,34 +339,38 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-vh-100 bg-light d-flex flex-column">
-      {/* Top Navbar */}
-      <header className="navbar navbar-dark bg-dark px-3 px-md-4 py-2 shadow-sm">
+    <div className="min-vh-100 d-flex flex-column" style={{ backgroundColor: "var(--bg-page)" }}>
+      {/* Responsive Top Navbar */}
+      <header className="navbar navbar-dark bg-dark px-3 px-md-4 py-2 shadow-sm d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center gap-2">
           <span className="brand-dot"></span>
-          <span className="navbar-brand fw-bold fs-5 mb-0">Portfolio Control Center</span>
+          <span className="navbar-brand fw-bold fs-6 fs-md-5 mb-0">Control Center</span>
         </div>
         <div className="d-flex align-items-center gap-2">
           <Link
             to="/"
             target="_blank"
-            className="btn btn-sm btn-outline-light rounded-pill px-3"
+            className="btn btn-sm btn-outline-light rounded-pill px-2 px-sm-3"
+            title="View Live Site"
           >
-            <i className="bi bi-box-arrow-up-right me-1"></i> View Live Site
+            <i className="bi bi-box-arrow-up-right me-1"></i>
+            <span className="d-none d-sm-inline">Live Site</span>
           </Link>
           <button
             onClick={handleLogout}
-            className="btn btn-sm btn-danger rounded-pill px-3"
+            className="btn btn-sm btn-danger rounded-pill px-2 px-sm-3"
+            title="Logout"
           >
-            <i className="bi bi-box-arrow-right me-1"></i> Logout
+            <i className="bi bi-box-arrow-right me-1"></i>
+            <span className="d-none d-sm-inline">Logout</span>
           </button>
         </div>
       </header>
 
       {/* Main Container */}
-      <div className="container-fluid flex-grow-1 p-3 p-md-4">
+      <div className="container-fluid flex-grow-1 p-2 p-sm-3 p-md-4">
         {successMsg && (
-          <div className="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+          <div className="alert alert-success alert-dismissible fade show shadow-sm mb-3" role="alert">
             <i className="bi bi-check-circle-fill me-2"></i>
             {successMsg}
             <button
@@ -377,13 +381,16 @@ const Dashboard = () => {
           </div>
         )}
 
-        <div className="row g-4">
-          {/* Sidebar Nav */}
+        <div className="row g-3 g-md-4">
+          {/* Responsive Navigation: Horizontal scroll on mobile, Vertical on desktop */}
           <div className="col-12 col-md-3 col-lg-2">
             <div className="card border-0 shadow-sm rounded-3 p-2 bg-white">
-              <div className="nav flex-column nav-pills gap-1">
+              <div
+                className="nav flex-row flex-md-column nav-pills gap-1 overflow-auto flex-nowrap pb-1 pb-md-0"
+                style={{ WebkitOverflowScrolling: "touch" }}
+              >
                 <button
-                  className={`nav-link text-start py-2 px-3 fw-semibold rounded-2 ${
+                  className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
                     activeTab === "overview" ? "active" : "text-dark"
                   }`}
                   onClick={() => setActiveTab("overview")}
@@ -391,15 +398,15 @@ const Dashboard = () => {
                   <i className="bi bi-grid-1x2 me-2"></i> Overview
                 </button>
                 <button
-                  className={`nav-link text-start py-2 px-3 fw-semibold rounded-2 ${
+                  className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
                     activeTab === "profile" ? "active" : "text-dark"
                   }`}
                   onClick={() => setActiveTab("profile")}
                 >
-                  <i className="bi bi-person me-2"></i> Profile & Bio
+                  <i className="bi bi-person me-2"></i> Profile
                 </button>
                 <button
-                  className={`nav-link text-start py-2 px-3 fw-semibold rounded-2 ${
+                  className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
                     activeTab === "projects" ? "active" : "text-dark"
                   }`}
                   onClick={() => setActiveTab("projects")}
@@ -407,7 +414,7 @@ const Dashboard = () => {
                   <i className="bi bi-laptop me-2"></i> Projects ({profileState.projects?.length || 0})
                 </button>
                 <button
-                  className={`nav-link text-start py-2 px-3 fw-semibold rounded-2 ${
+                  className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
                     activeTab === "companies" ? "active" : "text-dark"
                   }`}
                   onClick={() => setActiveTab("companies")}
@@ -415,7 +422,7 @@ const Dashboard = () => {
                   <i className="bi bi-briefcase me-2"></i> Experience ({profileState.companies?.length || 0})
                 </button>
                 <button
-                  className={`nav-link text-start py-2 px-3 fw-semibold rounded-2 ${
+                  className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
                     activeTab === "skills" ? "active" : "text-dark"
                   }`}
                   onClick={() => setActiveTab("skills")}
@@ -423,7 +430,7 @@ const Dashboard = () => {
                   <i className="bi bi-stars me-2"></i> Skills ({profileState.skills?.length || 0})
                 </button>
                 <button
-                  className={`nav-link text-start py-2 px-3 fw-semibold rounded-2 ${
+                  className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
                     activeTab === "resume" ? "active" : "text-dark"
                   }`}
                   onClick={() => setActiveTab("resume")}
@@ -438,61 +445,61 @@ const Dashboard = () => {
           <div className="col-12 col-md-9 col-lg-10">
             {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
-              <div className="d-flex flex-column gap-4">
-                <div className="row g-3">
-                  <div className="col-12 col-sm-6 col-lg-3">
-                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white">
+              <div className="d-flex flex-column gap-3 gap-md-4">
+                <div className="row g-2 g-sm-3">
+                  <div className="col-6 col-lg-3">
+                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white h-100">
                       <div className="text-muted small">Calculated Experience</div>
-                      <div className="fs-2 fw-bold text-success">{calculatedExp}</div>
-                      <div className="small text-muted">Auto-computed from companies</div>
+                      <div className="fs-3 fs-md-2 fw-bold text-success">{calculatedExp}</div>
+                      <div className="small text-muted d-none d-sm-block">Auto-computed</div>
                     </div>
                   </div>
-                  <div className="col-12 col-sm-6 col-lg-3">
-                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white">
+                  <div className="col-6 col-lg-3">
+                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white h-100">
                       <div className="text-muted small">Total Projects</div>
-                      <div className="fs-2 fw-bold text-primary">
+                      <div className="fs-3 fs-md-2 fw-bold text-primary">
                         {profileState.projects?.length || 0}
                       </div>
-                      <div className="small text-muted">In portfolio showcase</div>
+                      <div className="small text-muted d-none d-sm-block">In showcase</div>
                     </div>
                   </div>
-                  <div className="col-12 col-sm-6 col-lg-3">
-                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white">
+                  <div className="col-6 col-lg-3">
+                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white h-100">
                       <div className="text-muted small">Companies Worked</div>
-                      <div className="fs-2 fw-bold text-warning">
+                      <div className="fs-3 fs-md-2 fw-bold text-warning">
                         {profileState.companies?.length || 0}
                       </div>
-                      <div className="small text-muted">Verified positions</div>
+                      <div className="small text-muted d-none d-sm-block">Verified roles</div>
                     </div>
                   </div>
-                  <div className="col-12 col-sm-6 col-lg-3">
-                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white">
+                  <div className="col-6 col-lg-3">
+                    <div className="card border-0 shadow-sm p-3 rounded-3 bg-white h-100">
                       <div className="text-muted small">Skills Indexed</div>
-                      <div className="fs-2 fw-bold text-info">
+                      <div className="fs-3 fs-md-2 fw-bold text-info">
                         {profileState.skills?.length || 0}
                       </div>
-                      <div className="small text-muted">Live on skills matrix</div>
+                      <div className="small text-muted d-none d-sm-block">On matrix</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="card border-0 shadow-sm p-4 rounded-3 bg-white">
+                <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
                   <h5 className="fw-bold mb-3">Quick Actions</h5>
                   <div className="d-flex flex-wrap gap-2">
                     <button
-                      className="btn btn-primary rounded-pill px-4"
+                      className="btn btn-primary rounded-pill px-3 px-sm-4"
                       onClick={openNewProjectModal}
                     >
-                      <i className="bi bi-plus-lg me-1"></i> Add Detailed Project
+                      <i className="bi bi-plus-lg me-1"></i> Add Project
                     </button>
                     <button
-                      className="btn btn-outline-primary rounded-pill px-4"
+                      className="btn btn-outline-primary rounded-pill px-3 px-sm-4"
                       onClick={openNewCompanyModal}
                     >
-                      <i className="bi bi-plus-lg me-1"></i> Add Company Experience
+                      <i className="bi bi-plus-lg me-1"></i> Add Experience
                     </button>
                     <button
-                      className="btn btn-outline-secondary rounded-pill px-4"
+                      className="btn btn-outline-secondary rounded-pill px-3 px-sm-4"
                       onClick={() => setActiveTab("profile")}
                     >
                       <i className="bi bi-pencil me-1"></i> Edit Profile Info
@@ -504,11 +511,11 @@ const Dashboard = () => {
 
             {/* PROFILE TAB */}
             {activeTab === "profile" && (
-              <div className="card border-0 shadow-sm p-4 rounded-3 bg-white">
-                <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
+                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-4">
                   <h5 className="fw-bold mb-0">Detailed Profile & Biography</h5>
                   <span className="badge bg-light text-secondary border px-3 py-2">
-                    Auto-Calculated Experience: <strong>{calculatedExp}</strong>
+                    Experience: <strong>{calculatedExp}</strong>
                   </span>
                 </div>
 
@@ -538,31 +545,8 @@ const Dashboard = () => {
                         required
                       />
                     </div>
-                    <div className="col-12 col-md-6">
-                      <label className="form-label small fw-semibold">Email Address</label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        value={profileForm.email}
-                        onChange={(e) =>
-                          setProfileForm({ ...profileForm, email: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                    <div className="col-12 col-md-6">
-                      <label className="form-label small fw-semibold">WhatsApp Number (e.g. 918767841958)</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={profileForm.whatsappNo}
-                        onChange={(e) =>
-                          setProfileForm({ ...profileForm, whatsappNo: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="col-12 col-md-6">
-                      <label className="form-label small fw-semibold">City, State, Country</label>
+                    <div className="col-12 col-md-4">
+                      <label className="form-label small fw-semibold">Primary Location</label>
                       <input
                         type="text"
                         className="form-control"
@@ -571,6 +555,30 @@ const Dashboard = () => {
                           setProfileForm({ ...profileForm, location: e.target.value })
                         }
                         placeholder="e.g. Pune, Maharashtra, India"
+                      />
+                    </div>
+                    <div className="col-12 col-md-4">
+                      <label className="form-label small fw-semibold">Contact Email</label>
+                      <input
+                        type="email"
+                        className="form-control"
+                        value={profileForm.email}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, email: e.target.value })
+                        }
+                        placeholder="yourname@gmail.com"
+                      />
+                    </div>
+                    <div className="col-12 col-md-4">
+                      <label className="form-label small fw-semibold">WhatsApp Number (with country code)</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={profileForm.whatsappNo}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, whatsappNo: e.target.value })
+                        }
+                        placeholder="918767841958"
                       />
                     </div>
                     <div className="col-12 col-md-6">
@@ -582,7 +590,7 @@ const Dashboard = () => {
                         onChange={(e) =>
                           setProfileForm({ ...profileForm, linkedInUrl: e.target.value })
                         }
-                        placeholder="https://linkedin.com/in/..."
+                        placeholder="https://www.linkedin.com/in/..."
                       />
                     </div>
                     <div className="col-12 col-md-6">
@@ -597,23 +605,11 @@ const Dashboard = () => {
                         placeholder="https://github.com/..."
                       />
                     </div>
-                    <div className="col-12 col-md-6">
-                      <label className="form-label small fw-semibold">Calculated Experience</label>
-                      <input
-                        type="text"
-                        className="form-control bg-light"
-                        value={calculatedExp}
-                        disabled
-                      />
-                      <div className="form-text small">
-                        Automatically derived from your Company Experience entries.
-                      </div>
-                    </div>
                     <div className="col-12">
-                      <label className="form-label small fw-semibold">About Me Biography</label>
+                      <label className="form-label small fw-semibold">About Me Narrative</label>
                       <textarea
                         className="form-control"
-                        rows="5"
+                        rows="4"
                         value={profileForm.aboutMe}
                         onChange={(e) =>
                           setProfileForm({ ...profileForm, aboutMe: e.target.value })
@@ -623,7 +619,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <button type="submit" className="btn btn-primary rounded-pill px-4">
+                    <button type="submit" className="btn btn-primary rounded-pill px-4 w-100 w-sm-auto">
                       <i className="bi bi-check-lg me-1"></i> Save Profile Details
                     </button>
                   </div>
@@ -633,8 +629,8 @@ const Dashboard = () => {
 
             {/* PROJECTS TAB */}
             {activeTab === "projects" && (
-              <div className="card border-0 shadow-sm p-4 rounded-3 bg-white">
-                <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
+                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-4">
                   <div>
                     <h5 className="fw-bold mb-0">Manage Projects</h5>
                     <p className="text-muted small mb-0">Add architecture highlights, tech stack, and repository links</p>
@@ -649,95 +645,147 @@ const Dashboard = () => {
 
                 {profileState.projects?.length === 0 ? (
                   <div className="text-center text-muted py-5">
-                    No projects found. Click "Add Project" to add your first detailed project.
+                    No projects found. Click &quot;Add Project&quot; to add your first project.
                   </div>
                 ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle table-hover">
-                      <thead className="table-light">
-                        <tr>
-                          <th>Title</th>
-                          <th>Category</th>
-                          <th>Tech Stack</th>
-                          <th>Demo Link</th>
-                          <th>GitHub</th>
-                          <th className="text-end">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {profileState.projects?.map((proj) => (
-                          <tr key={proj.id}>
-                            <td className="fw-semibold">{proj.name}</td>
-                            <td>
-                              <span className="badge bg-light text-primary border">
-                                {proj.category || "Backend"}
-                              </span>
-                            </td>
-                            <td>
-                              <span className="small text-muted">
-                                {Array.isArray(proj.techStack)
-                                  ? proj.techStack.join(", ")
-                                  : proj.techStack}
-                              </span>
-                            </td>
-                            <td>
-                              {proj.demoLink ? (
-                                <a
-                                  href={proj.demoLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-decoration-none small"
-                                >
-                                  Live <i className="bi bi-box-arrow-up-right"></i>
+                  <>
+                    {/* Mobile Card View (d-md-none) */}
+                    <div className="d-flex flex-column gap-3 d-md-none">
+                      {profileState.projects?.map((proj) => (
+                        <div key={proj.id} className="border rounded-3 p-3 bg-light">
+                          <div className="d-flex justify-content-between align-items-start mb-2">
+                            <h6 className="fw-bold mb-0 text-dark">{proj.name}</h6>
+                            <span className="badge bg-white text-primary border small">
+                              {proj.category || "Backend"}
+                            </span>
+                          </div>
+                          <p className="text-muted small mb-2 text-truncate-2">
+                            {proj.description}
+                          </p>
+                          <div className="small text-muted mb-3">
+                            <strong>Stack:</strong>{" "}
+                            {Array.isArray(proj.techStack) ? proj.techStack.join(", ") : proj.techStack}
+                          </div>
+                          <div className="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <div className="d-flex gap-2">
+                              {proj.demoLink && (
+                                <a href={proj.demoLink} target="_blank" rel="noopener noreferrer" className="small">
+                                  Demo <i className="bi bi-box-arrow-up-right"></i>
                                 </a>
-                              ) : (
-                                <span className="text-muted small">—</span>
                               )}
-                            </td>
-                            <td>
-                              {proj.githubLink ? (
-                                <a
-                                  href={proj.githubLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-decoration-none small"
-                                >
+                              {proj.githubLink && (
+                                <a href={proj.githubLink} target="_blank" rel="noopener noreferrer" className="small">
                                   Code <i className="bi bi-github"></i>
                                 </a>
-                              ) : (
-                                <span className="text-muted small">—</span>
                               )}
-                            </td>
-                            <td className="text-end">
+                            </div>
+                            <div className="d-flex gap-1">
                               <button
-                                className="btn btn-sm btn-outline-primary rounded-pill me-2"
+                                className="btn btn-sm btn-outline-primary rounded-pill px-2 py-1"
                                 onClick={() => openEditProjectModal(proj)}
                               >
                                 Edit
                               </button>
                               <button
-                                className="btn btn-sm btn-outline-danger rounded-pill"
+                                className="btn btn-sm btn-outline-danger rounded-pill px-2 py-1"
                                 onClick={() => handleDeleteProject(proj.id)}
                               >
                                 Delete
                               </button>
-                            </td>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Desktop Table View (d-none d-md-block) */}
+                    <div className="table-responsive d-none d-md-block">
+                      <table className="table align-middle table-hover">
+                        <thead className="table-light">
+                          <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Tech Stack</th>
+                            <th>Demo Link</th>
+                            <th>GitHub</th>
+                            <th className="text-end">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {profileState.projects?.map((proj) => (
+                            <tr key={proj.id}>
+                              <td className="fw-semibold">{proj.name}</td>
+                              <td>
+                                <span className="badge bg-light text-primary border">
+                                  {proj.category || "Backend"}
+                                </span>
+                              </td>
+                              <td>
+                                <span className="small text-muted">
+                                  {Array.isArray(proj.techStack)
+                                    ? proj.techStack.join(", ")
+                                    : proj.techStack}
+                                </span>
+                              </td>
+                              <td>
+                                {proj.demoLink ? (
+                                  <a
+                                    href={proj.demoLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-decoration-none small"
+                                  >
+                                    Live <i className="bi bi-box-arrow-up-right"></i>
+                                  </a>
+                                ) : (
+                                  <span className="text-muted small">—</span>
+                                )}
+                              </td>
+                              <td>
+                                {proj.githubLink ? (
+                                  <a
+                                    href={proj.githubLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-decoration-none small"
+                                  >
+                                    Code <i className="bi bi-github"></i>
+                                  </a>
+                                ) : (
+                                  <span className="text-muted small">—</span>
+                                )}
+                              </td>
+                              <td className="text-end">
+                                <button
+                                  className="btn btn-sm btn-outline-primary rounded-pill me-2"
+                                  onClick={() => openEditProjectModal(proj)}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  className="btn btn-sm btn-outline-danger rounded-pill"
+                                  onClick={() => handleDeleteProject(proj.id)}
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
                 )}
               </div>
             )}
 
             {/* COMPANIES TAB */}
             {activeTab === "companies" && (
-              <div className="card border-0 shadow-sm p-4 rounded-3 bg-white">
-                <div className="d-flex justify-content-between align-items-center mb-4">
+              <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
+                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-4">
                   <div>
                     <h5 className="fw-bold mb-0">Manage Work Experience</h5>
-                    <p className="text-muted small mb-0">Dates entered here automatically calculate your total experience across the portfolio</p>
+                    <p className="text-muted small mb-0">Dates automatically calculate total experience across the site</p>
                   </div>
                   <button
                     className="btn btn-primary rounded-pill px-3"
@@ -749,57 +797,93 @@ const Dashboard = () => {
 
                 {profileState.companies?.length === 0 ? (
                   <div className="text-center text-muted py-5">
-                    No company experience found. Click "Add Experience" to add one.
+                    No experience records found. Click &quot;Add Experience&quot; to add your position.
                   </div>
                 ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle table-hover">
-                      <thead className="table-light">
-                        <tr>
-                          <th>Company</th>
-                          <th>Role</th>
-                          <th>Duration</th>
-                          <th>Location</th>
-                          <th className="text-end">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {profileState.companies?.map((comp) => (
-                          <tr key={comp.id}>
-                            <td className="fw-semibold">{comp.company}</td>
-                            <td>{comp.role}</td>
-                            <td>
-                              <span className="badge bg-light text-dark border">
-                                {comp.duration || `${comp.startDate} - ${comp.isCurrent ? "Present" : comp.endDate}`}
-                              </span>
-                            </td>
-                            <td className="small text-muted">{comp.location || "—"}</td>
-                            <td className="text-end">
-                              <button
-                                className="btn btn-sm btn-outline-primary rounded-pill me-2"
-                                onClick={() => openEditCompanyModal(comp)}
-                              >
-                                Edit
-                              </button>
-                              <button
-                                className="btn btn-sm btn-outline-danger rounded-pill"
-                                onClick={() => handleDeleteCompany(comp.id)}
-                              >
-                                Delete
-                              </button>
-                            </td>
+                  <>
+                    {/* Mobile Card View (d-md-none) */}
+                    <div className="d-flex flex-column gap-3 d-md-none">
+                      {profileState.companies?.map((comp) => (
+                        <div key={comp.id} className="border rounded-3 p-3 bg-light">
+                          <div className="d-flex justify-content-between align-items-start mb-1">
+                            <h6 className="fw-bold mb-0 text-dark">{comp.company}</h6>
+                            <span className="badge bg-white text-dark border small">
+                              {comp.duration || comp.startDate}
+                            </span>
+                          </div>
+                          <div className="text-muted small mb-2">
+                            {comp.role} &bull; {comp.location || "Remote"}
+                          </div>
+                          <div className="d-flex justify-content-end gap-1 pt-2 border-top">
+                            <button
+                              className="btn btn-sm btn-outline-primary rounded-pill px-2 py-1"
+                              onClick={() => openEditCompanyModal(comp)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="btn btn-sm btn-outline-danger rounded-pill px-2 py-1"
+                              onClick={() => handleDeleteCompany(comp.id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Desktop Table View (d-none d-md-block) */}
+                    <div className="table-responsive d-none d-md-block">
+                      <table className="table align-middle table-hover">
+                        <thead className="table-light">
+                          <tr>
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Duration / Dates</th>
+                            <th>Type</th>
+                            <th>Location</th>
+                            <th className="text-end">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {profileState.companies?.map((comp) => (
+                            <tr key={comp.id}>
+                              <td className="fw-semibold">{comp.company}</td>
+                              <td>{comp.role}</td>
+                              <td>
+                                <span className="badge bg-light text-dark border">
+                                  {comp.duration || `${comp.startDate} - ${comp.isCurrent ? "Present" : comp.endDate}`}
+                                </span>
+                              </td>
+                              <td className="small text-muted">{comp.employmentType || "Full-time"}</td>
+                              <td className="small text-muted">{comp.location || "—"}</td>
+                              <td className="text-end">
+                                <button
+                                  className="btn btn-sm btn-outline-primary rounded-pill me-2"
+                                  onClick={() => openEditCompanyModal(comp)}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  className="btn btn-sm btn-outline-danger rounded-pill"
+                                  onClick={() => handleDeleteCompany(comp.id)}
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
                 )}
               </div>
             )}
 
             {/* SKILLS TAB */}
             {activeTab === "skills" && (
-              <div className="card border-0 shadow-sm p-4 rounded-3 bg-white">
+              <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
                 <h5 className="fw-bold mb-2">Manage Skills & Technologies</h5>
                 <p className="text-muted small mb-4">
                   Add, edit, or remove skills. Changes update the skills matrix on the live site immediately.
@@ -832,7 +916,7 @@ const Dashboard = () => {
                     <span
                       key={index}
                       className="badge bg-light text-dark border px-3 py-2 rounded-pill d-inline-flex align-items-center gap-2"
-                      style={{ fontSize: "0.9rem" }}
+                      style={{ fontSize: "0.88rem" }}
                     >
                       <span>{skill}</span>
                       <button
@@ -859,7 +943,7 @@ const Dashboard = () => {
                       }
                     ></textarea>
                   </div>
-                  <button type="submit" className="btn btn-outline-primary rounded-pill px-4">
+                  <button type="submit" className="btn btn-outline-primary rounded-pill px-4 w-100 w-sm-auto">
                     Save Bulk Skills
                   </button>
                 </form>
@@ -868,7 +952,7 @@ const Dashboard = () => {
 
             {/* RESUME TAB */}
             {activeTab === "resume" && (
-              <div className="card border-0 shadow-sm p-4 rounded-3 bg-white">
+              <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
                 <h5 className="fw-bold mb-2">Resume PDF Management</h5>
                 <p className="text-muted small mb-4">
                   Update the resume link downloaded by visitors when clicking &quot;Download Resume&quot;.
@@ -893,7 +977,7 @@ const Dashboard = () => {
                     </div>
                   </div>
 
-                  <div className="d-flex align-items-center gap-3">
+                  <div className="d-flex flex-wrap align-items-center gap-2">
                     <button type="submit" className="btn btn-primary rounded-pill px-4">
                       Save Resume Link
                     </button>
@@ -913,14 +997,14 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* DETAILED PROJECT MODAL */}
+      {/* FULLY RESPONSIVE PROJECT MODAL */}
       {projectModalOpen && (
         <div
           className="modal show d-block"
           style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
           tabIndex="-1"
         >
-          <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg modal-fullscreen-sm-down">
             <div className="modal-content border-0 shadow-lg rounded-3">
               <div className="modal-header">
                 <h5 className="modal-title fw-bold">
@@ -944,11 +1028,11 @@ const Dashboard = () => {
                         onChange={(e) =>
                           setProjectForm({ ...projectForm, name: e.target.value })
                         }
-                        placeholder="e.g. E-Commerce Microservices Platform"
+                        placeholder="e.g. Distributed Payment Gateway"
                         required
                       />
                     </div>
-                    <div className="col-12 col-md-3">
+                    <div className="col-12 col-sm-6 col-md-3">
                       <label className="form-label small fw-semibold">Category</label>
                       <select
                         className="form-select"
@@ -964,7 +1048,7 @@ const Dashboard = () => {
                         <option value="Cloud Native">Cloud Native</option>
                       </select>
                     </div>
-                    <div className="col-12 col-md-3">
+                    <div className="col-12 col-sm-6 col-md-3">
                       <label className="form-label small fw-semibold">Status</label>
                       <select
                         className="form-select"
@@ -1002,26 +1086,23 @@ const Dashboard = () => {
                         onChange={(e) =>
                           setProjectForm({ ...projectForm, keyFeatures: e.target.value })
                         }
-                        placeholder="• Implemented JWT token authentication with Spring Security&#10;• Designed asynchronous message queue with Kafka / RabbitMQ&#10;• Optimized JPA database queries and reduced latency by 40%"
+                        placeholder="• High-throughput reactive architecture&#10;• JWT role-based security layer&#10;• Optimized relational database queries"
                       ></textarea>
                     </div>
                     <div className="col-12">
-                      <label className="form-label small fw-semibold">
-                        Tech Stack (comma-separated)
-                      </label>
+                      <label className="form-label small fw-semibold">Tech Stack (comma-separated)</label>
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="Java 17, Spring Boot, MySQL, Docker, Spring Cloud"
                         value={projectForm.techStack}
                         onChange={(e) =>
                           setProjectForm({ ...projectForm, techStack: e.target.value })
                         }
-                        required
+                        placeholder="Java 17, Spring Boot, MySQL, Docker, REST API"
                       />
                     </div>
                     <div className="col-12 col-md-6">
-                      <label className="form-label small fw-semibold">Live Demo / OpenAPI Link</label>
+                      <label className="form-label small fw-semibold">Live Demo Link (optional)</label>
                       <input
                         type="url"
                         className="form-control"
@@ -1044,21 +1125,9 @@ const Dashboard = () => {
                         placeholder="https://github.com/..."
                       />
                     </div>
-                    <div className="col-12">
-                      <label className="form-label small fw-semibold">Thumbnail Image Path</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={projectForm.image}
-                        onChange={(e) =>
-                          setProjectForm({ ...projectForm, image: e.target.value })
-                        }
-                        placeholder="/images/aboutme.jpeg"
-                      />
-                    </div>
                   </div>
                 </div>
-                <div className="modal-footer">
+                <div className="modal-footer d-flex justify-content-end gap-2 flex-wrap">
                   <button
                     type="button"
                     className="btn btn-secondary rounded-pill"
@@ -1076,14 +1145,14 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* DETAILED COMPANY MODAL */}
+      {/* FULLY RESPONSIVE COMPANY MODAL */}
       {companyModalOpen && (
         <div
           className="modal show d-block"
           style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
           tabIndex="-1"
         >
-          <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg modal-fullscreen-sm-down">
             <div className="modal-content border-0 shadow-lg rounded-3">
               <div className="modal-header">
                 <h5 className="modal-title fw-bold">
@@ -1107,7 +1176,7 @@ const Dashboard = () => {
                         onChange={(e) =>
                           setCompanyForm({ ...companyForm, company: e.target.value })
                         }
-                        placeholder="e.g. ANMsoft Technologies"
+                        placeholder="e.g. Acme Tech Solutions"
                         required
                       />
                     </div>
@@ -1124,7 +1193,7 @@ const Dashboard = () => {
                         required
                       />
                     </div>
-                    <div className="col-12 col-md-4">
+                    <div className="col-12 col-sm-6 col-md-4">
                       <label className="form-label small fw-semibold">Employment Type</label>
                       <select
                         className="form-select"
@@ -1139,7 +1208,7 @@ const Dashboard = () => {
                         <option value="Internship">Internship</option>
                       </select>
                     </div>
-                    <div className="col-12 col-md-4">
+                    <div className="col-12 col-sm-6 col-md-4">
                       <label className="form-label small fw-semibold">Workplace Type</label>
                       <select
                         className="form-select"
@@ -1165,7 +1234,7 @@ const Dashboard = () => {
                         placeholder="e.g. Pune, India"
                       />
                     </div>
-                    <div className="col-12 col-md-4">
+                    <div className="col-12 col-sm-6 col-md-4">
                       <label className="form-label small fw-semibold">Start Date (YYYY-MM or Year)</label>
                       <input
                         type="text"
@@ -1178,7 +1247,7 @@ const Dashboard = () => {
                         required
                       />
                     </div>
-                    <div className="col-12 col-md-4">
+                    <div className="col-12 col-sm-6 col-md-4">
                       <label className="form-label small fw-semibold">End Date</label>
                       <input
                         type="text"
@@ -1191,7 +1260,7 @@ const Dashboard = () => {
                         disabled={companyForm.isCurrent}
                       />
                     </div>
-                    <div className="col-12 col-md-4 d-flex align-items-center pt-3">
+                    <div className="col-12 col-md-4 d-flex align-items-center pt-2 pt-md-3">
                       <div className="form-check">
                         <input
                           className="form-check-input"
@@ -1248,7 +1317,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="modal-footer">
+                <div className="modal-footer d-flex justify-content-end gap-2 flex-wrap">
                   <button
                     type="button"
                     className="btn btn-secondary rounded-pill"

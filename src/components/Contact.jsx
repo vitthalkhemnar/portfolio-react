@@ -3,6 +3,10 @@ import { useSelector } from "react-redux";
 const Contact = () => {
   const profile = useSelector((state) => state.profile);
 
+  const cleanWhatsApp = profile.whatsappNo
+    ? profile.whatsappNo.replace(/[^0-9]/g, "")
+    : "";
+
   return (
     <div className="py-5 px-3">
       <div className="container py-3" style={{ maxWidth: "800px" }}>
@@ -15,47 +19,53 @@ const Contact = () => {
         </div>
 
         <div className="row g-4 mb-4">
-          <div className="col-12 col-md-4">
-            <a
-              href={`mailto:${profile.email || "vitthalkkhemnar@gmail.com"}`}
-              className="text-decoration-none d-block h-100"
-            >
-              <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-envelope text-primary fs-3 mb-2 d-block"></i>
-                <h6 className="fw-bold mb-1 text-dark">Email</h6>
-                <p className="small mb-0 text-break text-muted">
-                  {profile.email || "vitthalkkhemnar@gmail.com"}
-                </p>
-              </div>
-            </a>
-          </div>
-
-          <div className="col-12 col-md-4">
-            <a
-              href={`https://wa.me/${profile.whatsappNo || "918767841958"}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-decoration-none d-block h-100"
-            >
-              <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-whatsapp text-primary fs-3 mb-2 d-block"></i>
-                <h6 className="fw-bold mb-1 text-dark">WhatsApp</h6>
-                <p className="small mb-0 text-muted">
-                  +{profile.whatsappNo || "918767841958"}
-                </p>
-              </div>
-            </a>
-          </div>
-
-          <div className="col-12 col-md-4">
-            <div className="clean-card p-4 text-center h-100">
-              <i className="bi bi-geo-alt text-primary fs-3 mb-2 d-block"></i>
-              <h6 className="fw-bold mb-1 text-dark">Location</h6>
-              <p className="small mb-0 text-muted">
-                {profile.location || "Pune, India"}
-              </p>
+          {profile.email && (
+            <div className="col-12 col-md-4">
+              <a
+                href={`mailto:${profile.email}`}
+                className="text-decoration-none d-block h-100"
+              >
+                <div className="clean-card p-4 text-center h-100">
+                  <i className="bi bi-envelope text-primary fs-3 mb-2 d-block"></i>
+                  <h6 className="fw-bold mb-1 text-dark">Email</h6>
+                  <p className="small mb-0 text-break text-muted">
+                    {profile.email}
+                  </p>
+                </div>
+              </a>
             </div>
-          </div>
+          )}
+
+          {cleanWhatsApp && (
+            <div className="col-12 col-md-4">
+              <a
+                href={`https://wa.me/${cleanWhatsApp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-decoration-none d-block h-100"
+              >
+                <div className="clean-card p-4 text-center h-100">
+                  <i className="bi bi-whatsapp text-primary fs-3 mb-2 d-block"></i>
+                  <h6 className="fw-bold mb-1 text-dark">WhatsApp</h6>
+                  <p className="small mb-0 text-muted">
+                    +{cleanWhatsApp}
+                  </p>
+                </div>
+              </a>
+            </div>
+          )}
+
+          {profile.location && (
+            <div className="col-12 col-md-4">
+              <div className="clean-card p-4 text-center h-100">
+                <i className="bi bi-geo-alt text-primary fs-3 mb-2 d-block"></i>
+                <h6 className="fw-bold mb-1 text-dark">Location</h6>
+                <p className="small mb-0 text-muted">
+                  {profile.location}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Action Buttons */}

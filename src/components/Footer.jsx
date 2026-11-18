@@ -15,10 +15,13 @@ const Footer = () => {
     >
       <div className="container d-flex flex-column flex-sm-row justify-content-between align-items-center small px-3 px-md-4">
         <div>
-          &copy; {currentYear} <strong className="text-dark">{profile.name || "Vitthal Khemnar"}</strong>. Built with React.
+          &copy; {currentYear} <strong className="text-dark">{profile.name || "Vitthal Khemnar"}</strong>. All rights reserved.
         </div>
         <div className="mt-2 mt-sm-0 text-muted">
-          <span>{profile.role || "Java Backend Developer"} &bull; {profile.location || "Pune, India"}</span>
+          <span>
+            {profile.role || "Software Engineer"}
+            {profile.location && ` \u2022 ${profile.location}`}
+          </span>
         </div>
       </div>
     </footer>

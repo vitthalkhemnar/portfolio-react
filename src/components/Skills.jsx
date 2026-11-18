@@ -4,28 +4,10 @@ const Skills = () => {
   const profile = useSelector((state) => state.profile);
 
   // Dynamic skills list from Redux/Admin
-  const allSkills = profile.skills && profile.skills.length > 0
-    ? profile.skills
-    : [
-        "Core Java",
-        "Spring Boot",
-        "Spring Data JPA",
-        "Hibernate ORM",
-        "Microservices",
-        "REST APIs",
-        "Spring Security",
-        "MySQL",
-        "PostgreSQL",
-        "MongoDB",
-        "Docker",
-        "Git & GitHub",
-        "Maven",
-        "Postman",
-        "ReactJS"
-      ];
+  const allSkills = profile.skills || [];
 
-  const backendKeywords = ["java", "spring", "hibernate", "jpa", "microservice", "rest", "api", "security"];
-  const dbToolsKeywords = ["sql", "mongo", "docker", "git", "maven", "postman", "swagger", "database", "redis", "linux"];
+  const backendKeywords = ["java", "spring", "hibernate", "jpa", "microservice", "rest", "api", "security", "backend"];
+  const dbToolsKeywords = ["sql", "mongo", "docker", "git", "maven", "postman", "swagger", "database", "redis", "linux", "cloud", "aws"];
 
   const backendSkills = [];
   const dbToolsSkills = [];
@@ -42,23 +24,42 @@ const Skills = () => {
     }
   });
 
-  const categories = [
+  const rawCategories = [
     {
-      title: "Backend & Core Java",
+      title: "Backend & Core Architecture",
       icon: "bi-cup-hot",
-      skills: backendSkills.length > 0 ? backendSkills : allSkills.slice(0, 7)
+      skills: backendSkills
     },
     {
-      title: "Databases & Tools",
+      title: "Databases & DevOps Tools",
       icon: "bi-database",
-      skills: dbToolsSkills.length > 0 ? dbToolsSkills : allSkills.slice(7, 13)
+      skills: dbToolsSkills
     },
     {
       title: "Full Stack & Practices",
       icon: "bi-laptop",
-      skills: otherSkills.length > 0 ? otherSkills : ["ReactJS", "Redux Toolkit", "JavaScript", "Bootstrap", "Agile / Scrum"]
+      skills: otherSkills
     }
   ];
+
+  // If categorization leaves any empty, provide a balanced distribution of allSkills
+  const categories = rawCategories.filter((c) => c.skills.length > 0);
+  const displayCategories =
+    categories.length > 0
+      ? categories
+      : allSkills.length > 0
+      ? [
+          {
+            title: "Technical Skills",
+            icon: "bi-stars",
+            skills: allSkills
+          }
+        ]
+      : [];
+
+  if (displayCategories.length === 0) {
+    return null;
+  }
 
   return (
     <div className="py-5 px-3">
@@ -67,12 +68,12 @@ const Skills = () => {
         <div className="text-center mb-5">
           <h2 className="section-heading">Skills & Technologies</h2>
           <p className="section-desc">
-            The core tools and frameworks I use to build scalable backend services.
+            The core tools, languages, and frameworks used in daily development.
           </p>
         </div>
 
         <div className="row g-4">
-          {categories.map((cat, idx) => (
+          {displayCategories.map((cat, idx) => (
             <div key={idx} className="col-12 col-md-4">
               <div className="clean-card p-4 h-100">
                 <div className="d-flex align-items-center gap-2 mb-3">

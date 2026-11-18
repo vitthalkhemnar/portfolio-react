@@ -4,7 +4,19 @@ import { calculateTotalExperience } from "../utils/experienceCalculator";
 const About = () => {
   const profile = useSelector((state) => state.profile);
   const companies = useSelector((state) => state.profile.companies) || [];
+  const projects = useSelector((state) => state.profile.projects) || [];
   const calculatedExp = calculateTotalExperience(companies);
+
+  const currentCompany =
+    companies.find((c) => c.isCurrent)?.company ||
+    (companies[0] ? companies[0].company : "");
+
+  const role = profile.role || "Java Backend Developer";
+  const name = profile.name || "Vitthal Khemnar";
+
+  const aboutText =
+    profile.aboutMe ||
+    `I am a ${role} with professional experience${currentCompany ? ` at ${currentCompany}` : ""}. My expertise includes Core Java, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture.`;
 
   return (
     <div className="py-5 px-3">
@@ -28,7 +40,7 @@ const About = () => {
             >
               <img
                 src="/images/aboutme.jpeg"
-                alt="Vitthal Khemnar"
+                alt={name}
                 className="w-100 h-100 object-fit-cover"
               />
             </div>
@@ -36,8 +48,7 @@ const About = () => {
 
           <div className="col-12 col-md-8 text-center text-md-start">
             <p className="fs-6 mb-3" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
-              {profile.aboutMe ||
-                "I am a Java Backend Developer with professional experience at ANMsoft Technologies. My expertise includes Core Java, Spring Boot, Spring Data JPA, Hibernate, and Microservices architecture."}
+              {aboutText}
             </p>
             <p className="fs-6 mb-0" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
               I focus on writing clean, maintainable code, designing scalable REST APIs, and optimizing database performance. I value clear communication, strong fundamentals in Object-Oriented Programming, and team collaboration.
@@ -45,7 +56,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* 3 Simple Stat Cards */}
+        {/* 3 Dynamic Stat Cards */}
         <div className="row g-3 text-center">
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
@@ -55,14 +66,18 @@ const About = () => {
           </div>
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">Spring Boot</div>
-              <div className="small text-muted">Microservices & APIs</div>
+              <div className="fs-3 fw-bold text-dark mb-1">
+                {projects.length > 0 ? `${projects.length}+ Projects` : "Projects"}
+              </div>
+              <div className="small text-muted">Built & Showcased</div>
             </div>
           </div>
           <div className="col-12 col-md-4">
             <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">{profile.location || "Pune, India"}</div>
-              <div className="small text-muted">Current Location</div>
+              <div className="fs-3 fw-bold text-dark mb-1">
+                {profile.location || "Remote / On-site"}
+              </div>
+              <div className="small text-muted">Location</div>
             </div>
           </div>
         </div>
