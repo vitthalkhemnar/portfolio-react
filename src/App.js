@@ -1,50 +1,48 @@
-import React, { useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useEffect } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Portfolio from "./components/Portfolio";
+import Dashboard from "./components/admin/Dashboard";
+import Login from "./components/admin/Login";
+import { setFullData } from "./redux/profile/profileSlice";
+import { dataService } from "./services/dataService";
 
-import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import About from "./components/About";
-import Project from "./components/Project";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+function NotFound() {
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 text-center px-3">
+      <h1 className="display-1 fw-bold text-primary">404</h1>
+      <h3 className="mb-3">Page Not Found</h3>
+      <p className="text-muted mb-4">
+        The page you are looking for does not exist or has been moved.
+      </p>
+      <Link to="/" className="btn btn-primary rounded-pill px-4">
+        <i className="bi bi-house me-1"></i> Back to Portfolio
+      </Link>
+    </div>
+  );
+}
 
 function App() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    AOS.init({
-      duration: 800,   // animation duration (ms)
-      once: true,      // animate only once per section
-      offset: 100,     // how early animation starts
-    });
-  }, []);
+    // Load persisted portfolio data on initial mount
+    const saved = dataService.loadData();
+    dispatch(setFullData(saved));
+  }, [dispatch]);
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Navbar />
+    <Routes>
+      {/* Default portfolio page */}
+      <Route path="/" element={<Portfolio />} />
 
-      <main className="flex-grow-1">
-        <section id="home" data-aos="fade-up">
-          <Home />
-        </section>
+      {/* Admin section */}
+      <Route path="/admin" element={<Dashboard />} />
+      <Route path="/login" element={<Login />} />
 
-        <section id="about" data-aos="fade-up">
-          <About />
-        </section>
-
-        <section id="project" data-aos="fade-up">
-          <Project />
-        </section>
-
-        <section id="contact" data-aos="fade-up">
-          <Contact />
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+      {/* 404 fallback */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
