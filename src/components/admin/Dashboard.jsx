@@ -237,12 +237,39 @@ const Dashboard = () => {
         "Java",
         "Spring Boot",
         "Microservices",
-        "REST APIs",
-        "React",
+        "RESTful APIs",
+        "Hibernate / JPA",
         "PostgreSQL",
+        "Redis",
         "Docker",
         "AWS",
-        "Git"
+        "Git & GitHub"
+      ],
+      skillCategories: [
+        {
+          id: "backend",
+          title: "Backend & Architecture",
+          icon: "bi-server",
+          skills: ["Java", "Spring Boot", "Microservices", "RESTful APIs", "Hibernate / JPA", "Distributed Systems"]
+        },
+        {
+          id: "database",
+          title: "Databases & Caching",
+          icon: "bi-database",
+          skills: ["PostgreSQL", "MySQL", "Redis", "Database Indexing", "Data Modeling"]
+        },
+        {
+          id: "cloud-devops",
+          title: "Cloud & DevOps",
+          icon: "bi-cloud-check",
+          skills: ["Docker", "Kubernetes", "AWS (EC2, S3)", "CI/CD Pipelines", "Maven / Gradle"]
+        },
+        {
+          id: "tools-frontend",
+          title: "Frontend & Engineering Tools",
+          icon: "bi-tools",
+          skills: ["React", "JavaScript", "Git & GitHub", "Postman", "Linux", "JUnit & Mockito"]
+        }
       ]
     };
 
@@ -253,6 +280,7 @@ const Dashboard = () => {
     }));
 
     dispatch(setProfile(minimalProfile));
+    dispatch(setSkillCategories(minimalProfile.skillCategories));
 
     const fullUpdatedData = {
       profile: {
