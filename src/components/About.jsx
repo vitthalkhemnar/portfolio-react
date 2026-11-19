@@ -86,6 +86,20 @@ const About = () => {
                 )}
               </button>
             )}
+
+            <div className="mt-4 pt-1 d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-3">
+              <a
+                href={profile.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
+                download="Vitthal_Khemnar_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-clean-secondary rounded-pill d-inline-flex align-items-center gap-2"
+                title="Download Resume PDF"
+              >
+                <i className="bi bi-download" style={{ color: "var(--primary)" }}></i>
+                Download Resume
+              </a>
+            </div>
           </div>
         </div>
       </div>

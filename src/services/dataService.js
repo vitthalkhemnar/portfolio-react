@@ -17,6 +17,8 @@ export const INITIAL_PORTFOLIO_DATA = {
     summary: "",
     aboutMe: "",
     resumeUrl: "",
+    profileImage: "",
+    aboutImage: "",
     skillCategories: [],
     skills: []
   },

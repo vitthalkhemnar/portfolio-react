@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { authService } from "../../services/authService";
 import { dataService } from "../../services/dataService";
+import { storageService } from "../../services/storageService";
 import {
   setProfile,
   setSkillCategories,
@@ -29,6 +30,15 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [successMsg, setSuccessMsg] = useState("");
 
+  // Media upload state
+  const [uploadMode, setUploadMode] = useState(storageService.getUploadMode());
+  const [uploadingProfileImg, setUploadingProfileImg] = useState(false);
+  const [profileImgProgress, setProfileImgProgress] = useState(0);
+  const [uploadingAboutImg, setUploadingAboutImg] = useState(false);
+  const [aboutImgProgress, setAboutImgProgress] = useState(0);
+  const [uploadingResume, setUploadingResume] = useState(false);
+  const [resumeProgress, setResumeProgress] = useState(0);
+
   // Profile Form state
   const [profileForm, setProfileForm] = useState({
     name: profileState.name || "",
@@ -44,6 +54,8 @@ const Dashboard = () => {
     githubUrl: profileState.githubUrl || "",
     aboutMe: profileState.aboutMe || "",
     resumeUrl: profileState.resumeUrl || "",
+    profileImage: profileState.profileImage || "",
+    aboutImage: profileState.aboutImage || "",
     skillsText: (profileState.skills || []).join(", ")
   });
 
@@ -63,9 +75,80 @@ const Dashboard = () => {
       githubUrl: profileState.githubUrl || "",
       aboutMe: profileState.aboutMe || "",
       resumeUrl: profileState.resumeUrl || "",
+      profileImage: profileState.profileImage || "",
+      aboutImage: profileState.aboutImage || "",
       skillsText: (profileState.skills || []).join(", ")
     });
   }, [profileState]);
+
+  const handleProfileImageUpload = async (file) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file (PNG, JPG, WEBP).");
+      return;
+    }
+    setUploadingProfileImg(true);
+    setProfileImgProgress(0);
+
+    const res = await storageService.uploadFile(file, "profile", (percent) => {
+      setProfileImgProgress(percent);
+    });
+
+    setUploadingProfileImg(false);
+    if (res.success) {
+      setProfileForm((prev) => ({ ...prev, profileImage: res.url }));
+      dispatch(setProfile({ profileImage: res.url }));
+      showNotification("Profile picture uploaded and saved successfully!");
+    } else {
+      alert(res.error || "Failed to upload profile picture.");
+    }
+  };
+
+  const handleAboutImageUpload = async (file) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file (PNG, JPG, WEBP).");
+      return;
+    }
+    setUploadingAboutImg(true);
+    setAboutImgProgress(0);
+
+    const res = await storageService.uploadFile(file, "about", (percent) => {
+      setAboutImgProgress(percent);
+    });
+
+    setUploadingAboutImg(false);
+    if (res.success) {
+      setProfileForm((prev) => ({ ...prev, aboutImage: res.url }));
+      dispatch(setProfile({ aboutImage: res.url }));
+      showNotification("About Me picture uploaded and saved successfully!");
+    } else {
+      alert(res.error || "Failed to upload About Me picture.");
+    }
+  };
+
+  const handleResumeUpload = async (file) => {
+    if (!file) return;
+    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+      alert("Please select a valid PDF document.");
+      return;
+    }
+    setUploadingResume(true);
+    setResumeProgress(0);
+
+    const res = await storageService.uploadFile(file, "resume", (percent) => {
+      setResumeProgress(percent);
+    });
+
+    setUploadingResume(false);
+    if (res.success) {
+      setProfileForm((prev) => ({ ...prev, resumeUrl: res.url }));
+      dispatch(setProfile({ resumeUrl: res.url }));
+      showNotification("Resume PDF uploaded and updated successfully!");
+    } else {
+      alert(res.error || "Failed to upload resume PDF.");
+    }
+  };
 
   // Project Form state (Detailed)
   const [editingProjectId, setEditingProjectId] = useState(null);
@@ -173,6 +256,8 @@ const Dashboard = () => {
         summary: profileState.summary,
         aboutMe: profileState.aboutMe,
         resumeUrl: profileState.resumeUrl,
+        profileImage: profileState.profileImage || "",
+        aboutImage: profileState.aboutImage || "",
         skillCategories: profileState.skillCategories,
         skills: profileState.skills
       },
@@ -210,6 +295,8 @@ const Dashboard = () => {
       githubUrl: profileForm.githubUrl,
       aboutMe: profileForm.aboutMe,
       resumeUrl: profileForm.resumeUrl,
+      profileImage: profileForm.profileImage || "",
+      aboutImage: profileForm.aboutImage || "",
       skills: skillsArray
     };
 
@@ -882,6 +969,258 @@ const Dashboard = () => {
                   </button>
                 </div>
 
+                {/* Visual Media & Picture Upload Section */}
+                <div className="card border mb-4 rounded-3 p-3 p-md-4" style={{ backgroundColor: "#fbfbfc" }}>
+                  <div className="d-flex align-items-center gap-2 mb-3">
+                    <i className="bi bi-images fs-5 text-primary"></i>
+                    <div>
+                      <h6 className="fw-bold mb-0">Visual Media & Photos</h6>
+                      <small className="text-muted">Upload your Hero avatar and About Me photo to Cloud Firestore / Storage</small>
+                    </div>
+                  </div>
+
+                  {/* Upload Engine Selector & CORS Helper */}
+                  <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between p-2 px-3 rounded-3 mb-3 border bg-white gap-2">
+                    <div className="d-flex align-items-center gap-2 small">
+                      <i className="bi bi-gear-fill text-primary"></i>
+                      <span className="fw-semibold text-dark">Upload Engine:</span>
+                      <span className="badge bg-primary text-white">
+                        {uploadMode === "firestore" ? "Firestore Direct (Zero CORS)" : "Firebase Cloud Storage"}
+                      </span>
+                    </div>
+                    <div className="btn-group btn-group-sm" role="group">
+                      <button
+                        type="button"
+                        className={`btn ${uploadMode === "firestore" ? "btn-primary" : "btn-outline-secondary"}`}
+                        onClick={() => {
+                          setUploadMode("firestore");
+                          storageService.setUploadMode("firestore");
+                          showNotification("Switched to Firestore Direct mode (Zero CORS).");
+                        }}
+                      >
+                        <i className="bi bi-lightning-fill me-1"></i> Firestore Direct
+                      </button>
+                      <button
+                        type="button"
+                        className={`btn ${uploadMode === "storage" ? "btn-primary" : "btn-outline-secondary"}`}
+                        onClick={() => {
+                          setUploadMode("storage");
+                          storageService.setUploadMode("storage");
+                          showNotification("Switched to Firebase Cloud Storage Bucket.");
+                        }}
+                      >
+                        <i className="bi bi-cloud-check-fill me-1"></i> Cloud Storage Bucket
+                      </button>
+                    </div>
+                  </div>
+
+                  {uploadMode === "storage" && (
+                    <div className="alert alert-warning small p-3 rounded-3 mb-3">
+                      <strong><i className="bi bi-exclamation-triangle-fill me-1"></i> If you see a CORS error in the browser:</strong>
+                      <p className="mb-2 mt-1">
+                        Google Cloud Storage buckets block cross-origin browser requests by default until CORS is set on the bucket.
+                      </p>
+                      <div className="mb-2">
+                        To enable CORS in 1 minute, open <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="fw-bold">Google Cloud Console</a> &gt; activate <strong>Cloud Shell</strong> (<code>&gt;_</code> icon at top right) &gt; run:
+                        <pre className="bg-dark text-white p-2 rounded mt-1 mb-0 user-select-all font-monospace" style={{ fontSize: "0.78rem" }}>
+                          {"gsutil cors set cors.json gs://vitthal-dev.firebasestorage.app"}
+                        </pre>
+                      </div>
+                      <p className="mb-0 text-muted">
+                        Or simply switch to <strong>Firestore Direct</strong> above to upload immediately without configuring CORS!
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="row g-4">
+                    {/* Profile Picture (Hero) */}
+                    <div className="col-12 col-md-6">
+                      <div className="p-3 border rounded-3 bg-white h-100 d-flex flex-column">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <label className="fw-bold small text-dark mb-0">Profile Picture (Hero Section)</label>
+                          {profileForm.profileImage ? (
+                            <span className="badge bg-success bg-opacity-10 text-success small">Custom Image</span>
+                          ) : (
+                            <span className="badge bg-secondary bg-opacity-10 text-secondary small">Default Image</span>
+                          )}
+                        </div>
+
+                        <div className="d-flex align-items-center gap-3 my-2">
+                          <div
+                            style={{
+                              width: "72px",
+                              height: "72px",
+                              minWidth: "72px",
+                              borderRadius: "50%",
+                              overflow: "hidden",
+                              border: "2px solid #ff6b00",
+                              boxShadow: "0 4px 12px rgba(255,107,0,0.15)",
+                              backgroundColor: "#18181b"
+                            }}
+                          >
+                            <img
+                              src={profileForm.profileImage || "/images/vitthal-image.jpeg"}
+                              alt="Profile Preview"
+                              className="w-100 h-100 object-fit-cover"
+                            />
+                          </div>
+
+                          <div className="flex-grow-1">
+                            <label className="btn btn-sm btn-primary rounded-pill px-3 py-1 mb-1 d-inline-flex align-items-center gap-1 cursor-pointer">
+                              <i className="bi bi-cloud-arrow-up"></i>
+                              <span>{uploadingProfileImg ? "Uploading..." : "Upload New Photo"}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="d-none"
+                                disabled={uploadingProfileImg}
+                                onChange={(e) => {
+                                  if (e.target.files?.[0]) {
+                                    handleProfileImageUpload(e.target.files[0]);
+                                  }
+                                }}
+                              />
+                            </label>
+                            {profileForm.profileImage && (
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-link text-danger p-0 d-block small mt-1"
+                                onClick={() => {
+                                  setProfileForm((prev) => ({ ...prev, profileImage: "" }));
+                                  dispatch(setProfile({ profileImage: "" }));
+                                  showNotification("Profile picture reset to default.");
+                                }}
+                              >
+                                Reset to Default
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {uploadingProfileImg && (
+                          <div className="mt-2">
+                            <div className="progress" style={{ height: "6px" }}>
+                              <div
+                                className="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                style={{ width: `${profileImgProgress}%` }}
+                              ></div>
+                            </div>
+                            <small className="text-muted mt-1 d-block">Uploading... {profileImgProgress}%</small>
+                          </div>
+                        )}
+
+                        <div className="mt-auto pt-2 border-top">
+                          <label className="form-label text-muted" style={{ fontSize: "0.76rem" }}>
+                            Or paste external image URL:
+                          </label>
+                          <input
+                            type="url"
+                            className="form-control form-control-sm"
+                            placeholder="https://..."
+                            value={profileForm.profileImage}
+                            onChange={(e) =>
+                              setProfileForm({ ...profileForm, profileImage: e.target.value })
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* About Me Picture */}
+                    <div className="col-12 col-md-6">
+                      <div className="p-3 border rounded-3 bg-white h-100 d-flex flex-column">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <label className="fw-bold small text-dark mb-0">About Me Picture (About Section)</label>
+                          {profileForm.aboutImage ? (
+                            <span className="badge bg-success bg-opacity-10 text-success small">Custom Image</span>
+                          ) : (
+                            <span className="badge bg-secondary bg-opacity-10 text-secondary small">Default Image</span>
+                          )}
+                        </div>
+
+                        <div className="d-flex align-items-center gap-3 my-2">
+                          <div
+                            style={{
+                              width: "72px",
+                              height: "72px",
+                              minWidth: "72px",
+                              borderRadius: "14px",
+                              overflow: "hidden",
+                              border: "2px solid #ff6b00",
+                              boxShadow: "0 4px 12px rgba(255,107,0,0.15)",
+                              backgroundColor: "#18181b"
+                            }}
+                          >
+                            <img
+                              src={profileForm.aboutImage || profileForm.profileImage || "/images/aboutme.jpeg"}
+                              alt="About Me Preview"
+                              className="w-100 h-100 object-fit-cover"
+                            />
+                          </div>
+
+                          <div className="flex-grow-1">
+                            <label className="btn btn-sm btn-primary rounded-pill px-3 py-1 mb-1 d-inline-flex align-items-center gap-1 cursor-pointer">
+                              <i className="bi bi-cloud-arrow-up"></i>
+                              <span>{uploadingAboutImg ? "Uploading..." : "Upload New Photo"}</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="d-none"
+                                disabled={uploadingAboutImg}
+                                onChange={(e) => {
+                                  if (e.target.files?.[0]) {
+                                    handleAboutImageUpload(e.target.files[0]);
+                                  }
+                                }}
+                              />
+                            </label>
+                            {profileForm.aboutImage && (
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-link text-danger p-0 d-block small mt-1"
+                                onClick={() => {
+                                  setProfileForm((prev) => ({ ...prev, aboutImage: "" }));
+                                  dispatch(setProfile({ aboutImage: "" }));
+                                  showNotification("About Me picture reset to default.");
+                                }}
+                              >
+                                Reset to Default
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {uploadingAboutImg && (
+                          <div className="mt-2">
+                            <div className="progress" style={{ height: "6px" }}>
+                              <div
+                                className="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                style={{ width: `${aboutImgProgress}%` }}
+                              ></div>
+                            </div>
+                            <small className="text-muted mt-1 d-block">Uploading... {aboutImgProgress}%</small>
+                          </div>
+                        )}
+
+                        <div className="mt-auto pt-2 border-top">
+                          <label className="form-label text-muted" style={{ fontSize: "0.76rem" }}>
+                            Or paste external image URL:
+                          </label>
+                          <input
+                            type="url"
+                            className="form-control form-control-sm"
+                            placeholder="https://..."
+                            value={profileForm.aboutImage}
+                            onChange={(e) =>
+                              setProfileForm({ ...profileForm, aboutImage: e.target.value })
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <form onSubmit={handleProfileSubmit}>
                   <div className="row g-3">
                     <div className="col-12 col-md-4">
@@ -1523,42 +1862,189 @@ const Dashboard = () => {
             {/* RESUME TAB */}
             {activeTab === "resume" && (
               <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
-                <h5 className="fw-bold mb-2">Resume PDF Management</h5>
-                <p className="text-muted small mb-4">
-                  Update the resume link downloaded by visitors when clicking &quot;Download Resume&quot;.
-                </p>
-
-                <form onSubmit={handleProfileSubmit}>
-                  <div className="mb-4">
-                    <label className="form-label small fw-semibold">
-                      Resume PDF Link / URL
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={profileForm.resumeUrl}
-                      onChange={(e) =>
-                        setProfileForm({ ...profileForm, resumeUrl: e.target.value })
-                      }
-                      placeholder="/Vitthal Khemnar - Resume.pdf or https://drive.google.com/..."
-                    />
-                    <div className="form-text small mt-2">
-                      Points to <code>public/Vitthal Khemnar - Resume.pdf</code> by default. You can also paste any public cloud storage direct link (Google Drive, Dropbox, AWS S3, Firebase).
-                    </div>
+                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
+                  <div>
+                    <h5 className="fw-bold mb-0">Resume PDF Management</h5>
+                    <p className="text-muted small mb-0">
+                      Upload your official resume in PDF format to Cloud Storage, or link an external PDF.
+                    </p>
                   </div>
+                  {profileForm.resumeUrl ? (
+                    <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill small">
+                      <i className="bi bi-file-earmark-check-fill me-1"></i> Custom PDF Active
+                    </span>
+                  ) : (
+                    <span className="badge bg-secondary bg-opacity-10 text-secondary border px-3 py-2 rounded-pill small">
+                      <i className="bi bi-file-earmark-pdf me-1"></i> Default Resume Active
+                    </span>
+                  )}
+                </div>
 
-                  <div className="d-flex flex-wrap align-items-center gap-2">
-                    <button type="submit" className="btn btn-primary rounded-pill px-4">
-                      Save Resume Link
-                    </button>
-                    <a
-                      href={profileForm.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-outline-secondary rounded-pill px-4"
+                {/* Upload Engine Selector & CORS Helper */}
+                <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between p-2 px-3 rounded-3 mb-3 border bg-light gap-2">
+                  <div className="d-flex align-items-center gap-2 small">
+                    <i className="bi bi-gear-fill text-primary"></i>
+                    <span className="fw-semibold text-dark">Upload Engine:</span>
+                    <span className="badge bg-primary text-white">
+                      {uploadMode === "firestore" ? "Firestore Direct (Zero CORS)" : "Firebase Cloud Storage"}
+                    </span>
+                  </div>
+                  <div className="btn-group btn-group-sm" role="group">
+                    <button
+                      type="button"
+                      className={`btn ${uploadMode === "firestore" ? "btn-primary" : "btn-outline-secondary"}`}
+                      onClick={() => {
+                        setUploadMode("firestore");
+                        storageService.setUploadMode("firestore");
+                        showNotification("Switched to Firestore Direct mode (Zero CORS).");
+                      }}
                     >
-                      <i className="bi bi-box-arrow-up-right me-1"></i> Test Resume Link
-                    </a>
+                      <i className="bi bi-lightning-fill me-1"></i> Firestore Direct
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${uploadMode === "storage" ? "btn-primary" : "btn-outline-secondary"}`}
+                      onClick={() => {
+                        setUploadMode("storage");
+                        storageService.setUploadMode("storage");
+                        showNotification("Switched to Firebase Cloud Storage Bucket.");
+                      }}
+                    >
+                      <i className="bi bi-cloud-check-fill me-1"></i> Cloud Storage Bucket
+                    </button>
+                  </div>
+                </div>
+
+                {uploadMode === "storage" && (
+                  <div className="alert alert-warning small p-3 rounded-3 mb-3">
+                    <strong><i className="bi bi-exclamation-triangle-fill me-1"></i> If you see a CORS error in the browser:</strong>
+                    <p className="mb-2 mt-1">
+                      Google Cloud Storage buckets block cross-origin browser requests by default until CORS is configured on the bucket.
+                    </p>
+                    <div className="mb-2">
+                      To enable CORS in 1 minute, open <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="fw-bold">Google Cloud Console</a> &gt; activate <strong>Cloud Shell</strong> (<code>&gt;_</code> icon at top right) &gt; run:
+                      <pre className="bg-dark text-white p-2 rounded mt-1 mb-0 user-select-all font-monospace" style={{ fontSize: "0.78rem" }}>
+                        {"gsutil cors set cors.json gs://vitthal-dev.firebasestorage.app"}
+                      </pre>
+                    </div>
+                    <p className="mb-0 text-muted">
+                      Or simply switch to <strong>Firestore Direct</strong> above to upload immediately without configuring CORS!
+                    </p>
+                  </div>
+                )}
+
+                {/* PDF File Upload Dropzone Card */}
+                <div
+                  className="p-4 rounded-3 border mb-4 text-center"
+                  style={{
+                    backgroundColor: "#fbfbfc",
+                    borderStyle: "dashed !important",
+                    borderWidth: "2px !important",
+                    borderColor: "var(--border-subtle)"
+                  }}
+                >
+                  <div className="mb-3">
+                    <i
+                      className="bi bi-file-earmark-pdf-fill display-4"
+                      style={{ color: "#ff6b00" }}
+                    ></i>
+                  </div>
+                  <h6 className="fw-bold mb-1 text-dark">Upload Resume in PDF Format</h6>
+                  <p className="text-muted small mb-3" style={{ maxWidth: "500px", margin: "0 auto" }}>
+                    Select a PDF file from your computer. It will be uploaded to Firebase Storage and immediately synced to Firestore so visitors can click &quot;Download Resume&quot;.
+                  </p>
+
+                  <label className="btn btn-primary rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2 shadow-sm cursor-pointer">
+                    <i className="bi bi-cloud-arrow-up-fill"></i>
+                    <span>{uploadingResume ? "Uploading PDF..." : "Choose PDF File"}</span>
+                    <input
+                      type="file"
+                      accept="application/pdf,.pdf"
+                      className="d-none"
+                      disabled={uploadingResume}
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          handleResumeUpload(e.target.files[0]);
+                        }
+                      }}
+                    />
+                  </label>
+
+                  {uploadingResume && (
+                    <div className="mt-3 mx-auto" style={{ maxWidth: "400px" }}>
+                      <div className="progress" style={{ height: "8px" }}>
+                        <div
+                          className="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                          style={{ width: `${resumeProgress}%` }}
+                        ></div>
+                      </div>
+                      <small className="text-muted mt-2 d-block">
+                        Uploading PDF... {resumeProgress}%
+                      </small>
+                    </div>
+                  )}
+                </div>
+
+                {/* Direct Actions & Download Test */}
+                <div className="d-flex flex-wrap align-items-center gap-2 mb-4">
+                  <a
+                    href={profileForm.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
+                    download="Vitthal_Khemnar_Resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-success rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2"
+                  >
+                    <i className="bi bi-download"></i> Test Download Resume
+                  </a>
+                  <a
+                    href={profileForm.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-secondary rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2"
+                  >
+                    <i className="bi bi-box-arrow-up-right"></i> Open in New Tab
+                  </a>
+                  {profileForm.resumeUrl && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger rounded-pill px-3 py-2"
+                      onClick={() => {
+                        setProfileForm((prev) => ({ ...prev, resumeUrl: "" }));
+                        dispatch(setProfile({ resumeUrl: "" }));
+                        showNotification("Reset to default bundled resume PDF.");
+                      }}
+                    >
+                      Reset to Default Resume
+                    </button>
+                  )}
+                </div>
+
+                {/* Direct URL Input Fallback */}
+                <form onSubmit={handleProfileSubmit}>
+                  <div className="p-3 border rounded-3 bg-light">
+                    <label className="form-label small fw-semibold text-dark">
+                      Direct PDF URL / External Storage Link (Optional)
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-white text-muted">
+                        <i className="bi bi-link-45deg"></i>
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={profileForm.resumeUrl}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, resumeUrl: e.target.value })
+                        }
+                        placeholder="/Vitthal Khemnar - Resume.pdf or https://drive.google.com/..."
+                      />
+                      <button type="submit" className="btn btn-primary px-3">
+                        Save Link
+                      </button>
+                    </div>
+                    <div className="form-text small mt-2">
+                      Points to <code>public/Vitthal Khemnar - Resume.pdf</code> by default. You can also paste direct public links from Google Drive, Dropbox, AWS S3, or any CDN.
+                    </div>
                   </div>
                 </form>
               </div>

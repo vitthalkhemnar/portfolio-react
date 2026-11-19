@@ -37,18 +37,18 @@ const Navbar = () => {
               ))}
             </ul>
 
-            {profile.resumeUrl && (
-              <div className="d-flex align-items-center ms-2">
-                <a
-                  href={profile.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-nav-resume"
-                >
-                  Resume
-                </a>
-              </div>
-            )}
+            <div className="d-flex align-items-center ms-2">
+              <a
+                href={profile.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
+                download="Vitthal_Khemnar_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-nav-resume d-flex align-items-center gap-1"
+                title="Download Resume PDF"
+              >
+                <i className="bi bi-download"></i> Resume
+              </a>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -87,19 +87,19 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {profile.resumeUrl && (
-          <div className="pt-3 border-top mt-auto" style={{ borderColor: "var(--border-subtle)" }}>
-            <a
-              href={profile.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-clean-secondary rounded-pill py-2 text-center w-100 justify-content-center"
-              onClick={toggleSidebar}
-            >
-              View Resume
-            </a>
-          </div>
-        )}
+        <div className="pt-3 border-top mt-auto" style={{ borderColor: "var(--border-subtle)" }}>
+          <a
+            href={profile.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
+            download="Vitthal_Khemnar_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-clean-secondary rounded-pill py-2 text-center w-100 justify-content-center d-flex align-items-center gap-2"
+            onClick={toggleSidebar}
+            title="Download Resume PDF"
+          >
+            <i className="bi bi-download"></i> Download Resume
+          </a>
+        </div>
       </div>
 
       {sidebarOpen && <div className="mobile-overlay" onClick={toggleSidebar}></div>}

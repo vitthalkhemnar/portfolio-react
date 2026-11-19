@@ -118,16 +118,16 @@ const Home = () => {
                 Explore Work <i className="bi bi-arrow-down-short"></i>
               </a>
 
-              {resumeUrl && (
-                <a
-                  href={resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-clean-secondary"
-                >
-                  <i className="bi bi-file-earmark-pdf"></i> Resume
-                </a>
-              )}
+              <a
+                href={resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
+                download="Vitthal_Khemnar_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-clean-secondary"
+                title="Download Resume PDF"
+              >
+                <i className="bi bi-download me-2"></i> Download Resume
+              </a>
 
               {/* Icon Buttons for Social / Contact Links */}
               {(githubUrl || linkedInUrl || email) && (
