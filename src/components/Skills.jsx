@@ -84,20 +84,20 @@ const Skills = () => {
                     </div>
                     <div>
                       <h5 className="fw-bold text-white mb-0 text-break">{domain.title}</h5>
-                      <small className="text-muted">{domain.skills.length} core technologies</small>
                     </div>
                   </div>
                   <span
                     className="badge rounded-pill"
                     style={{
-                      background: "rgba(255, 255, 255, 0.06)",
+                      background: "rgba(255, 255, 255, 0.05)",
                       border: "1px solid rgba(255, 255, 255, 0.1)",
                       color: "#e4e4e7",
-                      fontSize: "0.74rem",
-                      padding: "5px 10px"
+                      fontSize: "0.76rem",
+                      padding: "5px 12px",
+                      fontWeight: "500"
                     }}
                   >
-                    Domain {dIdx + 1}
+                    {domain.skills.length} Skills
                   </span>
                 </div>
 

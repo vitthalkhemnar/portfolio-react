@@ -102,19 +102,15 @@ const Home = () => {
             )}
 
             {/* Authentic Human Introduction */}
-            <div className="hero-editorial-bio mb-4">
-              {paragraphs.length > 0 ? (
-                paragraphs.map((para, idx) => (
+            {paragraphs.length > 0 && (
+              <div className="hero-editorial-bio mb-4">
+                {paragraphs.map((para, idx) => (
                   <p key={idx} className="hero-editorial-p">
                     {para}
                   </p>
-                ))
-              ) : (
-                <p className="hero-editorial-p text-muted">
-                  Software engineering background and project details can be updated through the admin dashboard.
-                </p>
-              )}
-            </div>
+                ))}
+              </div>
+            )}
 
             {/* Action Buttons & Icon Links */}
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">

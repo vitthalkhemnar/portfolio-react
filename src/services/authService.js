@@ -1,12 +1,17 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  getRedirectResult,
+  signOut
+} from "firebase/auth";
 import { auth, isFirebaseConfigured } from "./firebase";
 
 const AUTH_KEY = "portfolio_admin_auth";
 
 export const authService = {
   /**
-   * Log in securely using Firebase Authentication.
-   * Zero admin credentials in .env or source code.
+   * Log in securely using Firebase Email & Password Authentication.
    */
   login: async (email, password) => {
     const cleanEmail = email.trim();
@@ -59,6 +64,103 @@ export const authService = {
         success: false,
         error: fbError.message || "Failed to authenticate with Firebase."
       };
+    }
+  },
+
+  /**
+   * Log in securely using Firebase Google Authentication.
+   */
+  loginWithGoogle: async () => {
+    if (!isFirebaseConfigured || !auth) {
+      return {
+        success: false,
+        error:
+          "Firebase Authentication is not configured yet. Check your Firebase project keys in .env.local."
+      };
+    }
+
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: "select_account"
+      });
+
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const token = await user.getIdToken();
+
+      const session = {
+        email: user.email,
+        displayName: user.displayName || user.email,
+        photoURL: user.photoURL,
+        uid: user.uid,
+        provider: "google",
+        token,
+        loggedInAt: new Date().toISOString()
+      };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+      return { success: true, provider: "google", user };
+    } catch (fbError) {
+      const errorCode = fbError.code || "";
+      if (
+        errorCode === "auth/popup-closed-by-user" ||
+        errorCode === "auth/cancelled-popup-request"
+      ) {
+        return { success: false, error: "Sign in popup was closed. Please try again." };
+      }
+      if (errorCode === "auth/popup-blocked") {
+        return {
+          success: false,
+          error: "Sign-in popup was blocked by your browser. Please allow popups for localhost / this site."
+        };
+      }
+      if (errorCode === "auth/unauthorized-domain") {
+        return {
+          success: false,
+          error:
+            "This domain is not authorized in Firebase. Add 'localhost' in Firebase Console -> Authentication -> Settings -> Authorized domains."
+        };
+      }
+      if (errorCode === "auth/operation-not-allowed") {
+        return {
+          success: false,
+          error:
+            "Google sign-in is not enabled in Firebase. Enable Google provider in Firebase Console -> Authentication -> Sign-in method."
+        };
+      }
+      return {
+        success: false,
+        error: fbError.message || "Failed to authenticate with Google."
+      };
+    }
+  },
+
+  /**
+   * Checks if user just returned from a Google redirect sign-in.
+   */
+  checkRedirectResult: async () => {
+    if (!isFirebaseConfigured || !auth) return null;
+    try {
+      const result = await getRedirectResult(auth);
+      if (result && result.user) {
+        const user = result.user;
+        const token = await user.getIdToken();
+        const session = {
+          email: user.email,
+          displayName: user.displayName || user.email,
+          photoURL: user.photoURL,
+          uid: user.uid,
+          provider: "google",
+          token,
+          loggedInAt: new Date().toISOString()
+        };
+        localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+        return { success: true, provider: "google", user };
+      }
+      return null;
+    } catch (err) {
+      console.warn("Firebase redirect check warning:", err);
+      return null;
     }
   },
 

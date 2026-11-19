@@ -10,14 +10,17 @@ import { dataService } from "./services/dataService";
 
 function NotFound() {
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center min-vh-100 text-center px-3">
-      <h1 className="display-1 fw-bold text-primary">404</h1>
-      <h3 className="mb-3 text-dark">Page Not Found</h3>
+    <div
+      className="d-flex flex-column justify-content-center align-items-center min-vh-100 text-center px-3"
+      style={{ backgroundColor: "var(--bg-main)", color: "#fff" }}
+    >
+      <h1 className="display-1 fw-bold" style={{ color: "var(--primary)" }}>404</h1>
+      <h3 className="mb-3 text-white">Page Not Found</h3>
       <p className="text-muted mb-4">
         The page you are looking for does not exist or has been moved.
       </p>
       <Link to="/" className="btn-clean-primary">
-        <i className="bi bi-house"></i> Back to Portfolio
+        <i className="bi bi-house me-2"></i> Back to Portfolio
       </Link>
     </div>
   );

@@ -58,21 +58,15 @@ const About = () => {
           </div>
 
           <div className="col-12 col-md-8 text-center text-md-start">
-            {displayedParagraphs.length > 0 ? (
-              displayedParagraphs.map((para, pIdx) => (
-                <p
-                  key={pIdx}
-                  className={`fs-6 ${pIdx === displayedParagraphs.length - 1 ? "mb-2" : "mb-3"}`}
-                  style={{ color: "var(--text-body)", lineHeight: "1.8", fontSize: "1.02rem" }}
-                >
-                  {para}
-                </p>
-              ))
-            ) : (
-              <p className="fs-6 text-muted mb-0" style={{ lineHeight: "1.8" }}>
-                Bio details can be configured in the admin dashboard.
+            {displayedParagraphs.map((para, pIdx) => (
+              <p
+                key={pIdx}
+                className={`fs-6 ${pIdx === displayedParagraphs.length - 1 ? "mb-2" : "mb-3"}`}
+                style={{ color: "var(--text-body)", lineHeight: "1.8", fontSize: "1.02rem" }}
+              >
+                {para}
               </p>
-            )}
+            ))}
 
             {isLongBio && (
               <button

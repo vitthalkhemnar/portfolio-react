@@ -157,7 +157,7 @@ const Experience = () => {
 
         {companies.length === 0 ? (
           <div className="clean-card p-5 text-center text-muted">
-            <p className="mb-0">No experience records found. Add your work experience through the admin panel.</p>
+            <p className="mb-0">Experience details will be updated soon.</p>
           </div>
         ) : (
           <div className="d-flex flex-column gap-4">

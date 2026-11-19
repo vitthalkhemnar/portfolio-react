@@ -159,7 +159,7 @@ const Project = () => {
 
         {projects.length === 0 ? (
           <div className="clean-card p-5 text-center text-muted">
-            <p className="mb-0">No projects added yet. Add projects through the admin dashboard.</p>
+            <p className="mb-0">Featured projects will be showcased here soon.</p>
           </div>
         ) : (
           /* Centered row so single project or odd project count centers properly */

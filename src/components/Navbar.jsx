@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const profile = useSelector((state) => state.profile);
@@ -38,8 +37,8 @@ const Navbar = () => {
               ))}
             </ul>
 
-            <div className="d-flex align-items-center gap-2 ms-2">
-              {profile.resumeUrl && (
+            {profile.resumeUrl && (
+              <div className="d-flex align-items-center ms-2">
                 <a
                   href={profile.resumeUrl}
                   target="_blank"
@@ -48,15 +47,8 @@ const Navbar = () => {
                 >
                   Resume
                 </a>
-              )}
-              <Link
-                to="/admin"
-                className="btn-nav-admin"
-                title="Admin Dashboard"
-              >
-                <i className="bi bi-shield-lock"></i>
-              </Link>
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,26 +87,19 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="pt-3 border-top mt-auto d-flex flex-column gap-2" style={{ borderColor: "var(--border-subtle)" }}>
-          {profile.resumeUrl && (
+        {profile.resumeUrl && (
+          <div className="pt-3 border-top mt-auto" style={{ borderColor: "var(--border-subtle)" }}>
             <a
               href={profile.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-clean-secondary rounded-pill py-2 text-center"
+              className="btn-clean-secondary rounded-pill py-2 text-center w-100 justify-content-center"
               onClick={toggleSidebar}
             >
               View Resume
             </a>
-          )}
-          <Link
-            to="/admin"
-            className="btn-clean-primary rounded-pill py-2 text-center fw-semibold justify-content-center"
-            onClick={toggleSidebar}
-          >
-            Admin Panel
-          </Link>
-        </div>
+          </div>
+        )}
       </div>
 
       {sidebarOpen && <div className="mobile-overlay" onClick={toggleSidebar}></div>}

@@ -73,7 +73,7 @@ const Contact = () => {
 
           {!email && !cleanWhatsApp && !location && (
             <div className="col-12 text-center text-muted py-4">
-              <p className="mb-0">Contact details can be added through the admin dashboard.</p>
+              <p className="mb-0">Connect via GitHub or LinkedIn below.</p>
             </div>
           )}
         </div>
