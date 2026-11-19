@@ -1,9 +1,27 @@
 .hero-section {
   min-height: 85vh;
-  padding-top: 80px;
+  padding-top: 100px;
+  padding-bottom: 50px;
   background: var(--bg-page);
 }
 
+/* Typography Hierarchy */
+.hero-author-name {
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 750;
+  color: var(--text-heading);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.hero-author-role {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: -0.01em;
+}
+
+/* Status Pill */
 .hero-status-pill {
   background: #ffffff;
   border: 1px solid var(--border-subtle);
@@ -18,43 +36,23 @@
   box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
-.hero-heading {
-  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
-  font-weight: 750;
-  line-height: 1.18;
-  letter-spacing: -0.03em;
-  color: var(--text-heading);
-}
-
-.hero-description {
-  font-size: clamp(1.05rem, 1.8vw, 1.15rem);
-  line-height: 1.7;
+/* Editorial Body Text */
+.hero-editorial-bio {
   max-width: 580px;
+}
+
+.hero-editorial-p {
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: var(--text-body);
+  margin-bottom: 1rem;
 }
 
-.hero-social-link {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  background: #ffffff;
-  box-shadow: var(--shadow-sm);
+.hero-editorial-p:last-child {
+  margin-bottom: 0;
 }
 
-.hero-social-link:hover {
-  color: var(--text-heading);
-  border-color: var(--border-hover);
-  background: #f8fafc;
-  transform: translateY(-2px);
-}
-
+/* Big Image Wrapper on Right */
 .hero-photo-wrapper {
   width: 280px;
   height: 280px;
@@ -63,6 +61,11 @@
   background: #ffffff;
   border: 1px solid var(--border-subtle);
   box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.hero-photo-wrapper:hover {
+  transform: scale(1.02);
 }
 
 .hero-photo-img {
@@ -72,9 +75,59 @@
   object-fit: cover;
 }
 
+/* Round Icon Buttons for Social / Links */
+.hero-social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  font-size: 1.1rem;
+}
+
+.hero-social-link:hover {
+  color: var(--text-heading);
+  border-color: var(--border-hover);
+  background: #f8fafc;
+  transform: translateY(-2px);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 991px) {
+  .hero-section {
+    min-height: auto;
+    padding-top: 95px;
+    padding-bottom: 40px;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-photo-wrapper {
     width: 220px;
     height: 220px;
+  }
+  .hero-editorial-p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-author-name {
+    font-size: 1.85rem;
+  }
+  .hero-author-role {
+    font-size: 1.05rem;
+  }
+  .hero-photo-wrapper {
+    width: 180px;
+    height: 180px;
   }
 }

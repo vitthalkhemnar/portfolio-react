@@ -23,7 +23,7 @@ const Navbar = () => {
           {/* Brand */}
           <a className="brand-link d-flex align-items-center gap-2" href="#home">
             <span className="brand-dot"></span>
-            <span className="brand-title">{profile.name || "Vitthal Khemnar"}</span>
+            <span className="brand-title">{profile.name || "Portfolio"}</span>
           </a>
 
           {/* Desktop Nav */}
@@ -39,14 +39,16 @@ const Navbar = () => {
             </ul>
 
             <div className="d-flex align-items-center gap-2 ms-2">
-              <a
-                href={profile.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-nav-resume"
-              >
-                Resume
-              </a>
+              {profile.resumeUrl && (
+                <a
+                  href={profile.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-nav-resume"
+                >
+                  Resume
+                </a>
+              )}
               <Link
                 to="/admin"
                 className="btn-nav-admin"
@@ -71,7 +73,7 @@ const Navbar = () => {
       {/* Mobile Drawer */}
       <div className={`mobile-drawer ${sidebarOpen ? "open" : ""}`}>
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <span className="fw-semibold">{profile.name || "Vitthal Khemnar"}</span>
+          <span className="fw-semibold">{profile.name || "Portfolio"}</span>
           <button
             className="btn-close"
             onClick={toggleSidebar}
@@ -94,15 +96,17 @@ const Navbar = () => {
         </ul>
 
         <div className="pt-3 border-top mt-auto d-flex flex-column gap-2" style={{ borderColor: "var(--border-subtle)" }}>
-          <a
-            href={profile.resumeUrl || "/Vitthal Khemnar - Resume.pdf"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-outline-dark rounded-pill py-2 text-center"
-            onClick={toggleSidebar}
-          >
-            View Resume
-          </a>
+          {profile.resumeUrl && (
+            <a
+              href={profile.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-dark rounded-pill py-2 text-center"
+              onClick={toggleSidebar}
+            >
+              View Resume
+            </a>
+          )}
           <Link
             to="/admin"
             className="btn btn-dark rounded-pill py-2 text-center fw-semibold"

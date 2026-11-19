@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { authService } from "../../services/authService";
-import { DEFAULT_PORTFOLIO_DATA } from "../../services/dataService";
+import { dataService } from "../../services/dataService";
 import {
   setProfile,
   setSkillCategories,
@@ -33,14 +33,17 @@ const Dashboard = () => {
   const [profileForm, setProfileForm] = useState({
     name: profileState.name || "",
     role: profileState.role || "",
-    experience: profileState.experience || "1.5+ Years",
+    statusText: profileState.statusText || "",
+    tagline: profileState.tagline || "",
+    experience: profileState.experience || "",
+    summary: profileState.summary || "",
     location: profileState.location || "",
     email: profileState.email || "",
     whatsappNo: profileState.whatsappNo || "",
     linkedInUrl: profileState.linkedInUrl || "",
     githubUrl: profileState.githubUrl || "",
     aboutMe: profileState.aboutMe || "",
-    resumeUrl: profileState.resumeUrl || "/Vitthal Khemnar - Resume.pdf",
+    resumeUrl: profileState.resumeUrl || "",
     skillsText: (profileState.skills || []).join(", ")
   });
 
@@ -49,14 +52,17 @@ const Dashboard = () => {
     setProfileForm({
       name: profileState.name || "",
       role: profileState.role || "",
-      experience: profileState.experience || "1.5+ Years",
+      statusText: profileState.statusText || "",
+      tagline: profileState.tagline || "",
+      experience: profileState.experience || "",
+      summary: profileState.summary || "",
       location: profileState.location || "",
       email: profileState.email || "",
       whatsappNo: profileState.whatsappNo || "",
       linkedInUrl: profileState.linkedInUrl || "",
       githubUrl: profileState.githubUrl || "",
       aboutMe: profileState.aboutMe || "",
-      resumeUrl: profileState.resumeUrl || "/Vitthal Khemnar - Resume.pdf",
+      resumeUrl: profileState.resumeUrl || "",
       skillsText: (profileState.skills || []).join(", ")
     });
   }, [profileState]);
@@ -106,26 +112,15 @@ const Dashboard = () => {
   }, [projectModalOpen, companyModalOpen]);
 
   // Categorized Skills states with full fallback
-  const masterSkillCategories = DEFAULT_PORTFOLIO_DATA.profile.skillCategories;
-  const hasValidAdminCategories =
-    Array.isArray(profileState.skillCategories) &&
-    profileState.skillCategories.length > 0 &&
-    profileState.skillCategories.every(
-      (c) => typeof c === "object" && c !== null && (c.title || c.name)
-    );
-
   const rawSkillCategories = (
-    hasValidAdminCategories ? profileState.skillCategories : masterSkillCategories
+    Array.isArray(profileState.skillCategories) ? profileState.skillCategories : []
   ).map((cat, idx) => {
-    const defaultCat = masterSkillCategories[idx] || masterSkillCategories[idx % masterSkillCategories.length];
     const catObj = typeof cat === "object" && cat !== null ? cat : {};
     return {
-      ...defaultCat,
-      ...catObj,
-      id: catObj.id || defaultCat.id || `cat-${idx}`,
-      title: catObj.title || catObj.name || defaultCat.title,
-      icon: catObj.icon || defaultCat.icon,
-      skills: Array.isArray(catObj.skills) && catObj.skills.length > 0 ? catObj.skills : defaultCat.skills
+      id: catObj.id || `cat-${idx}`,
+      title: catObj.title || catObj.name || `Category ${idx + 1}`,
+      icon: catObj.icon || "bi-stars",
+      skills: Array.isArray(catObj.skills) ? catObj.skills : []
     };
   });
   const firstCatId = rawSkillCategories[0]?.id;
@@ -148,9 +143,49 @@ const Dashboard = () => {
     setTimeout(() => setSuccessMsg(""), 4000);
   };
 
-  const handleLogout = () => {
-    authService.logout();
+  const [syncingCloud, setSyncingCloud] = useState(false);
+
+  const handleLogout = async () => {
+    await authService.logout();
     navigate("/login");
+  };
+
+  const handleManualCloudSync = async () => {
+    if (!dataService.isCloudSyncActive()) {
+      alert(
+        "Firebase is not configured yet. Add your Firebase credentials in .env or .env.local to enable Cloud Firestore sync."
+      );
+      return;
+    }
+    setSyncingCloud(true);
+    const currentData = {
+      profile: {
+        name: profileState.name,
+        role: profileState.role,
+        statusText: profileState.statusText,
+        tagline: profileState.tagline,
+        experience: profileState.experience,
+        location: profileState.location,
+        linkedInUrl: profileState.linkedInUrl,
+        githubUrl: profileState.githubUrl,
+        whatsappNo: profileState.whatsappNo,
+        email: profileState.email,
+        summary: profileState.summary,
+        aboutMe: profileState.aboutMe,
+        resumeUrl: profileState.resumeUrl,
+        skillCategories: profileState.skillCategories,
+        skills: profileState.skills
+      },
+      companies: profileState.companies,
+      projects: profileState.projects
+    };
+    const success = await dataService.syncToCloud(currentData);
+    setSyncingCloud(false);
+    if (success) {
+      showNotification("All portfolio data successfully synchronized to Cloud Firestore!");
+    } else {
+      alert("Failed to sync to Cloud Firestore. Check your connection and Firestore security rules.");
+    }
   };
 
   // Profile Save
@@ -164,7 +199,10 @@ const Dashboard = () => {
     const updated = {
       name: profileForm.name,
       role: profileForm.role,
+      statusText: profileForm.statusText,
+      tagline: profileForm.tagline,
       experience: profileForm.experience,
+      summary: profileForm.summary,
       location: profileForm.location,
       email: profileForm.email,
       whatsappNo: profileForm.whatsappNo,
@@ -177,6 +215,60 @@ const Dashboard = () => {
 
     dispatch(setProfile(updated));
     showNotification("Profile details saved successfully!");
+  };
+
+  // One-click apply & sync of real-world minimalist profile to Firebase Firestore
+  const handleApplyMinimalistProfile = async () => {
+    const minimalProfile = {
+      name: "Vitthal Khemnar",
+      role: "Software Engineer",
+      statusText: "Available for new opportunities",
+      tagline: "Building scalable distributed systems and mission-critical backend APIs",
+      summary:
+        "Specializing in Java, Spring Boot, and distributed backend architecture. Over the past two years, I’ve built mission-critical travel APIs, payment workflows, and cloud-deployed applications like Bazaar, bridging rock-solid backend engineering with seamless user experiences.",
+      experience: "2+ Years",
+      location: "India",
+      email: "vitthal@example.com",
+      githubUrl: "https://github.com",
+      linkedInUrl: "https://linkedin.com",
+      aboutMe:
+        "Backend & full-stack software engineer with deep expertise in Java, Spring Boot microservices, high-throughput APIs, and modern cloud deployment.",
+      skills: [
+        "Java",
+        "Spring Boot",
+        "Microservices",
+        "REST APIs",
+        "React",
+        "PostgreSQL",
+        "Docker",
+        "AWS",
+        "Git"
+      ]
+    };
+
+    setProfileForm((prev) => ({
+      ...prev,
+      ...minimalProfile,
+      skillsText: minimalProfile.skills.join(", ")
+    }));
+
+    dispatch(setProfile(minimalProfile));
+
+    const fullUpdatedData = {
+      profile: {
+        ...profileState,
+        ...minimalProfile
+      },
+      companies: profileState.companies || [],
+      projects: profileState.projects || []
+    };
+
+    dataService.saveData(fullUpdatedData);
+    if (dataService.isCloudSyncActive()) {
+      await dataService.syncToCloud(fullUpdatedData);
+    }
+
+    showNotification("Minimalist profile applied and synced to Firebase Firestore!");
   };
 
   // Projects CRUD
@@ -483,6 +575,23 @@ const Dashboard = () => {
           <span className="navbar-brand fw-bold fs-6 fs-md-5 mb-0">Control Center</span>
         </div>
         <div className="d-flex align-items-center gap-2">
+          {dataService.isCloudSyncActive() ? (
+            <span
+              className="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 rounded-pill px-2 px-sm-3 py-1 small d-flex align-items-center gap-1"
+              title="Cloud Firestore active. Edits automatically sync to cloud."
+            >
+              <i className="bi bi-cloud-check-fill text-success"></i>
+              <span className="d-none d-md-inline">Firestore Synced</span>
+            </span>
+          ) : (
+            <span
+              className="badge bg-secondary bg-opacity-25 text-warning border border-secondary border-opacity-25 rounded-pill px-2 px-sm-3 py-1 small d-flex align-items-center gap-1"
+              title="Local Mode: Edits saved to browser storage. Add Firebase keys to sync to cloud."
+            >
+              <i className="bi bi-hdd-fill text-warning"></i>
+              <span className="d-none d-md-inline">Local Mode</span>
+            </span>
+          )}
           <Link
             to="/"
             target="_blank"
@@ -640,7 +749,68 @@ const Dashboard = () => {
                     >
                       <i className="bi bi-pencil me-1"></i> Edit Profile Info
                     </button>
+                    {dataService.isCloudSyncActive() && (
+                      <button
+                        className="btn btn-outline-success rounded-pill px-3 px-sm-4"
+                        onClick={handleManualCloudSync}
+                        disabled={syncingCloud}
+                      >
+                        <i className={`bi ${syncingCloud ? "bi-arrow-repeat spin" : "bi-cloud-upload"} me-1`}></i>
+                        {syncingCloud ? "Syncing..." : "Sync All to Firestore"}
+                      </button>
+                    )}
                   </div>
+                </div>
+
+                {/* Cloud Sync & Firebase Status Card */}
+                <div className="card border-0 shadow-sm p-3 p-md-4 rounded-3 bg-white">
+                  <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
+                    <div className="d-flex align-items-center gap-2">
+                      <i className="bi bi-fire fs-4 text-warning"></i>
+                      <div>
+                        <h6 className="fw-bold mb-0">Firebase Cloud Synchronization</h6>
+                        <small className="text-muted">Multi-device real-time cloud data storage</small>
+                      </div>
+                    </div>
+                    {dataService.isCloudSyncActive() ? (
+                      <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill small">
+                        <i className="bi bi-check-circle-fill me-1"></i> Connected to Firestore
+                      </span>
+                    ) : (
+                      <span className="badge bg-secondary bg-opacity-10 text-secondary border px-3 py-2 rounded-pill small">
+                        <i className="bi bi-hdd me-1"></i> Local Storage Mode
+                      </span>
+                    )}
+                  </div>
+
+                  {dataService.isCloudSyncActive() ? (
+                    <div className="bg-light p-3 rounded-3 small">
+                      <p className="mb-2 text-dark">
+                        <i className="bi bi-info-circle text-primary me-2"></i>
+                        Your portfolio is linked to <strong>Google Cloud Firestore</strong>. Any modifications made to your projects, experience, or skills automatically synchronize with the cloud database so visitors anywhere in the world see your changes immediately.
+                      </p>
+                      <div className="d-flex flex-wrap gap-2 mt-2">
+                        <button
+                          className="btn btn-sm btn-outline-success rounded-pill"
+                          onClick={handleManualCloudSync}
+                          disabled={syncingCloud}
+                        >
+                          <i className={`bi ${syncingCloud ? "bi-arrow-repeat spin" : "bi-arrow-clockwise"} me-1`}></i>
+                          {syncingCloud ? "Syncing with Firestore..." : "Force Cloud Sync"}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-light p-3 rounded-3 small">
+                      <p className="mb-2 text-dark">
+                        <i className="bi bi-shield-exclamation text-warning me-2"></i>
+                        Currently running in <strong>Local Storage Mode</strong>. All data changes are saved inside your local browser.
+                      </p>
+                      <p className="mb-0 text-muted">
+                        To enable multi-device cloud storage and allow recruiters worldwide to view your live edits, add your Firebase keys to <code>.env.local</code>. (See <code>.env.example</code> for details).
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -656,6 +826,26 @@ const Dashboard = () => {
                   <span className="badge bg-light text-secondary border px-3 py-2">
                     Experience: <strong>{profileState.experience || "1.5+ Years"}</strong>
                   </span>
+                </div>
+
+                {/* Real-World Minimalist Profile Quick-Sync Banner */}
+                <div className="alert alert-light border d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 p-3 mb-4 rounded-3">
+                  <div>
+                    <div className="fw-semibold text-dark mb-1">
+                      <i className="bi bi-stars text-primary me-2"></i>
+                      Real-World Minimalist Profile Template
+                    </div>
+                    <div className="small text-muted">
+                      Apply clean, professional editorial profile copy (single role title, authentic bio, outbound links) and sync to Firebase in one click.
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary btn-sm rounded-pill px-3 py-2 text-nowrap fw-semibold d-inline-flex align-items-center gap-2"
+                    onClick={handleApplyMinimalistProfile}
+                  >
+                    <i className="bi bi-cloud-arrow-up"></i> Apply & Sync to Firebase
+                  </button>
                 </div>
 
                 <form onSubmit={handleProfileSubmit}>
@@ -695,6 +885,30 @@ const Dashboard = () => {
                         }
                         placeholder="e.g. 1.5+ Years or 2 Years"
                         required
+                      />
+                    </div>
+                    <div className="col-12 col-md-6">
+                      <label className="form-label small fw-semibold">Availability Status Badge</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={profileForm.statusText}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, statusText: e.target.value })
+                        }
+                        placeholder="e.g. Available for Backend Roles"
+                      />
+                    </div>
+                    <div className="col-12 col-md-6">
+                      <label className="form-label small fw-semibold">Hero Heading Tagline</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={profileForm.tagline}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, tagline: e.target.value })
+                        }
+                        placeholder="e.g. building clean, resilient systems."
                       />
                     </div>
                     <div className="col-12 col-md-4">
@@ -756,6 +970,18 @@ const Dashboard = () => {
                         }
                         placeholder="https://github.com/..."
                       />
+                    </div>
+                    <div className="col-12">
+                      <label className="form-label small fw-semibold">Hero Intro Summary (Short Pitch on Home)</label>
+                      <textarea
+                        className="form-control"
+                        rows="2"
+                        value={profileForm.summary}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, summary: e.target.value })
+                        }
+                        placeholder="A concise 1-2 sentence pitch shown on the Home hero section..."
+                      ></textarea>
                     </div>
                     <div className="col-12">
                       <label className="form-label small fw-semibold">About Me Narrative</label>

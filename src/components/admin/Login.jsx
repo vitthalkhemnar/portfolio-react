@@ -9,13 +9,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const res = authService.login(email, password);
+      const res = await authService.login(email, password);
       if (res.success) {
         navigate("/admin");
       } else {
@@ -69,7 +69,7 @@ const Login = () => {
               <input
                 type="email"
                 className="form-control border-start-0 ps-0"
-                placeholder="admin@portfolio.com"
+                placeholder="admin@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -106,9 +106,17 @@ const Login = () => {
         </form>
 
         <div className="bg-light p-2 rounded text-center small mb-3 border text-muted">
-          <small>
-            Default: <code>admin@portfolio.com</code> / <code>admin</code>
-          </small>
+          {authService.isFirebaseAuthActive() ? (
+            <small className="text-success fw-medium">
+              <i className="bi bi-shield-lock-fill me-1"></i>
+              Connected to Firebase Authentication
+            </small>
+          ) : (
+            <small className="text-muted">
+              <i className="bi bi-info-circle me-1 text-primary"></i>
+              Connect Firebase in <code>.env.local</code> to authenticate
+            </small>
+          )}
         </div>
 
         <div className="text-center">

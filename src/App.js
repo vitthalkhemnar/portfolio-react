@@ -27,9 +27,21 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Load persisted portfolio data on initial mount
+    // 1. Instant load from localStorage / default data
     const saved = dataService.loadData();
     dispatch(setFullData(saved));
+
+    // 2. Asynchronously sync latest updates from Cloud Firestore if connected
+    dataService
+      .fetchCloudData()
+      .then((cloudData) => {
+        if (cloudData) {
+          dispatch(setFullData(cloudData));
+        }
+      })
+      .catch((err) => {
+        console.warn("Cloud data fetch warning on mount:", err);
+      });
   }, [dispatch]);
 
   return (

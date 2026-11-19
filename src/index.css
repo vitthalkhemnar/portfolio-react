@@ -72,12 +72,58 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-body) !important;
   box-shadow: var(--shadow-card);
   transition: all 0.25s ease;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
 }
 
 .clean-card:hover {
   border-color: var(--border-hover) !important;
   box-shadow: var(--shadow-card-hover);
   transform: translateY(-2px);
+}
+
+/* Read more / Show less toggle button */
+.btn-read-more {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  transition: color 0.15s ease, transform 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-read-more:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.btn-read-more:focus-visible {
+  outline: 2px solid var(--primary-border);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.card-expandable-content {
+  animation: fadeInExpand 0.25s ease-in-out forwards;
+}
+
+@keyframes fadeInExpand {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Unified Buttons */
