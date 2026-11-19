@@ -16,24 +16,29 @@ const Portfolio = () => {
   }, []);
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="d-flex flex-column min-vh-100" style={{ backgroundColor: "var(--bg-page)" }}>
       <Navbar />
       <main className="flex-grow-1">
         <section id="home">
           <Home />
         </section>
+        <div className="section-divider"></div>
         <section id="about" data-aos="fade-up">
           <About />
         </section>
+        <div className="section-divider"></div>
         <section id="skills" data-aos="fade-up">
           <Skills />
         </section>
+        <div className="section-divider"></div>
         <section id="experience" data-aos="fade-up">
           <Experience />
         </section>
+        <div className="section-divider"></div>
         <section id="project" data-aos="fade-up">
           <Project />
         </section>
+        <div className="section-divider"></div>
         <section id="contact" data-aos="fade-up">
           <Contact />
         </section>

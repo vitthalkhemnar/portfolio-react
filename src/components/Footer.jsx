@@ -11,19 +11,25 @@ const Footer = () => {
     <footer
       className="py-4"
       style={{
-        backgroundColor: "var(--bg-card)",
+        backgroundColor: "var(--bg-page)",
         borderTop: "1px solid var(--border-subtle)",
         color: "var(--text-muted)"
       }}
     >
       <div className="container d-flex flex-column flex-sm-row justify-content-between align-items-center small px-3 px-md-4">
         <div>
-          &copy; {currentYear} {name && <strong className="text-dark">{name}. </strong>}All rights reserved.
+          &copy; {currentYear} {name && <strong className="text-white">{name}. </strong>}All rights reserved.
         </div>
         {(role || location) && (
           <div className="mt-2 mt-sm-0 text-muted">
             <span>
-              {role && location ? `${role} • ${location}` : role || location}
+              {role && location ? (
+                <>
+                  {role} <span style={{ color: "var(--primary)" }}>&bull;</span> {location}
+                </>
+              ) : (
+                role || location
+              )}
             </span>
           </div>
         )}

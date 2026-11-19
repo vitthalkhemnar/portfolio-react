@@ -44,7 +44,7 @@ const Login = () => {
             style={{ width: "48px", height: "48px" }}
             className="mb-2"
           />
-          <h4 className="fw-bold mb-1 text-dark">Admin Portal</h4>
+          <h4 className="fw-bold mb-1 text-white">Admin Portal</h4>
           <p className="small mb-0 text-muted">
             Sign in to manage your portfolio
           </p>
@@ -59,16 +59,28 @@ const Login = () => {
 
         <form onSubmit={handleLogin}>
           <div className="mb-3">
-            <label className="form-label small fw-semibold text-dark">
+            <label className="form-label small fw-semibold text-white">
               Admin Email
             </label>
             <div className="input-group">
-              <span className="input-group-text bg-light text-muted border-end-0">
+              <span
+                className="input-group-text border-end-0"
+                style={{
+                  background: "var(--bg-chip)",
+                  borderColor: "var(--border-subtle)",
+                  color: "var(--text-muted)"
+                }}
+              >
                 <i className="bi bi-envelope"></i>
               </span>
               <input
                 type="email"
                 className="form-control border-start-0 ps-0"
+                style={{
+                  background: "var(--bg-chip)",
+                  borderColor: "var(--border-subtle)",
+                  color: "#ffffff"
+                }}
                 placeholder="admin@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -78,16 +90,28 @@ const Login = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label small fw-semibold text-dark">
+            <label className="form-label small fw-semibold text-white">
               Password
             </label>
             <div className="input-group">
-              <span className="input-group-text bg-light text-muted border-end-0">
+              <span
+                className="input-group-text border-end-0"
+                style={{
+                  background: "var(--bg-chip)",
+                  borderColor: "var(--border-subtle)",
+                  color: "var(--text-muted)"
+                }}
+              >
                 <i className="bi bi-lock"></i>
               </span>
               <input
                 type="password"
                 className="form-control border-start-0 ps-0"
+                style={{
+                  background: "var(--bg-chip)",
+                  borderColor: "var(--border-subtle)",
+                  color: "#ffffff"
+                }}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -105,7 +129,13 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="bg-light p-2 rounded text-center small mb-3 border text-muted">
+        <div
+          className="p-2 rounded text-center small mb-3 border text-muted"
+          style={{
+            background: "var(--bg-chip)",
+            borderColor: "var(--border-subtle)"
+          }}
+        >
           {authService.isFirebaseAuthActive() ? (
             <small className="text-success fw-medium">
               <i className="bi bi-shield-lock-fill me-1"></i>
@@ -113,14 +143,20 @@ const Login = () => {
             </small>
           ) : (
             <small className="text-muted">
-              <i className="bi bi-info-circle me-1 text-primary"></i>
+              <i
+                className="bi bi-info-circle me-1"
+                style={{ color: "var(--primary)" }}
+              ></i>
               Connect Firebase in <code>.env.local</code> to authenticate
             </small>
           )}
         </div>
 
         <div className="text-center">
-          <Link to="/" className="text-decoration-none small text-secondary hover-text-dark">
+          <Link
+            to="/"
+            className="text-decoration-none small hover-text-dark"
+          >
             <i className="bi bi-arrow-left me-1"></i> Return to Portfolio
           </Link>
         </div>

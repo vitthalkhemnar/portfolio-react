@@ -40,7 +40,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
       {/* Header: Title, Category, and Action Links */}
       <div className="d-flex justify-content-between align-items-start gap-2 mb-2 flex-wrap flex-sm-nowrap">
         <div className="min-w-0 flex-grow-1">
-          <h5 className="fw-bold text-dark mb-1 text-break">{name}</h5>
+          <h5 className="fw-bold text-white mb-1 text-break">{name}</h5>
           {category && (
             <span className="clean-badge-accent">
               {category}
@@ -53,7 +53,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
               href={githubLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary hover-text-dark"
+              className="project-icon-link"
               title="GitHub Repository"
               aria-label={`GitHub Repository for ${name}`}
             >
@@ -65,7 +65,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
               href={demoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-secondary hover-text-dark"
+              className="project-icon-link"
               title="Live Demo"
               aria-label={`Live Demo for ${name}`}
             >
@@ -88,7 +88,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
       {/* Expandable Key Features */}
       {isExpanded && hasFeatures && (
         <div className="mb-3 card-expandable-content">
-          <div className="fw-semibold small text-dark mb-1">Key Highlights:</div>
+          <div className="fw-semibold small text-white mb-1">Key Highlights:</div>
           <ul
             className="small ps-3 mb-0"
             style={{ color: "var(--text-body)", lineHeight: "1.6" }}
@@ -148,11 +148,12 @@ const Project = () => {
   return (
     <div className="py-5 px-3">
       <div className="container py-3" style={{ maxWidth: "960px" }}>
-        {/* Section Header */}
+        {/* Unified Section Header */}
         <div className="text-center mb-5">
+          <span className="section-eyebrow">{"// 04. PROJECTS"}</span>
           <h2 className="section-heading">Featured Projects</h2>
           <p className="section-desc">
-            {profile.projectsSubtitle || "A selection of systems and applications I've developed."}
+            {profile.projectsSubtitle || "Production systems, scalable architectures, and web applications."}
           </p>
         </div>
 

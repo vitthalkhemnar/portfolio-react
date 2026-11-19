@@ -567,12 +567,15 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-vh-100 d-flex flex-column" style={{ backgroundColor: "var(--bg-page)" }}>
+    <div className="admin-theme min-vh-100 d-flex flex-column" style={{ backgroundColor: "var(--bg-page)" }}>
       {/* Responsive Top Navbar */}
-      <header className="navbar navbar-dark bg-dark px-3 px-md-4 py-2 shadow-sm d-flex justify-content-between align-items-center">
+      <header
+        className="navbar navbar-dark px-3 px-md-4 py-2 shadow-sm d-flex justify-content-between align-items-center"
+        style={{ backgroundColor: "#0c0c0e", borderBottom: "1px solid var(--border-subtle)" }}
+      >
         <div className="d-flex align-items-center gap-2">
           <span className="brand-dot"></span>
-          <span className="navbar-brand fw-bold fs-6 fs-md-5 mb-0">Control Center</span>
+          <span className="navbar-brand fw-bold fs-6 fs-md-5 mb-0 text-white">Control Center</span>
         </div>
         <div className="d-flex align-items-center gap-2">
           {dataService.isCloudSyncActive() ? (
@@ -629,14 +632,14 @@ const Dashboard = () => {
         <div className="row g-3 g-md-4">
           {/* Responsive Navigation: Horizontal scroll on mobile, Vertical on desktop */}
           <div className="col-12 col-md-3 col-lg-2">
-            <div className="card border-0 shadow-sm rounded-3 p-2 bg-white">
+            <div className="clean-card p-2">
               <div
                 className="nav flex-row flex-md-column nav-pills gap-1 overflow-auto flex-nowrap pb-1 pb-md-0"
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
                 <button
                   className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
-                    activeTab === "overview" ? "active" : "text-dark"
+                    activeTab === "overview" ? "active" : ""
                   }`}
                   onClick={() => setActiveTab("overview")}
                 >
@@ -644,7 +647,7 @@ const Dashboard = () => {
                 </button>
                 <button
                   className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
-                    activeTab === "profile" ? "active" : "text-dark"
+                    activeTab === "profile" ? "active" : ""
                   }`}
                   onClick={() => setActiveTab("profile")}
                 >
@@ -652,7 +655,7 @@ const Dashboard = () => {
                 </button>
                 <button
                   className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
-                    activeTab === "projects" ? "active" : "text-dark"
+                    activeTab === "projects" ? "active" : ""
                   }`}
                   onClick={() => setActiveTab("projects")}
                 >
@@ -660,7 +663,7 @@ const Dashboard = () => {
                 </button>
                 <button
                   className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
-                    activeTab === "companies" ? "active" : "text-dark"
+                    activeTab === "companies" ? "active" : ""
                   }`}
                   onClick={() => setActiveTab("companies")}
                 >
@@ -668,7 +671,7 @@ const Dashboard = () => {
                 </button>
                 <button
                   className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
-                    activeTab === "skills" ? "active" : "text-dark"
+                    activeTab === "skills" ? "active" : ""
                   }`}
                   onClick={() => setActiveTab("skills")}
                 >
@@ -676,7 +679,7 @@ const Dashboard = () => {
                 </button>
                 <button
                   className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
-                    activeTab === "resume" ? "active" : "text-dark"
+                    activeTab === "resume" ? "active" : ""
                   }`}
                   onClick={() => setActiveTab("resume")}
                 >
@@ -829,9 +832,12 @@ const Dashboard = () => {
                 </div>
 
                 {/* Real-World Minimalist Profile Quick-Sync Banner */}
-                <div className="alert alert-light border d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 p-3 mb-4 rounded-3">
+                <div
+                  className="alert border d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 p-3 mb-4 rounded-3"
+                  style={{ background: "#18181b", borderColor: "var(--border-subtle)" }}
+                >
                   <div>
-                    <div className="fw-semibold text-dark mb-1">
+                    <div className="fw-semibold text-white mb-1">
                       <i className="bi bi-stars text-primary me-2"></i>
                       Real-World Minimalist Profile Template
                     </div>
@@ -841,7 +847,7 @@ const Dashboard = () => {
                   </div>
                   <button
                     type="button"
-                    className="btn btn-outline-primary btn-sm rounded-pill px-3 py-2 text-nowrap fw-semibold d-inline-flex align-items-center gap-2"
+                    className="btn btn-primary btn-sm rounded-pill px-3 py-2 text-nowrap fw-semibold d-inline-flex align-items-center gap-2"
                     onClick={handleApplyMinimalistProfile}
                   >
                     <i className="bi bi-cloud-arrow-up"></i> Apply & Sync to Firebase

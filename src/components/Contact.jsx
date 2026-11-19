@@ -12,12 +12,13 @@ const Contact = () => {
 
   return (
     <div className="py-5 px-3">
-      <div className="container py-3" style={{ maxWidth: "800px" }}>
-        {/* Clean Section Header */}
+      <div className="container py-3" style={{ maxWidth: "860px" }}>
+        {/* Unified Section Header */}
         <div className="text-center mb-5">
+          <span className="section-eyebrow">{"// 05. CONTACT"}</span>
           <h2 className="section-heading">Get In Touch</h2>
           <p className="section-desc">
-            Feel free to reach out for career opportunities, consulting, or technical discussions.
+            Open for career opportunities, engineering consultations, or technical discussions.
           </p>
         </div>
 
@@ -29,9 +30,9 @@ const Contact = () => {
                 className="text-decoration-none d-block h-100"
               >
                 <div className="clean-card p-4 text-center h-100">
-                  <i className="bi bi-envelope text-primary fs-3 mb-2 d-block"></i>
-                  <h6 className="fw-bold mb-1 text-dark">Email</h6>
-                  <p className="small mb-0 text-break text-muted">
+                  <i className="bi bi-envelope fs-3 mb-2 d-block" style={{ color: "var(--primary)" }}></i>
+                  <h6 className="fw-bold mb-1 text-white">Email</h6>
+                  <p className="small mb-0 text-break" style={{ color: "var(--text-body)" }}>
                     {email}
                   </p>
                 </div>
@@ -48,9 +49,9 @@ const Contact = () => {
                 className="text-decoration-none d-block h-100"
               >
                 <div className="clean-card p-4 text-center h-100">
-                  <i className="bi bi-whatsapp text-primary fs-3 mb-2 d-block"></i>
-                  <h6 className="fw-bold mb-1 text-dark">WhatsApp</h6>
-                  <p className="small mb-0 text-muted">
+                  <i className="bi bi-whatsapp fs-3 mb-2 d-block" style={{ color: "var(--primary)" }}></i>
+                  <h6 className="fw-bold mb-1 text-white">WhatsApp</h6>
+                  <p className="small mb-0" style={{ color: "var(--text-body)" }}>
                     +{cleanWhatsApp}
                   </p>
                 </div>
@@ -61,9 +62,9 @@ const Contact = () => {
           {location && (
             <div className="col-12 col-sm-6 col-md-4">
               <div className="clean-card p-4 text-center h-100">
-                <i className="bi bi-geo-alt text-primary fs-3 mb-2 d-block"></i>
-                <h6 className="fw-bold mb-1 text-dark">Location</h6>
-                <p className="small mb-0 text-muted">
+                <i className="bi bi-geo-alt fs-3 mb-2 d-block" style={{ color: "var(--primary)" }}></i>
+                <h6 className="fw-bold mb-1 text-white">Location</h6>
+                <p className="small mb-0" style={{ color: "var(--text-body)" }}>
                   {location}
                 </p>
               </div>

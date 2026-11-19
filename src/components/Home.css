@@ -9,7 +9,7 @@
 .hero-author-name {
   font-size: clamp(2.2rem, 4.5vw, 3.2rem);
   font-weight: 750;
-  color: var(--text-heading);
+  color: #ffffff;
   letter-spacing: -0.03em;
   line-height: 1.15;
 }
@@ -23,9 +23,10 @@
 
 /* Status Pill */
 .hero-status-pill {
-  background: #ffffff;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: #e4e4e7;
 }
 
 .hero-status-dot {
@@ -33,7 +34,7 @@
   height: 7px;
   border-radius: 50%;
   background: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
 }
 
 /* Editorial Body Text */
@@ -58,14 +59,16 @@
   height: 280px;
   border-radius: 50%;
   padding: 8px;
-  background: #ffffff;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
-  transition: transform 0.3s ease;
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%), #141418;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 107, 0, 0.12);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hero-photo-wrapper:hover {
   transform: scale(1.02);
+  border-color: var(--primary);
+  box-shadow: 0 20px 45px -10px rgba(255, 107, 0, 0.35), 0 0 35px rgba(255, 107, 0, 0.25);
 }
 
 .hero-photo-img {
@@ -77,26 +80,27 @@
 
 /* Round Icon Buttons for Social / Links */
 .hero-social-link {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: #e4e4e7;
   text-decoration: none;
   transition: all 0.2s ease;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
   box-shadow: var(--shadow-sm);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 .hero-social-link:hover {
-  color: var(--text-heading);
-  border-color: var(--border-hover);
-  background: #f8fafc;
+  color: #ffffff;
+  border-color: var(--primary);
+  background: var(--primary);
   transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.45);
 }
 
 /* Responsive Breakpoints */

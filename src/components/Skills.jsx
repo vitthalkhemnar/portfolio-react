@@ -58,11 +58,12 @@ const Skills = () => {
   return (
     <div className="py-5 px-3">
       <div className="container py-3" style={{ maxWidth: "960px" }}>
-        {/* Clean Section Header */}
+        {/* Unified Section Header */}
         <div className="text-center mb-5">
+          <span className="section-eyebrow">{"// 02. SKILLS"}</span>
           <h2 className="section-heading">Skills & Technologies</h2>
           <p className="section-desc">
-            Explore technologies organized by architectural domain.
+            Technologies and tools organized by architectural domain.
           </p>
         </div>
 
@@ -85,14 +86,15 @@ const Skills = () => {
                     <button
                       key={cat.id || idx}
                       type="button"
-                      className={`btn rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2 ${
-                        isActive
-                          ? "btn-dark shadow-sm fw-semibold"
-                          : "btn-light text-secondary border"
-                      }`}
+                      className="btn rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2 border"
                       style={{
                         fontSize: "0.88rem",
-                        transition: "all 0.2s ease"
+                        transition: "all 0.2s ease",
+                        backgroundColor: isActive ? "var(--primary)" : "rgba(255, 255, 255, 0.05)",
+                        borderColor: isActive ? "var(--primary)" : "rgba(255, 255, 255, 0.12)",
+                        color: isActive ? "#ffffff" : "#e4e4e7",
+                        boxShadow: isActive ? "0 4px 14px rgba(255, 107, 0, 0.4)" : "none",
+                        fontWeight: isActive ? "600" : "500"
                       }}
                       onClick={() => setActiveIndex(idx)}
                       aria-label={`View ${cat.title}`}
@@ -100,10 +102,12 @@ const Skills = () => {
                       <i className={`bi ${cat.icon || "bi-stars"}`}></i>
                       <span>{cat.title}</span>
                       <span
-                        className={`badge rounded-pill ${
-                          isActive ? "bg-light text-dark" : "bg-white text-secondary border"
-                        }`}
-                        style={{ fontSize: "0.72rem" }}
+                        className="badge rounded-pill"
+                        style={{
+                          fontSize: "0.72rem",
+                          backgroundColor: isActive ? "#ffffff" : "rgba(255, 255, 255, 0.1)",
+                          color: isActive ? "#09090b" : "#ffffff"
+                        }}
                       >
                         {cat.skills?.length || 0}
                       </span>
@@ -116,22 +120,26 @@ const Skills = () => {
               {currentCategory && (
                 <div className="clean-card p-4 p-md-5 mb-4 skills-carousel-card">
                   {/* Header of Active Category */}
-                  <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 pb-3 mb-4 border-bottom">
+                  <div
+                    className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 pb-3 mb-4"
+                    style={{ borderBottom: "1px solid var(--border-subtle)" }}
+                  >
                     <div className="d-flex align-items-center gap-3">
                       <div
                         className="rounded-circle d-flex align-items-center justify-content-center"
                         style={{
                           width: "48px",
                           height: "48px",
-                          background: "var(--bg-subtle, #f1f3f5)",
-                          color: "var(--text-dark, #111827)",
+                          background: "var(--primary-soft)",
+                          color: "var(--primary)",
+                          border: "1px solid var(--primary-border)",
                           fontSize: "1.35rem"
                         }}
                       >
                         <i className={`bi ${currentCategory.icon || "bi-stars"}`}></i>
                       </div>
                       <div>
-                        <h4 className="fw-bold mb-0 text-dark">
+                        <h4 className="fw-bold mb-0 text-white">
                           {currentCategory.title}
                         </h4>
                         <small className="text-muted">
@@ -145,8 +153,14 @@ const Skills = () => {
                       <button
                         type="button"
                         onClick={handlePrev}
-                        className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0"
-                        style={{ width: "38px", height: "38px" }}
+                        className="btn rounded-circle d-flex align-items-center justify-content-center p-0"
+                        style={{
+                          width: "38px",
+                          height: "38px",
+                          border: "1px solid rgba(255, 255, 255, 0.15)",
+                          background: "rgba(255, 255, 255, 0.05)",
+                          color: "#ffffff"
+                        }}
                         title="Previous Category"
                         aria-label="Previous Category"
                       >
@@ -158,8 +172,14 @@ const Skills = () => {
                       <button
                         type="button"
                         onClick={handleNext}
-                        className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-0"
-                        style={{ width: "38px", height: "38px" }}
+                        className="btn rounded-circle d-flex align-items-center justify-content-center p-0"
+                        style={{
+                          width: "38px",
+                          height: "38px",
+                          border: "1px solid rgba(255, 255, 255, 0.15)",
+                          background: "rgba(255, 255, 255, 0.05)",
+                          color: "#ffffff"
+                        }}
                         title="Next Category"
                         aria-label="Next Category"
                       >
@@ -180,9 +200,9 @@ const Skills = () => {
                           <div
                             className="p-3 rounded-3 h-100 d-flex align-items-center gap-3"
                             style={{
-                              background: "var(--bg-card, #ffffff)",
-                              border: "1px solid var(--border-subtle, #e5e7eb)",
-                              transition: "transform 0.2s ease, box-shadow 0.2s ease"
+                              background: "rgba(255, 255, 255, 0.04)",
+                              border: "1px solid rgba(255, 255, 255, 0.08)",
+                              transition: "transform 0.2s ease, border-color 0.2s ease"
                             }}
                           >
                             <span
@@ -190,10 +210,11 @@ const Skills = () => {
                               style={{
                                 width: "8px",
                                 height: "8px",
-                                backgroundColor: "var(--text-dark, #111827)"
+                                backgroundColor: "var(--primary)",
+                                boxShadow: "0 0 8px rgba(255, 107, 0, 0.6)"
                               }}
                             ></span>
-                            <span className="fw-medium text-dark text-break">
+                            <span className="fw-medium text-white text-break">
                               {skill}
                             </span>
                           </div>
@@ -216,8 +237,12 @@ const Skills = () => {
                           borderRadius: "4px",
                           backgroundColor:
                             idx === activeIndex
-                              ? "var(--text-dark, #111827)"
-                              : "var(--border-subtle, #d1d5db)",
+                              ? "var(--primary)"
+                              : "#27272a",
+                          boxShadow:
+                            idx === activeIndex
+                              ? "0 0 8px rgba(255, 107, 0, 0.6)"
+                              : "none",
                           border: "none",
                           padding: 0,
                           transition: "all 0.3s ease"
@@ -233,7 +258,10 @@ const Skills = () => {
             {allSkills.length > 0 && (
               <div className="pt-2">
                 <div className="text-center mb-3">
-                  <span className="small text-muted fw-semibold text-uppercase tracking-wider">
+                  <span
+                    className="small text-muted fw-semibold text-uppercase tracking-wider"
+                    style={{ letterSpacing: "0.1em" }}
+                  >
                     Full Technical Spectrum
                   </span>
                 </div>
@@ -253,10 +281,19 @@ const Skills = () => {
                         className="clean-chip text-nowrap px-3 py-1"
                         style={{
                           fontSize: "0.85rem",
-                          background: "#ffffff",
-                          border: "1px solid var(--border-subtle)"
+                          background: "var(--bg-chip)",
+                          border: "1px solid var(--border-subtle)",
+                          color: "var(--text-body)"
                         }}
                       >
+                        <span
+                          className="rounded-circle d-inline-block me-2 flex-shrink-0"
+                          style={{
+                            width: "6px",
+                            height: "6px",
+                            backgroundColor: "var(--primary)"
+                          }}
+                        ></span>
                         {skill}
                       </span>
                     ))}

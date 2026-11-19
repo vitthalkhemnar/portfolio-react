@@ -75,7 +75,7 @@ const Navbar = () => {
         <div className="d-flex justify-content-between align-items-center mb-4">
           <span className="fw-semibold">{profile.name || "Portfolio"}</span>
           <button
-            className="btn-close"
+            className="btn-close btn-close-white"
             onClick={toggleSidebar}
             aria-label="Close"
           ></button>
@@ -101,7 +101,7 @@ const Navbar = () => {
               href={profile.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-dark rounded-pill py-2 text-center"
+              className="btn-clean-secondary rounded-pill py-2 text-center"
               onClick={toggleSidebar}
             >
               View Resume
@@ -109,7 +109,7 @@ const Navbar = () => {
           )}
           <Link
             to="/admin"
-            className="btn btn-dark rounded-pill py-2 text-center fw-semibold"
+            className="btn-clean-primary rounded-pill py-2 text-center fw-semibold justify-content-center"
             onClick={toggleSidebar}
           >
             Admin Panel

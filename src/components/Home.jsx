@@ -85,7 +85,7 @@ const Home = () => {
             {statusText && (
               <div className="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 rounded-pill hero-status-pill">
                 <span className="hero-status-dot"></span>
-                <span className="small text-muted fw-medium">{statusText}</span>
+                <span className="small fw-medium" style={{ color: "#e4e4e7" }}>{statusText}</span>
               </div>
             )}
 

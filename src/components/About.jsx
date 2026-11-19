@@ -5,12 +5,9 @@ const About = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const profile = useSelector((state) => state.profile);
   const companies = useSelector((state) => state.profile.companies) || [];
-  const projects = useSelector((state) => state.profile.projects) || [];
 
   const role = profile.role || "";
   const name = profile.name || "";
-  const experience = profile.experience || "";
-  const location = profile.location || "";
 
   const currentCompany =
     companies.find((c) => c.isCurrent)?.company ||
@@ -26,30 +23,36 @@ const About = () => {
 
   return (
     <div className="py-5 px-3">
-      <div className="container py-3" style={{ maxWidth: "900px" }}>
-        {/* Clean Section Header */}
+      <div className="container py-3" style={{ maxWidth: "960px" }}>
+        {/* Unified Section Header */}
         <div className="text-center mb-5">
+          <span className="section-eyebrow">{"// 01. ABOUT"}</span>
           <h2 className="section-heading">About Me</h2>
+          <p className="section-desc">
+            Background, technical focus, and engineering philosophy.
+          </p>
         </div>
 
-        <div className="row g-4 align-items-center mb-5">
+        <div className="row g-4 align-items-center">
           <div className="col-12 col-md-4 text-center">
             <div
               className="mx-auto overflow-hidden shadow-sm"
               style={{
-                width: "200px",
-                height: "200px",
+                width: "210px",
+                height: "210px",
                 maxWidth: "80vw",
                 maxHeight: "80vw",
                 borderRadius: "20px",
-                border: "1px solid var(--border-subtle)",
-                background: "#ffffff"
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                background: "var(--bg-card)",
+                padding: "6px",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.6)"
               }}
             >
               <img
                 src={profile.aboutImage || profile.profileImage || "/images/aboutme.jpeg"}
                 alt={name || "About"}
-                className="w-100 h-100 object-fit-cover"
+                className="w-100 h-100 object-fit-cover rounded-4"
               />
             </div>
           </div>
@@ -60,7 +63,7 @@ const About = () => {
                 <p
                   key={pIdx}
                   className={`fs-6 ${pIdx === displayedParagraphs.length - 1 ? "mb-2" : "mb-3"}`}
-                  style={{ color: "var(--text-body)", lineHeight: "1.8" }}
+                  style={{ color: "var(--text-body)", lineHeight: "1.8", fontSize: "1.02rem" }}
                 >
                   {para}
                 </p>
@@ -89,32 +92,6 @@ const About = () => {
                 )}
               </button>
             )}
-          </div>
-        </div>
-
-        {/* 3 Dynamic Stat Cards (col-12 col-sm-4 for responsive tablet/desktop grid) */}
-        <div className="row g-3 text-center">
-          <div className="col-12 col-sm-4">
-            <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">{experience || "—"}</div>
-              <div className="small text-muted">Experience</div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-4">
-            <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">
-                {projects.length > 0 ? `${projects.length}+ Projects` : "0 Projects"}
-              </div>
-              <div className="small text-muted">Built & Showcased</div>
-            </div>
-          </div>
-          <div className="col-12 col-sm-4">
-            <div className="clean-card p-4 h-100">
-              <div className="fs-3 fw-bold text-dark mb-1">
-                {location || "—"}
-              </div>
-              <div className="small text-muted">Primary Location</div>
-            </div>
           </div>
         </div>
       </div>
