@@ -31,7 +31,6 @@ const Dashboard = () => {
   const [successMsg, setSuccessMsg] = useState("");
 
   // Media upload state
-  const [uploadMode, setUploadMode] = useState(storageService.getUploadMode());
   const [uploadingProfileImg, setUploadingProfileImg] = useState(false);
   const [profileImgProgress, setProfileImgProgress] = useState(0);
   const [uploadingAboutImg, setUploadingAboutImg] = useState(false);
@@ -974,63 +973,10 @@ const Dashboard = () => {
                   <div className="d-flex align-items-center gap-2 mb-3">
                     <i className="bi bi-images fs-5 text-primary"></i>
                     <div>
-                      <h6 className="fw-bold mb-0">Visual Media & Photos</h6>
-                      <small className="text-muted">Upload your Hero avatar and About Me photo to Cloud Firestore / Storage</small>
+                      <h6 className="fw-bold mb-0">Visual Media & Photos (Cloud Firestore)</h6>
+                      <small className="text-muted">Upload your Hero avatar and About Me photo directly to Cloud Firestore</small>
                     </div>
                   </div>
-
-                  {/* Upload Engine Selector & CORS Helper */}
-                  <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between p-2 px-3 rounded-3 mb-3 border bg-white gap-2">
-                    <div className="d-flex align-items-center gap-2 small">
-                      <i className="bi bi-gear-fill text-primary"></i>
-                      <span className="fw-semibold text-dark">Upload Engine:</span>
-                      <span className="badge bg-primary text-white">
-                        {uploadMode === "firestore" ? "Firestore Direct (Zero CORS)" : "Firebase Cloud Storage"}
-                      </span>
-                    </div>
-                    <div className="btn-group btn-group-sm" role="group">
-                      <button
-                        type="button"
-                        className={`btn ${uploadMode === "firestore" ? "btn-primary" : "btn-outline-secondary"}`}
-                        onClick={() => {
-                          setUploadMode("firestore");
-                          storageService.setUploadMode("firestore");
-                          showNotification("Switched to Firestore Direct mode (Zero CORS).");
-                        }}
-                      >
-                        <i className="bi bi-lightning-fill me-1"></i> Firestore Direct
-                      </button>
-                      <button
-                        type="button"
-                        className={`btn ${uploadMode === "storage" ? "btn-primary" : "btn-outline-secondary"}`}
-                        onClick={() => {
-                          setUploadMode("storage");
-                          storageService.setUploadMode("storage");
-                          showNotification("Switched to Firebase Cloud Storage Bucket.");
-                        }}
-                      >
-                        <i className="bi bi-cloud-check-fill me-1"></i> Cloud Storage Bucket
-                      </button>
-                    </div>
-                  </div>
-
-                  {uploadMode === "storage" && (
-                    <div className="alert alert-warning small p-3 rounded-3 mb-3">
-                      <strong><i className="bi bi-exclamation-triangle-fill me-1"></i> If you see a CORS error in the browser:</strong>
-                      <p className="mb-2 mt-1">
-                        Google Cloud Storage buckets block cross-origin browser requests by default until CORS is set on the bucket.
-                      </p>
-                      <div className="mb-2">
-                        To enable CORS in 1 minute, open <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="fw-bold">Google Cloud Console</a> &gt; activate <strong>Cloud Shell</strong> (<code>&gt;_</code> icon at top right) &gt; run:
-                        <pre className="bg-dark text-white p-2 rounded mt-1 mb-0 user-select-all font-monospace" style={{ fontSize: "0.78rem" }}>
-                          {"gsutil cors set cors.json gs://vitthal-dev.firebasestorage.app"}
-                        </pre>
-                      </div>
-                      <p className="mb-0 text-muted">
-                        Or simply switch to <strong>Firestore Direct</strong> above to upload immediately without configuring CORS!
-                      </p>
-                    </div>
-                  )}
 
                   <div className="row g-4">
                     {/* Profile Picture (Hero) */}
@@ -1879,59 +1825,6 @@ const Dashboard = () => {
                     </span>
                   )}
                 </div>
-
-                {/* Upload Engine Selector & CORS Helper */}
-                <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between p-2 px-3 rounded-3 mb-3 border bg-light gap-2">
-                  <div className="d-flex align-items-center gap-2 small">
-                    <i className="bi bi-gear-fill text-primary"></i>
-                    <span className="fw-semibold text-dark">Upload Engine:</span>
-                    <span className="badge bg-primary text-white">
-                      {uploadMode === "firestore" ? "Firestore Direct (Zero CORS)" : "Firebase Cloud Storage"}
-                    </span>
-                  </div>
-                  <div className="btn-group btn-group-sm" role="group">
-                    <button
-                      type="button"
-                      className={`btn ${uploadMode === "firestore" ? "btn-primary" : "btn-outline-secondary"}`}
-                      onClick={() => {
-                        setUploadMode("firestore");
-                        storageService.setUploadMode("firestore");
-                        showNotification("Switched to Firestore Direct mode (Zero CORS).");
-                      }}
-                    >
-                      <i className="bi bi-lightning-fill me-1"></i> Firestore Direct
-                    </button>
-                    <button
-                      type="button"
-                      className={`btn ${uploadMode === "storage" ? "btn-primary" : "btn-outline-secondary"}`}
-                      onClick={() => {
-                        setUploadMode("storage");
-                        storageService.setUploadMode("storage");
-                        showNotification("Switched to Firebase Cloud Storage Bucket.");
-                      }}
-                    >
-                      <i className="bi bi-cloud-check-fill me-1"></i> Cloud Storage Bucket
-                    </button>
-                  </div>
-                </div>
-
-                {uploadMode === "storage" && (
-                  <div className="alert alert-warning small p-3 rounded-3 mb-3">
-                    <strong><i className="bi bi-exclamation-triangle-fill me-1"></i> If you see a CORS error in the browser:</strong>
-                    <p className="mb-2 mt-1">
-                      Google Cloud Storage buckets block cross-origin browser requests by default until CORS is configured on the bucket.
-                    </p>
-                    <div className="mb-2">
-                      To enable CORS in 1 minute, open <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="fw-bold">Google Cloud Console</a> &gt; activate <strong>Cloud Shell</strong> (<code>&gt;_</code> icon at top right) &gt; run:
-                      <pre className="bg-dark text-white p-2 rounded mt-1 mb-0 user-select-all font-monospace" style={{ fontSize: "0.78rem" }}>
-                        {"gsutil cors set cors.json gs://vitthal-dev.firebasestorage.app"}
-                      </pre>
-                    </div>
-                    <p className="mb-0 text-muted">
-                      Or simply switch to <strong>Firestore Direct</strong> above to upload immediately without configuring CORS!
-                    </p>
-                  </div>
-                )}
 
                 {/* PDF File Upload Dropzone Card */}
                 <div
