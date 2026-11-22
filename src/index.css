@@ -676,6 +676,27 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Single item container (used when a section has only 1 card, e.g. Experience) */
+.single-item-container {
+  width: 100%;
+  display: flex;
+  padding: 0.25rem 0 0.5rem 0;
+}
+
+.single-card-item {
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+}
+
+.single-card-item > .clean-card {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
 /* ==========================================================================
    Skill Spectrum Showcase
    ========================================================================== */
@@ -878,6 +899,86 @@ h1, h2, h3, h4, h5, h6 {
     padding-left: 1.1rem !important;
     font-size: 0.86rem !important;
   }
+
+  /* ==========================================================================
+     Uniform Card Geometry on Mobile (Headers, Descriptions, Skills & Overall)
+     ========================================================================== */
+  .horizontal-scroll-track {
+    align-items: stretch !important;
+  }
+
+  .project-card-item,
+  .skills-card-item,
+  .experience-card-item {
+    display: flex !important;
+  }
+
+  .project-card-item > .clean-card,
+  .skills-card-item > .clean-card,
+  .experience-card-item > .clean-card {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Uniform Header Section across cards */
+  .project-card-header {
+    min-height: 52px !important;
+  }
+
+  .experience-card-header {
+    min-height: 72px !important;
+  }
+
+  .domain-card-header {
+    min-height: 60px !important;
+  }
+
+  /* Uniform Description / Summary Section across cards */
+  .project-card-desc-wrapper {
+    min-height: 4.8rem !important;
+  }
+
+  .experience-card-desc-wrapper {
+    min-height: 5.2rem !important;
+  }
+
+  /* Uniform Skill / Tech Stack Section across cards */
+  .project-card-skills {
+    min-height: 68px !important;
+    align-content: flex-start !important;
+  }
+
+  .experience-card-skills {
+    min-height: 68px !important;
+    align-content: flex-start !important;
+  }
+
+  .skills-chips-wrapper {
+    min-height: 140px !important;
+    align-content: flex-start !important;
+  }
+
+  /* Single card full-width on mobile (e.g., when a section has only 1 card like Experience) */
+  .single-item-container {
+    width: 100% !important;
+    display: flex !important;
+    padding: 0.25rem 0 0.5rem 0 !important;
+  }
+
+  .single-card-item,
+  .single-card-item.experience-card-item,
+  .single-card-item.project-card-item,
+  .single-card-item.skills-card-item {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .single-card-item > .clean-card {
+    width: 100% !important;
+  }
 }
 
 /* Extra small screens (< 400px) */
@@ -888,6 +989,16 @@ h1, h2, h3, h4, h5, h6 {
     flex: 0 0 88% !important;
     max-width: calc(100vw - 32px) !important;
     min-width: 250px !important;
+  }
+
+  .single-card-item,
+  .single-card-item.experience-card-item,
+  .single-card-item.project-card-item,
+  .single-card-item.skills-card-item {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
   }
 
   .clean-card {

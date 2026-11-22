@@ -39,7 +39,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
   return (
     <div className="clean-card p-4 p-md-4 d-flex flex-column w-100">
       {/* Header: Title, Category, and Action Links */}
-      <div className="d-flex justify-content-between align-items-start gap-2 mb-2 flex-wrap flex-sm-nowrap">
+      <div className="project-card-header d-flex justify-content-between align-items-start gap-2 mb-2 flex-wrap flex-sm-nowrap">
         <div className="min-w-0 flex-grow-1">
           <h5 className="fw-bold text-white mb-1 text-break">{name}</h5>
           {category && <span className="clean-badge-accent">{category}</span>}
@@ -74,12 +74,14 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
 
       {/* Description */}
       {description && (
-        <p
-          className="small mb-2"
-          style={{ color: "var(--text-body)", lineHeight: "1.7" }}
-        >
-          {displayDescription}
-        </p>
+        <div className="project-card-desc-wrapper mb-2">
+          <p
+            className="project-card-desc small mb-0"
+            style={{ color: "var(--text-body)", lineHeight: "1.7" }}
+          >
+            {displayDescription}
+          </p>
+        </div>
       )}
 
       {/* Expandable Key Features */}
@@ -122,7 +124,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
       {/* Tech Stack Chips (pinned cleanly to card bottom) */}
       {techList.length > 0 && (
         <div
-          className="d-flex flex-wrap gap-1 pt-3 mt-auto"
+          className="project-card-skills d-flex flex-wrap gap-1 pt-3 mt-auto"
           style={{ borderTop: "1px solid var(--border-subtle)" }}
         >
           {techList.map((tech, idx) => (

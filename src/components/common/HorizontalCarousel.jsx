@@ -170,17 +170,28 @@ const HorizontalCarousel = ({
         )}
       </div>
 
-      {/* Horizontal Scroll Track */}
+      {/* Horizontal Scroll Track (Multiple items) OR Full-Width Container (Single item) */}
       <div
         ref={trackRef}
-        className={`horizontal-scroll-track ${isDragging ? "is-dragging" : ""}`}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUpOrLeave}
-        onMouseLeave={handleMouseUpOrLeave}
+        className={
+          hasMultiple
+            ? `horizontal-scroll-track ${isDragging ? "is-dragging" : ""}`
+            : "single-item-container w-100"
+        }
+        onMouseDown={hasMultiple ? handleMouseDown : undefined}
+        onMouseMove={hasMultiple ? handleMouseMove : undefined}
+        onMouseUp={hasMultiple ? handleMouseUpOrLeave : undefined}
+        onMouseLeave={hasMultiple ? handleMouseUpOrLeave : undefined}
       >
         {items.map((item, idx) => (
-          <div key={item.id || idx} className={itemClassName}>
+          <div
+            key={item.id || idx}
+            className={
+              hasMultiple
+                ? itemClassName
+                : `single-card-item w-100 ${itemClassName}`
+            }
+          >
             {renderItem(item, idx)}
           </div>
         ))}

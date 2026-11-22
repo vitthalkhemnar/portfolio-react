@@ -44,7 +44,7 @@ const ExperienceCard = ({ item, idx }) => {
   return (
     <div key={item.id || idx} className="clean-card p-4 p-md-5 w-100 d-flex flex-column">
       {/* Header: Role, Company, Location, Duration */}
-      <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
+      <div className="experience-card-header d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
         <div className="min-w-0 flex-grow-1">
           <h5 className="fw-bold mb-1 text-white text-break">
             {role}{" "}
@@ -83,9 +83,11 @@ const ExperienceCard = ({ item, idx }) => {
 
       {/* Description / Summary */}
       {description && (
-        <p className="mb-3" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
-          {displayDescription}
-        </p>
+        <div className="experience-card-desc-wrapper mb-3">
+          <p className="experience-card-desc mb-0" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
+            {displayDescription}
+          </p>
+        </div>
       )}
 
       {/* Expandable Key Responsibilities & Impact */}
@@ -128,7 +130,7 @@ const ExperienceCard = ({ item, idx }) => {
       {/* Technologies pinned to card bottom */}
       {technologies.length > 0 && (
         <div
-          className="d-flex flex-wrap gap-2 pt-3 mt-auto"
+          className="experience-card-skills d-flex flex-wrap gap-2 pt-3 mt-auto"
           style={{ borderTop: "1px solid var(--border-subtle)" }}
         >
           {technologies.map((tech, tIdx) => (

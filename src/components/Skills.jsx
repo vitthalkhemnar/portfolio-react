@@ -241,7 +241,7 @@ const SkillDomainCard = ({ domain, dIdx }) => {
     <div className="clean-card p-4 p-md-4 h-100 w-100 d-flex flex-column">
       {/* Domain Card Header */}
       <div
-        className="d-flex align-items-center justify-content-between pb-3 mb-3"
+        className="domain-card-header d-flex align-items-center justify-content-between pb-3 mb-3"
         style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}
       >
         <div className="d-flex align-items-center gap-3 min-w-0">
@@ -291,7 +291,7 @@ const SkillDomainCard = ({ domain, dIdx }) => {
           No skills configured in this domain.
         </div>
       ) : (
-        <div className="d-flex flex-wrap gap-2 my-auto py-2">
+        <div className="skills-chips-wrapper d-flex flex-wrap gap-2 my-auto py-2">
           {domain.skills.map((skill, sIdx) => {
             const skillIcon = getSkillIcon(skill);
             return (
