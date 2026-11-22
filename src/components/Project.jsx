@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import HorizontalCarousel from "./common/HorizontalCarousel";
 
 const ProjectCard = ({ proj, pIdx, profile }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const cardRef = useRef(null);
+  const cardOffsetFromViewportTop = useRef(null);
 
   const name = proj.name || `Project ${pIdx + 1}`;
   const category = proj.category || "";
@@ -31,13 +33,38 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
   const hasFeatures = features.length > 0;
   const needsReadMore = isLongDesc || hasFeatures;
 
-  const displayDescription =
-    !isExpanded && isLongDesc
-      ? `${description.slice(0, 135).trim()}...`
-      : description;
+  const handleToggleExpand = () => {
+    if (isExpanded) {
+      if (cardRef.current) {
+        const safeNavbarOffset = 85;
+        const desiredOffset = Math.max(
+          safeNavbarOffset,
+          cardOffsetFromViewportTop.current ?? safeNavbarOffset
+        );
+        const currentCardPageY =
+          window.pageYOffset + cardRef.current.getBoundingClientRect().top;
+        const targetScrollY = Math.max(0, currentCardPageY - desiredOffset);
+
+        setIsExpanded(false);
+
+        window.scrollTo({
+          top: targetScrollY,
+          behavior: "smooth"
+        });
+      } else {
+        setIsExpanded(false);
+      }
+    } else {
+      if (cardRef.current) {
+        cardOffsetFromViewportTop.current =
+          cardRef.current.getBoundingClientRect().top;
+      }
+      setIsExpanded(true);
+    }
+  };
 
   return (
-    <div className="clean-card p-4 p-md-4 d-flex flex-column w-100">
+    <div ref={cardRef} className="clean-card p-4 p-md-4 d-flex flex-column w-100">
       {/* Header: Title, Category, and Action Links */}
       <div className="project-card-header d-flex justify-content-between align-items-start gap-2 mb-2 flex-wrap flex-sm-nowrap">
         <div className="min-w-0 flex-grow-1">
@@ -79,23 +106,44 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
             className="project-card-desc small mb-0"
             style={{ color: "var(--text-body)", lineHeight: "1.7" }}
           >
-            {displayDescription}
+            {isLongDesc ? (
+              <>
+                <span>{description.slice(0, 135).trim()}</span>
+                {!isExpanded && <span className="text-muted">...</span>}
+              </>
+            ) : (
+              description
+            )}
           </p>
         </div>
       )}
 
-      {/* Expandable Key Features */}
-      {isExpanded && hasFeatures && (
-        <div className="mb-3 card-expandable-content">
-          <div className="fw-semibold small text-white mb-1">Key Highlights:</div>
-          <ul
-            className="small ps-3 mb-0"
-            style={{ color: "var(--text-body)", lineHeight: "1.6" }}
-          >
-            {features.map((feat, fIdx) => (
-              <li key={fIdx}>{feat.replace(/^[•-]\s*/, "")}</li>
-            ))}
-          </ul>
+      {/* Expandable Key Features & Continuation */}
+      {needsReadMore && (
+        <div className={`card-expandable-wrapper ${isExpanded ? "is-expanded" : ""}`}>
+          <div className="card-expandable-inner">
+            {isLongDesc && (
+              <p
+                className="project-card-desc small mb-2"
+                style={{ color: "var(--text-body)", lineHeight: "1.7" }}
+              >
+                {description.slice(135).trim()}
+              </p>
+            )}
+            {hasFeatures && (
+              <div className="mb-2">
+                <div className="fw-semibold small text-white mb-1">Key Highlights:</div>
+                <ul
+                  className="small ps-3 mb-0"
+                  style={{ color: "var(--text-body)", lineHeight: "1.6" }}
+                >
+                  {features.map((feat, fIdx) => (
+                    <li key={fIdx}>{feat.replace(/^[•-]\s*/, "")}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -104,19 +152,12 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
         <div className="mb-3">
           <button
             type="button"
-            className="btn-read-more"
-            onClick={() => setIsExpanded(!isExpanded)}
+            className={`btn-read-more ${isExpanded ? "is-expanded" : ""}`}
+            onClick={handleToggleExpand}
             aria-expanded={isExpanded}
           >
-            {isExpanded ? (
-              <>
-                Show less <i className="bi bi-chevron-up"></i>
-              </>
-            ) : (
-              <>
-                Read more <i className="bi bi-chevron-down"></i>
-              </>
-            )}
+            <span>{isExpanded ? "Show less" : "Read more"}</span>
+            <i className="bi bi-chevron-down btn-read-more-icon"></i>
           </button>
         </div>
       )}

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import HorizontalCarousel from "./common/HorizontalCarousel";
 
 const ExperienceCard = ({ item, idx }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const cardRef = useRef(null);
+  const cardOffsetFromViewportTop = useRef(null);
 
   const role = item.role || "";
   const company = item.company || "";
@@ -36,13 +38,38 @@ const ExperienceCard = ({ item, idx }) => {
   const hasResponsibilities = responsibilities.length > 0;
   const needsReadMore = isLongDesc || hasResponsibilities;
 
-  const displayDescription =
-    !isExpanded && isLongDesc
-      ? `${description.slice(0, 175).trim()}...`
-      : description;
+  const handleToggleExpand = () => {
+    if (isExpanded) {
+      if (cardRef.current) {
+        const safeNavbarOffset = 85;
+        const desiredOffset = Math.max(
+          safeNavbarOffset,
+          cardOffsetFromViewportTop.current ?? safeNavbarOffset
+        );
+        const currentCardPageY =
+          window.pageYOffset + cardRef.current.getBoundingClientRect().top;
+        const targetScrollY = Math.max(0, currentCardPageY - desiredOffset);
+
+        setIsExpanded(false);
+
+        window.scrollTo({
+          top: targetScrollY,
+          behavior: "smooth"
+        });
+      } else {
+        setIsExpanded(false);
+      }
+    } else {
+      if (cardRef.current) {
+        cardOffsetFromViewportTop.current =
+          cardRef.current.getBoundingClientRect().top;
+      }
+      setIsExpanded(true);
+    }
+  };
 
   return (
-    <div key={item.id || idx} className="clean-card p-4 p-md-5 w-100 d-flex flex-column">
+    <div ref={cardRef} key={item.id || idx} className="clean-card p-4 p-md-5 w-100 d-flex flex-column">
       {/* Header: Role, Company, Location, Duration */}
       <div className="experience-card-header d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
         <div className="min-w-0 flex-grow-1">
@@ -83,25 +110,48 @@ const ExperienceCard = ({ item, idx }) => {
 
       {/* Description / Summary */}
       {description && (
-        <div className="experience-card-desc-wrapper mb-3">
+        <div className="experience-card-desc-wrapper mb-2">
           <p className="experience-card-desc mb-0" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
-            {displayDescription}
+            {isLongDesc ? (
+              <>
+                <span>{description.slice(0, 175).trim()}</span>
+                {!isExpanded && <span className="text-muted">...</span>}
+              </>
+            ) : (
+              description
+            )}
           </p>
         </div>
       )}
 
       {/* Expandable Key Responsibilities & Impact */}
-      {isExpanded && hasResponsibilities && (
-        <div className="mb-3 card-expandable-content">
-          <div className="fw-semibold small text-white mb-1">Key Responsibilities & Impact:</div>
-          <ul
-            className="small ps-3 mb-0"
-            style={{ color: "var(--text-body)", lineHeight: "1.7" }}
-          >
-            {responsibilities.map((resp, rIdx) => (
-              <li key={rIdx}>{resp.replace(/^[•-]\s*/, "")}</li>
-            ))}
-          </ul>
+      {needsReadMore && (
+        <div className={`card-expandable-wrapper ${isExpanded ? "is-expanded" : ""}`}>
+          <div className="card-expandable-inner">
+            {isLongDesc && (
+              <p
+                className="experience-card-desc mb-3"
+                style={{ color: "var(--text-body)", lineHeight: "1.8" }}
+              >
+                {description.slice(175).trim()}
+              </p>
+            )}
+            {hasResponsibilities && (
+              <div className="mb-3">
+                <div className="fw-semibold small text-white mb-1">
+                  Key Responsibilities & Impact:
+                </div>
+                <ul
+                  className="small ps-3 mb-0"
+                  style={{ color: "var(--text-body)", lineHeight: "1.7" }}
+                >
+                  {responsibilities.map((resp, rIdx) => (
+                    <li key={rIdx}>{resp.replace(/^[•-]\s*/, "")}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -110,19 +160,12 @@ const ExperienceCard = ({ item, idx }) => {
         <div className="mb-3">
           <button
             type="button"
-            className="btn-read-more"
-            onClick={() => setIsExpanded(!isExpanded)}
+            className={`btn-read-more ${isExpanded ? "is-expanded" : ""}`}
+            onClick={handleToggleExpand}
             aria-expanded={isExpanded}
           >
-            {isExpanded ? (
-              <>
-                Show less <i className="bi bi-chevron-up"></i>
-              </>
-            ) : (
-              <>
-                Read more <i className="bi bi-chevron-down"></i>
-              </>
-            )}
+            <span>{isExpanded ? "Show less" : "Read more"}</span>
+            <i className="bi bi-chevron-down btn-read-more-icon"></i>
           </button>
         </div>
       )}
