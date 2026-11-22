@@ -216,7 +216,7 @@ const Home = () => {
 
         {/* Skill Spectrum Section Below Hero */}
         <div className="skill-spectrum-container">
-          <div className="skill-spectrum-header">
+          <div className="skill-spectrum-header justify-content-center">
             <span className="skill-spectrum-badge">
               <i className="bi bi-cpu"></i> TECH STACK
             </span>
