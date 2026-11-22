@@ -903,14 +903,14 @@ const AnalyticsDashboard = () => {
         </div>
       </div>
 
-      {/* "Who Visits, Who Clicks" Real-Time Activity Log */}
+      {/* Visitor Activity Log */}
       <div className="card border-0 shadow-sm rounded-3 bg-white overflow-hidden">
         <div className="p-3 p-md-4 border-bottom bg-white">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
             <div>
               <h5 className="fw-bold mb-1 text-dark">
                 <i className="bi bi-clock-history me-2 text-warning"></i>
-                Visitor Activity Log ("Who Visits, Who Clicks")
+                Visitor Activity Log
               </h5>
               <div className="text-muted small">
                 Showing {tableEvents.length} events • Real-time granular logs with IP, location, device & target
