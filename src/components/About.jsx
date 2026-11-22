@@ -25,36 +25,29 @@ const About = () => {
   const handleToggleExpand = () => {
     if (isExpanded) {
       if (aboutRef.current) {
-        const safeNavbarOffset = 85;
-        const desiredOffset = Math.max(
-          safeNavbarOffset,
-          aboutOffsetFromViewportTop.current ?? safeNavbarOffset
-        );
-        const currentAboutPageY =
-          window.pageYOffset + aboutRef.current.getBoundingClientRect().top;
-        const targetScrollY = Math.max(0, currentAboutPageY - desiredOffset);
-
-        setIsExpanded(false);
-
-        window.scrollTo({
-          top: targetScrollY,
-          behavior: "smooth"
-        });
-      } else {
-        setIsExpanded(false);
+        const rect = aboutRef.current.getBoundingClientRect();
+        // Only scroll if About section top has scrolled out of view above the navbar
+        if (rect.top < 75) {
+          aboutRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest"
+          });
+        }
       }
+      setIsExpanded(false);
     } else {
-      if (aboutRef.current) {
-        aboutOffsetFromViewportTop.current =
-          aboutRef.current.getBoundingClientRect().top;
-      }
       setIsExpanded(true);
     }
   };
 
   return (
     <div className="py-5 px-3">
-      <div ref={aboutRef} className="container py-3" style={{ maxWidth: "960px" }}>
+      <div
+        ref={aboutRef}
+        className="container py-3"
+        style={{ maxWidth: "960px", scrollMarginTop: "85px" }}
+      >
         {/* Unified Section Header */}
         <div className="text-center mb-5">
           <span className="section-eyebrow">{"// 01. ABOUT"}</span>

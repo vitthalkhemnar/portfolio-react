@@ -14,6 +14,7 @@ import {
   updateCompany,
   deleteCompany
 } from "../../redux/profile/profileSlice";
+import AnalyticsDashboard from "./AnalyticsDashboard";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -761,6 +762,14 @@ const Dashboard = () => {
                 </button>
                 <button
                   className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
+                    activeTab === "analytics" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("analytics")}
+                >
+                  <i className="bi bi-graph-up me-2"></i> Analytics
+                </button>
+                <button
+                  className={`nav-link text-nowrap text-start py-2 px-3 fw-semibold rounded-2 ${
                     activeTab === "profile" ? "active" : ""
                   }`}
                   onClick={() => setActiveTab("profile")}
@@ -865,6 +874,12 @@ const Dashboard = () => {
                       onClick={() => setActiveTab("profile")}
                     >
                       <i className="bi bi-pencil me-1"></i> Edit Profile Info
+                    </button>
+                    <button
+                      className="btn btn-outline-dark rounded-pill px-3 px-sm-4"
+                      onClick={() => setActiveTab("analytics")}
+                    >
+                      <i className="bi bi-graph-up me-1"></i> View Analytics
                     </button>
                     {dataService.isCloudSyncActive() && (
                       <button
@@ -1942,6 +1957,9 @@ const Dashboard = () => {
                 </form>
               </div>
             )}
+
+            {/* ANALYTICS TAB */}
+            {activeTab === "analytics" && <AnalyticsDashboard />}
           </div>
         </div>
       </div>

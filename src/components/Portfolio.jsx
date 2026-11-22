@@ -9,10 +9,12 @@ import Experience from "./Experience";
 import Project from "./Project";
 import Contact from "./Contact";
 import Footer from "./Footer";
+import analyticsService from "../services/analyticsService";
 
 const Portfolio = () => {
   useEffect(() => {
     AOS.init({ duration: 700, once: true, offset: 80 });
+    analyticsService.logVisit();
   }, []);
 
   return (

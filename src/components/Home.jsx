@@ -1,6 +1,7 @@
 import "./Home.css";
 import { useSelector } from "react-redux";
 import { getSkillIcon } from "./Skills";
+import analyticsService from "../services/analyticsService";
 
 const DEFAULT_SPECTRUM_SKILLS = [
   "Core Java (11/17/21)",
@@ -155,6 +156,7 @@ const Home = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-clean-secondary"
+                onClick={() => analyticsService.logResumeDownload("hero")}
                 title="Download Resume PDF"
               >
                 <i className="bi bi-download me-2"></i> Download Resume

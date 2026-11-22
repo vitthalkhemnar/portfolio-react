@@ -41,29 +41,18 @@ const ExperienceCard = ({ item, idx }) => {
   const handleToggleExpand = () => {
     if (isExpanded) {
       if (cardRef.current) {
-        const safeNavbarOffset = 85;
-        const desiredOffset = Math.max(
-          safeNavbarOffset,
-          cardOffsetFromViewportTop.current ?? safeNavbarOffset
-        );
-        const currentCardPageY =
-          window.pageYOffset + cardRef.current.getBoundingClientRect().top;
-        const targetScrollY = Math.max(0, currentCardPageY - desiredOffset);
-
-        setIsExpanded(false);
-
-        window.scrollTo({
-          top: targetScrollY,
-          behavior: "smooth"
-        });
-      } else {
-        setIsExpanded(false);
+        const rect = cardRef.current.getBoundingClientRect();
+        // Only scroll if the card top has scrolled out of view above the navbar
+        if (rect.top < 75) {
+          cardRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest"
+          });
+        }
       }
+      setIsExpanded(false);
     } else {
-      if (cardRef.current) {
-        cardOffsetFromViewportTop.current =
-          cardRef.current.getBoundingClientRect().top;
-      }
       setIsExpanded(true);
     }
   };
@@ -112,45 +101,30 @@ const ExperienceCard = ({ item, idx }) => {
       {description && (
         <div className="experience-card-desc-wrapper mb-2">
           <p className="experience-card-desc mb-0" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
-            {isLongDesc ? (
-              <>
-                <span>{description.slice(0, 175).trim()}</span>
-                {!isExpanded && <span className="text-muted">...</span>}
-              </>
-            ) : (
-              description
-            )}
+            {isExpanded || !isLongDesc
+              ? description
+              : `${description.slice(0, 175).trim()}...`}
           </p>
         </div>
       )}
 
       {/* Expandable Key Responsibilities & Impact */}
-      {needsReadMore && (
+      {hasResponsibilities && (
         <div className={`card-expandable-wrapper ${isExpanded ? "is-expanded" : ""}`}>
           <div className="card-expandable-inner">
-            {isLongDesc && (
-              <p
-                className="experience-card-desc mb-3"
-                style={{ color: "var(--text-body)", lineHeight: "1.8" }}
-              >
-                {description.slice(175).trim()}
-              </p>
-            )}
-            {hasResponsibilities && (
-              <div className="mb-3">
-                <div className="fw-semibold small text-white mb-1">
-                  Key Responsibilities & Impact:
-                </div>
-                <ul
-                  className="small ps-3 mb-0"
-                  style={{ color: "var(--text-body)", lineHeight: "1.7" }}
-                >
-                  {responsibilities.map((resp, rIdx) => (
-                    <li key={rIdx}>{resp.replace(/^[•-]\s*/, "")}</li>
-                  ))}
-                </ul>
+            <div className="mb-3">
+              <div className="fw-semibold small text-white mb-1">
+                Key Responsibilities & Impact:
               </div>
-            )}
+              <ul
+                className="small ps-3 mb-0"
+                style={{ color: "var(--text-body)", lineHeight: "1.7" }}
+              >
+                {responsibilities.map((resp, rIdx) => (
+                  <li key={rIdx}>{resp.replace(/^[•-]\s*/, "")}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       )}

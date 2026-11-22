@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
+import analyticsService from "../services/analyticsService";
 
 const Navbar = () => {
   const profile = useSelector((state) => state.profile);
@@ -44,6 +45,7 @@ const Navbar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-nav-resume d-flex align-items-center gap-1"
+                onClick={() => analyticsService.logResumeDownload("navbar_desktop")}
                 title="Download Resume PDF"
               >
                 <i className="bi bi-download"></i> Resume
@@ -94,7 +96,10 @@ const Navbar = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="btn-clean-secondary rounded-pill py-2 text-center w-100 justify-content-center d-flex align-items-center gap-2"
-            onClick={toggleSidebar}
+            onClick={() => {
+              toggleSidebar();
+              analyticsService.logResumeDownload("navbar_mobile");
+            }}
             title="Download Resume PDF"
           >
             <i className="bi bi-download"></i> Download Resume

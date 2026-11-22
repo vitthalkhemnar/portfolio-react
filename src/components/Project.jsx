@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import HorizontalCarousel from "./common/HorizontalCarousel";
+import analyticsService from "../services/analyticsService";
 
 const ProjectCard = ({ proj, pIdx, profile }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -36,29 +37,18 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
   const handleToggleExpand = () => {
     if (isExpanded) {
       if (cardRef.current) {
-        const safeNavbarOffset = 85;
-        const desiredOffset = Math.max(
-          safeNavbarOffset,
-          cardOffsetFromViewportTop.current ?? safeNavbarOffset
-        );
-        const currentCardPageY =
-          window.pageYOffset + cardRef.current.getBoundingClientRect().top;
-        const targetScrollY = Math.max(0, currentCardPageY - desiredOffset);
-
-        setIsExpanded(false);
-
-        window.scrollTo({
-          top: targetScrollY,
-          behavior: "smooth"
-        });
-      } else {
-        setIsExpanded(false);
+        const rect = cardRef.current.getBoundingClientRect();
+        // Only scroll if the card top has scrolled out of view above the navbar
+        if (rect.top < 75) {
+          cardRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest"
+          });
+        }
       }
+      setIsExpanded(false);
     } else {
-      if (cardRef.current) {
-        cardOffsetFromViewportTop.current =
-          cardRef.current.getBoundingClientRect().top;
-      }
       setIsExpanded(true);
     }
   };
@@ -78,6 +68,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="project-icon-link"
+              onClick={() => analyticsService.logRepoClick(name, githubLink)}
               title="GitHub Repository"
               aria-label={`GitHub Repository for ${name}`}
             >
@@ -90,6 +81,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="project-icon-link"
+              onClick={() => analyticsService.logDemoClick(name, demoLink)}
               title="Live Demo"
               aria-label={`Live Demo for ${name}`}
             >
@@ -106,43 +98,28 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
             className="project-card-desc small mb-0"
             style={{ color: "var(--text-body)", lineHeight: "1.7" }}
           >
-            {isLongDesc ? (
-              <>
-                <span>{description.slice(0, 135).trim()}</span>
-                {!isExpanded && <span className="text-muted">...</span>}
-              </>
-            ) : (
-              description
-            )}
+            {isExpanded || !isLongDesc
+              ? description
+              : `${description.slice(0, 135).trim()}...`}
           </p>
         </div>
       )}
 
-      {/* Expandable Key Features & Continuation */}
-      {needsReadMore && (
+      {/* Expandable Key Highlights */}
+      {hasFeatures && (
         <div className={`card-expandable-wrapper ${isExpanded ? "is-expanded" : ""}`}>
           <div className="card-expandable-inner">
-            {isLongDesc && (
-              <p
-                className="project-card-desc small mb-2"
-                style={{ color: "var(--text-body)", lineHeight: "1.7" }}
+            <div className="mb-2">
+              <div className="fw-semibold small text-white mb-1">Key Highlights:</div>
+              <ul
+                className="small ps-3 mb-0"
+                style={{ color: "var(--text-body)", lineHeight: "1.6" }}
               >
-                {description.slice(135).trim()}
-              </p>
-            )}
-            {hasFeatures && (
-              <div className="mb-2">
-                <div className="fw-semibold small text-white mb-1">Key Highlights:</div>
-                <ul
-                  className="small ps-3 mb-0"
-                  style={{ color: "var(--text-body)", lineHeight: "1.6" }}
-                >
-                  {features.map((feat, fIdx) => (
-                    <li key={fIdx}>{feat.replace(/^[•-]\s*/, "")}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                {features.map((feat, fIdx) => (
+                  <li key={fIdx}>{feat.replace(/^[•-]\s*/, "")}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       )}
