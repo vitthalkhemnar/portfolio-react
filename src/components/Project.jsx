@@ -6,7 +6,6 @@ import analyticsService from "../services/analyticsService";
 const ProjectCard = ({ proj, pIdx, profile }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef(null);
-  const cardOffsetFromViewportTop = useRef(null);
 
   const name = proj.name || `Project ${pIdx + 1}`;
   const category = proj.category || "";

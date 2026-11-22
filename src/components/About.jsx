@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 const About = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const aboutRef = useRef(null);
-  const aboutOffsetFromViewportTop = useRef(null);
 
   const profile = useSelector((state) => state.profile);
   const companies = useSelector((state) => state.profile.companies) || [];

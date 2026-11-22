@@ -5,7 +5,6 @@ import HorizontalCarousel from "./common/HorizontalCarousel";
 const ExperienceCard = ({ item, idx }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef(null);
-  const cardOffsetFromViewportTop = useRef(null);
 
   const role = item.role || "";
   const company = item.company || "";
