@@ -85,7 +85,6 @@ const HorizontalCarousel = ({
 
   // Mouse Drag handlers
   const handleMouseDown = (e) => {
-    // Prevent drag trigger if clicked interactive element
     if (e.target.closest("a, button, input, textarea, select")) return;
     const el = trackRef.current;
     if (!el) return;
@@ -116,7 +115,7 @@ const HorizontalCarousel = ({
   return (
     <div className="horizontal-scroll-container">
       {/* Header with Title and Modern Controls */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end gap-3 mb-4">
+      <div className="d-flex flex-column justify-content-between align-items-start gap-2 mb-3">
         <div>
           {eyebrow && <span className="section-eyebrow">{eyebrow}</span>}
           {title && <h2 className="section-heading mb-1">{title}</h2>}
@@ -127,8 +126,9 @@ const HorizontalCarousel = ({
           )}
         </div>
 
+        {/* Carousel Arrow & Badge Controls */}
         {hasMultiple && (
-          <div className="d-flex align-items-center gap-2 flex-shrink-0 align-self-end align-self-md-auto pt-2 pt-md-0">
+          <div className="d-flex align-items-center justify-content-between gap-2 flex-shrink-0 w-100 pt-2">
             {badgeText && (
               <span
                 className="badge rounded-pill me-1"
@@ -144,26 +144,28 @@ const HorizontalCarousel = ({
                 {badgeText}
               </span>
             )}
-            <button
-              type="button"
-              className="carousel-nav-btn"
-              onClick={() => scrollByDirection("prev")}
-              disabled={!canScrollLeft}
-              aria-label="Scroll left"
-              title="Previous item"
-            >
-              <i className="bi bi-chevron-left"></i>
-            </button>
-            <button
-              type="button"
-              className="carousel-nav-btn"
-              onClick={() => scrollByDirection("next")}
-              disabled={!canScrollRight}
-              aria-label="Scroll right"
-              title="Next item"
-            >
-              <i className="bi bi-chevron-right"></i>
-            </button>
+            <div className="d-flex align-items-center gap-2 ms-auto">
+              <button
+                type="button"
+                className="carousel-nav-btn"
+                onClick={() => scrollByDirection("prev")}
+                disabled={!canScrollLeft}
+                aria-label="Scroll left"
+                title="Previous item"
+              >
+                <i className="bi bi-chevron-left"></i>
+              </button>
+              <button
+                type="button"
+                className="carousel-nav-btn"
+                onClick={() => scrollByDirection("next")}
+                disabled={!canScrollRight}
+                aria-label="Scroll right"
+                title="Next item"
+              >
+                <i className="bi bi-chevron-right"></i>
+              </button>
+            </div>
           </div>
         )}
       </div>

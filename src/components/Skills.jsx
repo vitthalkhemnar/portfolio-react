@@ -389,33 +389,41 @@ const Skills = () => {
               <p className="mb-0">Skills details will be updated soon.</p>
             </div>
           </div>
-        ) : categories.length === 1 ? (
-          <div>
-            <div className="text-center mb-5">
-              <span className="section-eyebrow">{"// 02. SKILLS"}</span>
-              <h2 className="section-heading">Skills & Technologies</h2>
-              <p className="section-desc">
-                Architectural domains, core frameworks, distributed systems, and modern engineering tools.
-              </p>
-            </div>
-            <div className="row justify-content-center">
-              <div className="col-12 col-md-8 col-lg-7">
-                <SkillDomainCard domain={categories[0]} dIdx={0} />
+        ) : (
+          <>
+            {/* Desktop View: Original 2-column grid with centered header (Don't change anything for desktop) */}
+            <div className="d-none d-md-block">
+              <div className="text-center mb-5">
+                <span className="section-eyebrow">{"// 02. SKILLS"}</span>
+                <h2 className="section-heading">Skills & Technologies</h2>
+                <p className="section-desc">
+                  Architectural domains, core frameworks, distributed systems, and modern engineering tools.
+                </p>
+              </div>
+              <div className="row g-4">
+                {categories.map((domain, dIdx) => (
+                  <div key={domain.id || dIdx} className="col-12 col-md-6">
+                    <SkillDomainCard domain={domain} dIdx={dIdx} />
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        ) : (
-          <HorizontalCarousel
-            items={categories}
-            eyebrow="// 02. SKILLS"
-            title="Skills & Technologies"
-            subtitle="Architectural domains, core frameworks, distributed systems, and modern engineering tools."
-            badgeText={`${categories.length} Domains`}
-            itemClassName="skills-card-item"
-            renderItem={(domain, dIdx) => (
-              <SkillDomainCard domain={domain} dIdx={dIdx} />
-            )}
-          />
+
+            {/* Mobile View: Swipeable horizontal carousel with peek & controls user loved */}
+            <div className="d-block d-md-none">
+              <HorizontalCarousel
+                items={categories}
+                eyebrow="// 02. SKILLS"
+                title="Skills & Technologies"
+                subtitle="Architectural domains, core frameworks, distributed systems, and modern engineering tools."
+                badgeText={`${categories.length} Domains`}
+                itemClassName="skills-card-item"
+                renderItem={(domain, dIdx) => (
+                  <SkillDomainCard domain={domain} dIdx={dIdx} />
+                )}
+              />
+            </div>
+          </>
         )}
       </div>
     </div>

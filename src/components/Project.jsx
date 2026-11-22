@@ -158,37 +158,52 @@ const Project = () => {
               <p className="mb-0">Featured projects will be showcased here soon.</p>
             </div>
           </div>
-        ) : projects.length === 1 ? (
-          <div>
-            <div className="text-center mb-5">
-              <span className="section-eyebrow">{"// 04. PROJECTS"}</span>
-              <h2 className="section-heading">Featured Projects</h2>
-              <p className="section-desc">
-                {profile.projectsSubtitle ||
-                  "Production systems, scalable architectures, and web applications."}
-              </p>
-            </div>
-            <div className="row justify-content-center">
-              <div className="col-12 col-md-8 col-lg-7">
-                <ProjectCard proj={projects[0]} pIdx={0} profile={profile} />
+        ) : (
+          <>
+            {/* Desktop View: Original responsive grid with centered header (Don't change anything for desktop) */}
+            <div className="d-none d-md-block">
+              <div className="text-center mb-5">
+                <span className="section-eyebrow">{"// 04. PROJECTS"}</span>
+                <h2 className="section-heading">Featured Projects</h2>
+                <p className="section-desc">
+                  {profile.projectsSubtitle ||
+                    "Production systems, scalable architectures, and web applications."}
+                </p>
+              </div>
+              <div className="row g-4 justify-content-center">
+                {projects.map((proj, pIdx) => (
+                  <div
+                    key={proj.id || pIdx}
+                    className={
+                      projects.length === 1
+                        ? "col-12 col-md-8 col-lg-7 d-flex justify-content-center"
+                        : "col-12 col-md-6 d-flex"
+                    }
+                  >
+                    <ProjectCard proj={proj} pIdx={pIdx} profile={profile} />
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        ) : (
-          <HorizontalCarousel
-            items={projects}
-            eyebrow="// 04. PROJECTS"
-            title="Featured Projects"
-            subtitle={
-              profile.projectsSubtitle ||
-              "Production systems, scalable architectures, and modern web applications."
-            }
-            badgeText={`${projects.length} Projects`}
-            itemClassName="project-card-item"
-            renderItem={(proj, pIdx) => (
-              <ProjectCard proj={proj} pIdx={pIdx} profile={profile} />
-            )}
-          />
+
+            {/* Mobile View: Swipeable horizontal carousel with peek & controls */}
+            <div className="d-block d-md-none">
+              <HorizontalCarousel
+                items={projects}
+                eyebrow="// 04. PROJECTS"
+                title="Featured Projects"
+                subtitle={
+                  profile.projectsSubtitle ||
+                  "Production systems, scalable architectures, and modern web applications."
+                }
+                badgeText={`${projects.length} Projects`}
+                itemClassName="project-card-item"
+                renderItem={(proj, pIdx) => (
+                  <ProjectCard proj={proj} pIdx={pIdx} profile={profile} />
+                )}
+              />
+            </div>
+          </>
         )}
       </div>
     </div>

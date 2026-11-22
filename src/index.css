@@ -782,6 +782,120 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffb076;
 }
 
+/* ==========================================================================
+   Mobile-Only Responsiveness (Desktop remains completely untouched)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  /* Section title and subtitle on mobile */
+  .section-heading {
+    font-size: 1.75rem !important;
+  }
+  
+  .section-eyebrow {
+    font-size: 0.78rem !important;
+  }
+
+  .section-desc {
+    font-size: 0.94rem !important;
+  }
+
+  /* Compact padding on cards for mobile screens */
+  .clean-card {
+    padding: 1.25rem 1.1rem !important;
+    border-radius: 16px !important;
+  }
+
+  /* Horizontal scroll track on mobile: tighter gap and smooth touch momentum */
+  .horizontal-scroll-track {
+    gap: 1rem !important;
+    padding: 0.25rem 0.15rem 0.85rem 0.15rem !important;
+  }
+
+  /* Mobile card sizing with intentional 14% peek of next card */
+  .project-card-item,
+  .skills-card-item,
+  .experience-card-item {
+    flex: 0 0 86% !important;
+    max-width: calc(100vw - 44px) !important;
+    min-width: 270px !important;
+  }
+
+  /* Mobile arrows */
+  .carousel-nav-btn {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Mobile dots */
+  .carousel-dots-wrapper {
+    gap: 6px !important;
+    padding-top: 0.65rem !important;
+  }
+
+  .carousel-dot {
+    width: 7px !important;
+    height: 7px !important;
+  }
+
+  .carousel-dot.active {
+    width: 20px !important;
+  }
+
+  /* Skills chips on mobile */
+  .skills-card-item .clean-chip {
+    padding: 4px 10px !important;
+    font-size: 0.8rem !important;
+    gap: 6px !important;
+  }
+
+  /* Project cards on mobile */
+  .project-card-item h5 {
+    font-size: 1.1rem !important;
+  }
+
+  .project-card-item .clean-badge-accent {
+    font-size: 0.74rem !important;
+    padding: 3px 8px !important;
+  }
+
+  .project-card-item .clean-chip {
+    padding: 3px 9px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Experience cards on mobile */
+  .experience-card-item h5 {
+    font-size: 1.1rem !important;
+  }
+
+  .experience-card-item .badge {
+    font-size: 0.74rem !important;
+    padding: 3px 9px !important;
+  }
+
+  .experience-card-item ul {
+    padding-left: 1.1rem !important;
+    font-size: 0.86rem !important;
+  }
+}
+
+/* Extra small screens (< 400px) */
+@media (max-width: 399.98px) {
+  .project-card-item,
+  .skills-card-item,
+  .experience-card-item {
+    flex: 0 0 88% !important;
+    max-width: calc(100vw - 32px) !important;
+    min-width: 250px !important;
+  }
+
+  .clean-card {
+    padding: 1rem 0.9rem !important;
+  }
+}
+
+
 
 
 

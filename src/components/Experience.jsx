@@ -170,33 +170,41 @@ const Experience = () => {
               <p className="mb-0">Experience details will be updated soon.</p>
             </div>
           </div>
-        ) : companies.length === 1 ? (
-          <div>
-            <div className="text-center mb-5">
-              <span className="section-eyebrow">{"// 03. EXPERIENCE"}</span>
-              <h2 className="section-heading">Work Experience</h2>
-              <p className="section-desc">
-                {profile.experienceSubtitle ||
-                  "Professional journey, impact, and engineering milestones."}
-              </p>
-            </div>
-            <div className="d-flex flex-column gap-4">
-              <ExperienceCard item={companies[0]} idx={0} />
-            </div>
-          </div>
         ) : (
-          <HorizontalCarousel
-            items={companies}
-            eyebrow="// 03. EXPERIENCE"
-            title="Work Experience"
-            subtitle={
-              profile.experienceSubtitle ||
-              "Professional journey, impact, and engineering milestones."
-            }
-            badgeText={`${companies.length} Roles`}
-            itemClassName="experience-card-item"
-            renderItem={(item, idx) => <ExperienceCard item={item} idx={idx} />}
-          />
+          <>
+            {/* Desktop View: Original vertical stack with centered header (Don't change anything for desktop) */}
+            <div className="d-none d-md-block">
+              <div className="text-center mb-5">
+                <span className="section-eyebrow">{"// 03. EXPERIENCE"}</span>
+                <h2 className="section-heading">Work Experience</h2>
+                <p className="section-desc">
+                  {profile.experienceSubtitle ||
+                    "Professional journey, impact, and engineering milestones."}
+                </p>
+              </div>
+              <div className="d-flex flex-column gap-4">
+                {companies.map((item, idx) => (
+                  <ExperienceCard key={item.id || idx} item={item} idx={idx} />
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile View: Swipeable horizontal carousel with peek & controls */}
+            <div className="d-block d-md-none">
+              <HorizontalCarousel
+                items={companies}
+                eyebrow="// 03. EXPERIENCE"
+                title="Work Experience"
+                subtitle={
+                  profile.experienceSubtitle ||
+                  "Professional journey, impact, and engineering milestones."
+                }
+                badgeText={`${companies.length} Roles`}
+                itemClassName="experience-card-item"
+                renderItem={(item, idx) => <ExperienceCard item={item} idx={idx} />}
+              />
+            </div>
+          </>
         )}
       </div>
     </div>
