@@ -1,5 +1,29 @@
 import "./Home.css";
 import { useSelector } from "react-redux";
+import { getSkillIcon } from "./Skills";
+
+const DEFAULT_SPECTRUM_SKILLS = [
+  "Core Java (11/17/21)",
+  "Spring Boot",
+  "Microservices",
+  "Spring Data JPA",
+  "Hibernate",
+  "RESTful APIs",
+  "Distributed Systems",
+  "Spring Security",
+  "PostgreSQL",
+  "MySQL",
+  "Redis",
+  "Docker",
+  "Kubernetes",
+  "AWS (EC2, S3)",
+  "CI/CD Pipelines",
+  "Git & GitHub",
+  "Linux",
+  "ReactJS",
+  "Postman",
+  "JUnit & Mockito"
+];
 
 const Home = () => {
   const profile = useSelector((state) => state.profile);
@@ -35,7 +59,7 @@ const Home = () => {
       }
     }
 
-    // In remaining paragraphs, strip leading "I'm [Name], " or "A [Role] specializing in"
+    // In remaining paragraphs, strip leading self-introductions
     paras = paras
       .map((p) => {
         let cleaned = p;
@@ -70,22 +94,33 @@ const Home = () => {
 
   const paragraphs = getCleanParagraphs(summary, name, role);
 
-  const displaySkills =
+  // Raw skill list for spectrum
+  const rawSkills =
     Array.isArray(profile.skills) && profile.skills.length > 0
-      ? profile.skills.slice(0, 6)
-      : [];
+      ? profile.skills
+      : DEFAULT_SPECTRUM_SKILLS;
+
+  const spectrumItems = rawSkills.map((skill) => ({
+    name: skill,
+    icon: getSkillIcon(skill)
+  }));
+
+  // Duplicate list to achieve continuous seamless marquee loop
+  const duplicatedSpectrum = [...spectrumItems, ...spectrumItems];
 
   return (
     <section className="hero-section d-flex align-items-center">
       <div className="container py-4">
         <div className="row align-items-center g-5 py-4">
-          {/* Left Column (Content) */}
+          {/* Left Column: Narrative Content with Action Buttons and Links below Summary */}
           <div className="col-12 col-lg-7 text-center text-lg-start">
             {/* Availability Status Pill */}
             {statusText && (
               <div className="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 rounded-pill hero-status-pill">
                 <span className="hero-status-dot"></span>
-                <span className="small fw-medium" style={{ color: "#e4e4e7" }}>{statusText}</span>
+                <span className="small fw-medium" style={{ color: "#e4e4e7" }}>
+                  {statusText}
+                </span>
               </div>
             )}
 
@@ -94,14 +129,10 @@ const Home = () => {
               {name || "Software Engineer"}
             </h1>
 
-            {/* Professional Role Designation (strictly single occurrence) */}
-            {role && (
-              <p className="hero-author-role mb-3">
-                {role}
-              </p>
-            )}
+            {/* Professional Role Designation */}
+            {role && <p className="hero-author-role mb-3">{role}</p>}
 
-            {/* Authentic Human Introduction */}
+            {/* Authentic Human Introduction / Summary */}
             {paragraphs.length > 0 && (
               <div className="hero-editorial-bio mb-4">
                 {paragraphs.map((para, idx) => (
@@ -112,8 +143,8 @@ const Home = () => {
               </div>
             )}
 
-            {/* Action Buttons & Icon Links */}
-            <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">
+            {/* Action Buttons: Explore Work & Download Resume directly below summary */}
+            <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-3">
               <a href="#project" className="btn-clean-primary">
                 Explore Work <i className="bi bi-arrow-down-short"></i>
               </a>
@@ -128,62 +159,50 @@ const Home = () => {
               >
                 <i className="bi bi-download me-2"></i> Download Resume
               </a>
-
-              {/* Icon Buttons for Social / Contact Links */}
-              {(githubUrl || linkedInUrl || email) && (
-                <div className="d-flex align-items-center gap-2 ms-lg-2">
-                  {githubUrl && (
-                    <a
-                      href={githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hero-social-link"
-                      title="GitHub"
-                      aria-label="GitHub Profile"
-                    >
-                      <i className="bi bi-github"></i>
-                    </a>
-                  )}
-                  {linkedInUrl && (
-                    <a
-                      href={linkedInUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hero-social-link"
-                      title="LinkedIn"
-                      aria-label="LinkedIn Profile"
-                    >
-                      <i className="bi bi-linkedin"></i>
-                    </a>
-                  )}
-                  {email && (
-                    <a
-                      href={`mailto:${email}`}
-                      className="hero-social-link"
-                      title="Email"
-                      aria-label="Send Email"
-                    >
-                      <i className="bi bi-envelope"></i>
-                    </a>
-                  )}
-                </div>
-              )}
             </div>
 
-            {/* Tech Stack Chips */}
-            {displaySkills.length > 0 && (
-              <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-2 pt-2">
-                <span className="small text-muted fw-semibold me-1">Tech Stack:</span>
-                {displaySkills.map((tech) => (
-                  <span key={tech} className="clean-chip">
-                    {tech}
-                  </span>
-                ))}
+            {/* Social / Contact Links directly below Explore Work & Download Resume */}
+            {(githubUrl || linkedInUrl || email) && (
+              <div className="d-flex align-items-center justify-content-center justify-content-lg-start gap-2 pt-1">
+                {githubUrl && (
+                  <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hero-social-link"
+                    title="GitHub"
+                    aria-label="GitHub Profile"
+                  >
+                    <i className="bi bi-github"></i>
+                  </a>
+                )}
+                {linkedInUrl && (
+                  <a
+                    href={linkedInUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hero-social-link"
+                    title="LinkedIn"
+                    aria-label="LinkedIn Profile"
+                  >
+                    <i className="bi bi-linkedin"></i>
+                  </a>
+                )}
+                {email && (
+                  <a
+                    href={`mailto:${email}`}
+                    className="hero-social-link"
+                    title="Email"
+                    aria-label="Send Email"
+                  >
+                    <i className="bi bi-envelope"></i>
+                  </a>
+                )}
               </div>
             )}
           </div>
 
-          {/* Right Column (Big Image) */}
+          {/* Right Column: Hero Photo */}
           <div className="col-12 col-lg-5 d-flex justify-content-center">
             <div className="hero-photo-wrapper">
               <img
@@ -191,6 +210,41 @@ const Home = () => {
                 alt={name || "Profile"}
                 className="hero-photo-img"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Skill Spectrum Section Below Hero */}
+        <div className="skill-spectrum-container">
+          <div className="skill-spectrum-header">
+            <span className="skill-spectrum-badge">
+              <i className="bi bi-cpu"></i> TECH STACK
+            </span>
+          </div>
+
+          <div className="skill-spectrum-track-wrapper">
+            <div className="skill-spectrum-marquee">
+              {duplicatedSpectrum.map((item, idx) => (
+                <div key={idx} className="skill-spectrum-item">
+                  {item.icon ? (
+                    <i
+                      className={`bi ${item.icon}`}
+                      style={{ color: "var(--primary)", fontSize: "0.92rem" }}
+                    ></i>
+                  ) : (
+                    <span
+                      className="rounded-circle"
+                      style={{
+                        width: "6px",
+                        height: "6px",
+                        backgroundColor: "var(--primary)",
+                        boxShadow: "0 0 6px rgba(255, 107, 0, 0.7)"
+                      }}
+                    ></span>
+                  )}
+                  <span>{item.name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

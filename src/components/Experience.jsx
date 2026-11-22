@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import HorizontalCarousel from "./common/HorizontalCarousel";
 
 const ExperienceCard = ({ item, idx }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -46,12 +47,17 @@ const ExperienceCard = ({ item, idx }) => {
       : responsibilities;
 
   return (
-    <div key={item.id || idx} className="clean-card p-4 p-md-5 w-100">
+    <div key={item.id || idx} className="clean-card p-4 p-md-5 w-100 h-100 d-flex flex-column">
       {/* Header: Role, Company, Location, Duration */}
       <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
         <div className="min-w-0 flex-grow-1">
           <h5 className="fw-bold mb-1 text-white text-break">
-            {role} {company && <span className="fw-medium" style={{ color: "var(--primary)" }}>@ {company}</span>}
+            {role}{" "}
+            {company && (
+              <span className="fw-medium" style={{ color: "var(--primary)" }}>
+                @ {company}
+              </span>
+            )}
           </h5>
           <div className="d-flex flex-wrap gap-2 small mt-1 text-muted">
             {location && (
@@ -90,7 +96,10 @@ const ExperienceCard = ({ item, idx }) => {
       {/* Key Responsibilities */}
       {displayResponsibilities.length > 0 && (
         <div className="mb-3">
-          <ul className="small ps-3 mb-0" style={{ color: "var(--text-body)", lineHeight: "1.7" }}>
+          <ul
+            className="small ps-3 mb-0"
+            style={{ color: "var(--text-body)", lineHeight: "1.7" }}
+          >
             {displayResponsibilities.map((resp, rIdx) => (
               <li key={rIdx}>{resp.replace(/^[•-]\s*/, "")}</li>
             ))}
@@ -113,18 +122,19 @@ const ExperienceCard = ({ item, idx }) => {
               </>
             ) : (
               <>
-                Read more ({hasManyResp ? `+${responsibilities.length - 2} more points` : "full details"}){" "}
-                <i className="bi bi-chevron-down"></i>
+                Read more (
+                {hasManyResp ? `+${responsibilities.length - 2} more points` : "full details"}
+                ) <i className="bi bi-chevron-down"></i>
               </>
             )}
           </button>
         </div>
       )}
 
-      {/* Technologies */}
+      {/* Technologies pinned to card bottom */}
       {technologies.length > 0 && (
         <div
-          className="d-flex flex-wrap gap-2 pt-3"
+          className="d-flex flex-wrap gap-2 pt-3 mt-auto"
           style={{ borderTop: "1px solid var(--border-subtle)" }}
         >
           {technologies.map((tech, tIdx) => (
@@ -145,26 +155,48 @@ const Experience = () => {
 
   return (
     <div className="py-5 px-3">
-      <div className="container py-3" style={{ maxWidth: "960px" }}>
-        {/* Unified Section Header */}
-        <div className="text-center mb-5">
-          <span className="section-eyebrow">{"// 03. EXPERIENCE"}</span>
-          <h2 className="section-heading">Work Experience</h2>
-          <p className="section-desc">
-            {profile.experienceSubtitle || "Professional journey, impact, and engineering milestones."}
-          </p>
-        </div>
-
+      <div className="container py-3" style={{ maxWidth: "1000px" }}>
         {companies.length === 0 ? (
-          <div className="clean-card p-5 text-center text-muted">
-            <p className="mb-0">Experience details will be updated soon.</p>
+          <div>
+            <div className="text-center mb-5">
+              <span className="section-eyebrow">{"// 03. EXPERIENCE"}</span>
+              <h2 className="section-heading">Work Experience</h2>
+              <p className="section-desc">
+                {profile.experienceSubtitle ||
+                  "Professional journey, impact, and engineering milestones."}
+              </p>
+            </div>
+            <div className="clean-card p-5 text-center text-muted">
+              <p className="mb-0">Experience details will be updated soon.</p>
+            </div>
+          </div>
+        ) : companies.length === 1 ? (
+          <div>
+            <div className="text-center mb-5">
+              <span className="section-eyebrow">{"// 03. EXPERIENCE"}</span>
+              <h2 className="section-heading">Work Experience</h2>
+              <p className="section-desc">
+                {profile.experienceSubtitle ||
+                  "Professional journey, impact, and engineering milestones."}
+              </p>
+            </div>
+            <div className="d-flex flex-column gap-4">
+              <ExperienceCard item={companies[0]} idx={0} />
+            </div>
           </div>
         ) : (
-          <div className="d-flex flex-column gap-4">
-            {companies.map((item, idx) => (
-              <ExperienceCard key={item.id || idx} item={item} idx={idx} />
-            ))}
-          </div>
+          <HorizontalCarousel
+            items={companies}
+            eyebrow="// 03. EXPERIENCE"
+            title="Work Experience"
+            subtitle={
+              profile.experienceSubtitle ||
+              "Professional journey, impact, and engineering milestones."
+            }
+            badgeText={`${companies.length} Roles`}
+            itemClassName="experience-card-item"
+            renderItem={(item, idx) => <ExperienceCard item={item} idx={idx} />}
+          />
         )}
       </div>
     </div>

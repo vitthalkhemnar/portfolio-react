@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import HorizontalCarousel from "./common/HorizontalCarousel";
 
 const ProjectCard = ({ proj, pIdx, profile }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -36,16 +37,12 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
       : description;
 
   return (
-    <div className="clean-card p-4 p-md-4 flex-fill d-flex flex-column w-100">
+    <div className="clean-card p-4 p-md-4 d-flex flex-column w-100 h-100">
       {/* Header: Title, Category, and Action Links */}
       <div className="d-flex justify-content-between align-items-start gap-2 mb-2 flex-wrap flex-sm-nowrap">
         <div className="min-w-0 flex-grow-1">
           <h5 className="fw-bold text-white mb-1 text-break">{name}</h5>
-          {category && (
-            <span className="clean-badge-accent">
-              {category}
-            </span>
-          )}
+          {category && <span className="clean-badge-accent">{category}</span>}
         </div>
         <div className="d-flex gap-2 flex-shrink-0 pt-1">
           {githubLink && (
@@ -143,40 +140,55 @@ const Project = () => {
   const reduxProjects = useSelector((state) => state.profile.projects);
   const profile = useSelector((state) => state.profile);
   const projects = Array.isArray(reduxProjects) ? reduxProjects : [];
-  const isSingle = projects.length === 1;
 
   return (
     <div className="py-5 px-3">
-      <div className="container py-3" style={{ maxWidth: "960px" }}>
-        {/* Unified Section Header */}
-        <div className="text-center mb-5">
-          <span className="section-eyebrow">{"// 04. PROJECTS"}</span>
-          <h2 className="section-heading">Featured Projects</h2>
-          <p className="section-desc">
-            {profile.projectsSubtitle || "Production systems, scalable architectures, and web applications."}
-          </p>
-        </div>
-
+      <div className="container py-3" style={{ maxWidth: "1000px" }}>
         {projects.length === 0 ? (
-          <div className="clean-card p-5 text-center text-muted">
-            <p className="mb-0">Featured projects will be showcased here soon.</p>
+          <div>
+            <div className="text-center mb-5">
+              <span className="section-eyebrow">{"// 04. PROJECTS"}</span>
+              <h2 className="section-heading">Featured Projects</h2>
+              <p className="section-desc">
+                {profile.projectsSubtitle ||
+                  "Production systems, scalable architectures, and web applications."}
+              </p>
+            </div>
+            <div className="clean-card p-5 text-center text-muted">
+              <p className="mb-0">Featured projects will be showcased here soon.</p>
+            </div>
+          </div>
+        ) : projects.length === 1 ? (
+          <div>
+            <div className="text-center mb-5">
+              <span className="section-eyebrow">{"// 04. PROJECTS"}</span>
+              <h2 className="section-heading">Featured Projects</h2>
+              <p className="section-desc">
+                {profile.projectsSubtitle ||
+                  "Production systems, scalable architectures, and web applications."}
+              </p>
+            </div>
+            <div className="row justify-content-center">
+              <div className="col-12 col-md-8 col-lg-7">
+                <ProjectCard proj={projects[0]} pIdx={0} profile={profile} />
+              </div>
+            </div>
           </div>
         ) : (
-          /* Centered row so single project or odd project count centers properly */
-          <div className="row g-4 justify-content-center">
-            {projects.map((proj, pIdx) => (
-              <div
-                key={proj.id || pIdx}
-                className={`${
-                  isSingle
-                    ? "col-12 col-md-8 col-lg-7 d-flex justify-content-center"
-                    : "col-12 col-md-6 d-flex"
-                }`}
-              >
-                <ProjectCard proj={proj} pIdx={pIdx} profile={profile} />
-              </div>
-            ))}
-          </div>
+          <HorizontalCarousel
+            items={projects}
+            eyebrow="// 04. PROJECTS"
+            title="Featured Projects"
+            subtitle={
+              profile.projectsSubtitle ||
+              "Production systems, scalable architectures, and modern web applications."
+            }
+            badgeText={`${projects.length} Projects`}
+            itemClassName="project-card-item"
+            renderItem={(proj, pIdx) => (
+              <ProjectCard proj={proj} pIdx={pIdx} profile={profile} />
+            )}
+          />
         )}
       </div>
     </div>

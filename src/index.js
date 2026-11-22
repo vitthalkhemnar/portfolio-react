@@ -10,6 +10,37 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
+// Ignore third-party browser extension errors (e.g. MetaMask, wallet extensions)
+if (typeof window !== "undefined") {
+  const isExtensionError = (msg, src) => {
+    const m = String(msg || "").toLowerCase();
+    const s = String(src || "").toLowerCase();
+    return (
+      s.includes("chrome-extension://") ||
+      s.includes("moz-extension://") ||
+      m.includes("metamask") ||
+      m.includes("failed to connect to metamask")
+    );
+  };
+
+  const originalOnError = window.onerror;
+  window.onerror = (message, source, lineno, colno, error) => {
+    if (isExtensionError(message, source) || isExtensionError(error?.message, error?.stack)) {
+      return true;
+    }
+    return originalOnError ? originalOnError(message, source, lineno, colno, error) : false;
+  };
+
+  window.addEventListener("unhandledrejection", (event) => {
+    const reason = event.reason;
+    const msg = typeof reason === "string" ? reason : reason?.message || "";
+    const stack = reason?.stack || "";
+    if (isExtensionError(msg, stack)) {
+      event.preventDefault();
+    }
+  });
+}
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
