@@ -33,18 +33,13 @@ const ExperienceCard = ({ item, idx }) => {
 
   // Determine if card content exceeds standard compact view
   const isLongDesc = description.length > 180;
-  const hasManyResp = responsibilities.length > 2;
-  const needsReadMore = isLongDesc || hasManyResp;
+  const hasResponsibilities = responsibilities.length > 0;
+  const needsReadMore = isLongDesc || hasResponsibilities;
 
   const displayDescription =
     !isExpanded && isLongDesc
       ? `${description.slice(0, 175).trim()}...`
       : description;
-
-  const displayResponsibilities =
-    !isExpanded && hasManyResp
-      ? responsibilities.slice(0, 2)
-      : responsibilities;
 
   return (
     <div key={item.id || idx} className="clean-card p-4 p-md-5 w-100 d-flex flex-column">
@@ -86,21 +81,22 @@ const ExperienceCard = ({ item, idx }) => {
         )}
       </div>
 
-      {/* Description */}
+      {/* Description / Summary */}
       {description && (
         <p className="mb-3" style={{ color: "var(--text-body)", lineHeight: "1.8" }}>
           {displayDescription}
         </p>
       )}
 
-      {/* Key Responsibilities */}
-      {displayResponsibilities.length > 0 && (
-        <div className="mb-3">
+      {/* Expandable Key Responsibilities & Impact */}
+      {isExpanded && hasResponsibilities && (
+        <div className="mb-3 card-expandable-content">
+          <div className="fw-semibold small text-white mb-1">Key Responsibilities & Impact:</div>
           <ul
             className="small ps-3 mb-0"
             style={{ color: "var(--text-body)", lineHeight: "1.7" }}
           >
-            {displayResponsibilities.map((resp, rIdx) => (
+            {responsibilities.map((resp, rIdx) => (
               <li key={rIdx}>{resp.replace(/^[•-]\s*/, "")}</li>
             ))}
           </ul>
@@ -122,9 +118,7 @@ const ExperienceCard = ({ item, idx }) => {
               </>
             ) : (
               <>
-                Read more (
-                {hasManyResp ? `+${responsibilities.length - 2} more points` : "full details"}
-                ) <i className="bi bi-chevron-down"></i>
+                Read more <i className="bi bi-chevron-down"></i>
               </>
             )}
           </button>
