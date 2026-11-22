@@ -37,7 +37,7 @@ const ProjectCard = ({ proj, pIdx, profile }) => {
       : description;
 
   return (
-    <div className="clean-card p-4 p-md-4 d-flex flex-column w-100 h-100">
+    <div className="clean-card p-4 p-md-4 d-flex flex-column w-100">
       {/* Header: Title, Category, and Action Links */}
       <div className="d-flex justify-content-between align-items-start gap-2 mb-2 flex-wrap flex-sm-nowrap">
         <div className="min-w-0 flex-grow-1">
@@ -170,18 +170,9 @@ const Project = () => {
                     "Production systems, scalable architectures, and web applications."}
                 </p>
               </div>
-              <div className="row g-4 justify-content-center">
+              <div className="d-flex flex-column gap-4 mx-auto" style={{ maxWidth: "780px" }}>
                 {projects.map((proj, pIdx) => (
-                  <div
-                    key={proj.id || pIdx}
-                    className={
-                      projects.length === 1
-                        ? "col-12 col-md-8 col-lg-7 d-flex justify-content-center"
-                        : "col-12 col-md-6 d-flex"
-                    }
-                  >
-                    <ProjectCard proj={proj} pIdx={pIdx} profile={profile} />
-                  </div>
+                  <ProjectCard key={proj.id || pIdx} proj={proj} pIdx={pIdx} profile={profile} />
                 ))}
               </div>
             </div>
